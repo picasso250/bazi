@@ -3,20 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTC时间节气查询</title>
+    <title>UTC时间与城市经纬度节气查询</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .container { max-width: 700px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
         h1 { text-align: center; color: #0056b3; margin-bottom: 30px; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
-        input[type="number"] {
-            width: calc(100% - 22px); /* 减去padding和border */
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 22px); /* Subtract padding and border */
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 16px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+            background-color: #fdfdfd;
+        }
+        legend {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0056b3;
+            padding: 0 10px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+        .input-group > div {
+            flex: 1 1 calc(33% - 10px); /* Adjust for 3 columns on larger screens */
+            min-width: 120px; /* Minimum width for inputs */
+        }
+        .input-group.full-width > div {
+             flex: 1 1 100%; /* For city input */
         }
         button {
             display: block;
@@ -30,6 +56,7 @@
             font-size: 18px;
             font-weight: bold;
             transition: background-color 0.3s ease;
+            margin-top: 20px;
         }
         button:hover { background-color: #0056b3; }
         .result {
@@ -44,45 +71,228 @@
         }
         .result p { margin: 5px 0; }
         .result strong { color: #0056b3; }
+        .error-message {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>UTC时间节气查询</h1>
+        <h1>UTC时间与城市经纬度节气查询</h1>
 
-        <form id="solarTermsForm">
-            <label for="year">年份 (UTC):</label>
-            <input type="number" id="year" value="2024" min="1900" max="2100" required>
+        <form id="combinedQueryForm">
+            <fieldset>
+                <legend>输入时间 (UTC)</legend>
+                <div class="input-group">
+                    <div>
+                        <label for="year">年份:</label>
+                        <input type="number" id="year" value="2024" min="1900" max="2100" required>
+                    </div>
+                    <div>
+                        <label for="month">月份:</label>
+                        <input type="number" id="month" value="2" min="1" max="12" required>
+                    </div>
+                    <div>
+                        <label for="day">日期:</label>
+                        <input type="number" id="day" value="4" min="1" max="31" required>
+                    </div>
+                    <div>
+                        <label for="hour">小时:</label>
+                        <input type="number" id="hour" value="16" min="0" max="23" required>
+                    </div>
+                    <div>
+                        <label for="minute">分钟:</label>
+                        <input type="number" id="minute" value="26" min="0" max="59" required>
+                    </div>
+                    <div>
+                        <label for="second">秒钟:</label>
+                        <input type="number" id="second" value="53" min="0" max="59" required>
+                    </div>
+                </div>
+            </fieldset>
 
-            <label for="month">月份 (UTC):</label>
-            <input type="number" id="month" value="2" min="1" max="12" required>
+            <fieldset>
+                <legend>输入城市</legend>
+                <div class="input-group full-width">
+                    <div>
+                        <label for="cityInput">城市名称 (例如: Shanghai):</label>
+                        <input type="text" id="cityInput" placeholder="请输入城市名称" required>
+                    </div>
+                </div>
+            </fieldset>
 
-            <label for="day">日期 (UTC):</label>
-            <input type="number" id="day" value="4" min="1" max="31" required>
-
-            <label for="hour">小时 (UTC):</label>
-            <input type="number" id="hour" value="16" min="0" max="23" required>
-
-            <label for="minute">分钟 (UTC):</label>
-            <input type="number" id="minute" value="26" min="0" max="59" required>
-
-            <label for="second">秒钟 (UTC):</label>
-            <input type="number" id="second" value="53" min="0" max="59" required>
-
-            <button type="submit">查询节气</button>
+            <button type="submit">查询</button>
         </form>
 
+        <div id="errorMessage" class="error-message"></div>
+
         <div id="result" class="result" style="display: none;">
-            <p>输入时间 (UTC): <strong id="inputTime"></strong></p>
+            <h2>查询结果</h2>
+            <p>输入时间 (UTC): <strong id="inputTimeUTC"></strong></p>
+            <p>查询城市: <strong id="cityNameDisplay"></strong> (<strong id="countryCodeDisplay"></strong>)</p>
+            <p>纬度: <strong id="latitudeDisplay"></strong>, 经度: <strong id="longitudeDisplay"></strong></p>
+            <p>根据经度计算的时区偏移: <strong id="timezoneOffsetDisplay"></strong> 小时</p>
+            <p>当地时间: <strong id="localTimeDisplay"></strong></p>
             <p>太阳黄经: <strong id="solarLongitude"></strong> 度</p>
             <p>当前节气: <strong id="solarTerm"></strong></p>
         </div>
     </div>
 
-    <!-- 移除旧的 astronomia CDN 引用 -->
-    <!-- <script src="https://unpkg.com/astronomia@2.2.0/dist/astronomia.min.js"></script> -->
+    <script type="module">
+        // 导入 astronomia 和 cities.json 数据
+        import * as astronomia from 'https://cdn.jsdelivr.net/npm/astronomia@4.1.1/+esm';
+        import cities from 'https://cdn.jsdelivr.net/npm/cities.json@1.1.50/+esm';
 
-    <!-- 将 script.js 声明为一个 ES Module -->
-    <script type="module" src="script.js"></script>
+        // 更加精确的节气判断函数
+        function getSolarTermByLongitude(lon) {
+            // 确保黄经在 0-360 范围内
+            lon = (lon % 360 + 360) % 360;
+
+            // 二十四节气，按黄经升序排列，春分0度（或360度）
+            const terms = [
+                { name: "春分", longitude: 0 },
+                { name: "清明", longitude: 15 },
+                { name: "谷雨", longitude: 30 },
+                { name: "立夏", longitude: 45 },
+                { name: "小满", longitude: 60 },
+                { name: "芒种", longitude: 75 },
+                { name: "夏至", longitude: 90 },
+                { name: "小暑", longitude: 105 },
+                { name: "大暑", longitude: 120 },
+                { name: "立秋", longitude: 135 },
+                { name: "处暑", longitude: 150 },
+                { name: "白露", longitude: 165 },
+                { name: "秋分", longitude: 180 },
+                { name: "寒露", longitude: 195 },
+                { name: "霜降", longitude: 210 },
+                { name: "立冬", longitude: 225 },
+                { name: "小雪", longitude: 240 },
+                { name: "大雪", longitude: 255 },
+                { name: "冬至", longitude: 270 },
+                { name: "小寒", longitude: 285 },
+                { name: "大寒", longitude: 300 },
+                { name: "立春", longitude: 315 },
+                { name: "雨水", longitude: 330 },
+                { name: "惊蛰", longitude: 345 }
+            ];
+
+            for (let i = 0; i < terms.length; i++) {
+                const currentTerm = terms[i];
+                const nextTerm = terms[(i + 1) % terms.length]; // 循环到下一个节气
+
+                if (currentTerm.longitude <= nextTerm.longitude) {
+                    // 普通情况，如 清明(15) -> 谷雨(30)
+                    if (lon >= currentTerm.longitude && lon < nextTerm.longitude) {
+                        return currentTerm.name;
+                    }
+                } else {
+                    // 跨越 360/0 度的情况，例如 惊蛰(345) -> 春分(0)
+                    if (lon >= currentTerm.longitude || lon < nextTerm.longitude) {
+                        return currentTerm.name;
+                    }
+                }
+            }
+            
+            return "未知"; // Fallback，理论上不应到达
+        }
+
+        document.getElementById('combinedQueryForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // 清空之前的搜索结果和错误信息
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('errorMessage').textContent = '';
+
+            // 获取 UTC 日期/时间输入
+            const year = parseInt(document.getElementById('year').value);
+            const month = parseInt(document.getElementById('month').value);
+            const day = parseInt(document.getElementById('day').value);
+            const hour = parseInt(document.getElementById('hour').value);
+            const minute = parseInt(document.getElementById('minute').value);
+            const second = parseInt(document.getElementById('second').value);
+
+            const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
+
+            if (!cityInput) {
+                document.getElementById('errorMessage').textContent = '请输入城市名称。';
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            // 组合成一个 Date 对象（UTC时间）
+            // 注意：Date对象的月份是从0开始的，所以需要 month - 1
+            const utcDate = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+
+            // 搜索城市数据
+            const foundCities = cities.filter(city =>
+                city.name.toLowerCase().includes(cityInput)
+            );
+
+            if (foundCities.length === 0) {
+                document.getElementById('errorMessage').textContent = `未找到城市 "${cityInput}" 的结果。`;
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            const selectedCity = foundCities[0]; // 为简化示例，只取第一个匹配的城市
+
+            // 显式将经纬度字符串转换为浮点数
+            const cityLat = parseFloat(selectedCity.lat);
+            const cityLng = parseFloat(selectedCity.lng);
+
+            // 根据经度计算时区偏移 (15度经度约等于1小时)
+            const timezoneOffsetHours = cityLng / 15;
+            
+            // 将 UTC 时间转换为当地时间
+            const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
+
+            // 使用 astronomia 库计算太阳黄经
+            // 1. 将Date对象转换为儒略日 (Julian Day)
+            const jd = astronomia.julian.DateToJD(utcDate);
+
+            // 2. 将儒略日转换为自 J2000 以来的儒略世纪数 (T)
+            const T = (jd - 2451545.0) / 36525.0;
+
+            // 3. 计算太阳的黄经
+            const solarPosition = astronomia.solar.trueLongitude(T);
+            
+            // 将弧度转换为度数
+            let solarLongitude = solarPosition.lon * 180 / Math.PI;
+
+            // 确保黄经度数调整到 0-360 度范围
+            solarLongitude = (solarLongitude % 360 + 360) % 360;
+
+            // 4. 判断当前节气
+            const currentSolarTerm = getSolarTermByLongitude(solarLongitude);
+
+            // 显示结果
+            document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+            document.getElementById('cityNameDisplay').textContent = selectedCity.name;
+            document.getElementById('countryCodeDisplay').textContent = selectedCity.country;
+            document.getElementById('latitudeDisplay').textContent = cityLat.toFixed(4); // 使用转换后的数字
+            document.getElementById('longitudeDisplay').textContent = cityLng.toFixed(4); // 使用转换后的数字
+            document.getElementById('timezoneOffsetDisplay').textContent = timezoneOffsetHours.toFixed(4);
+            document.getElementById('localTimeDisplay').textContent = localDate.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            document.getElementById('solarLongitude').textContent = solarLongitude.toFixed(4); // 保留4位小数
+            document.getElementById('solarTerm').textContent = currentSolarTerm;
+            
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
 </body>
 </html>
