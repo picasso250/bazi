@@ -13,12 +13,14 @@ const errorMessageDisplay = document.getElementById('errorMessage');
 
 const resultSection = document.getElementById('result');
 const inputTimeUTC8Display = document.getElementById('inputTimeUTC8');
-const inputTimeUTCDisplay = document.getElementById('inputTimeUTC');
+// 移除 inputTimeUTCDisplay 和 timezoneOffsetDisplay 的引用
+// const inputTimeUTCDisplay = document.getElementById('inputTimeUTC');
+// const timezoneOffsetDisplay = document.getElementById('timezoneOffsetDisplay');
 const cityNameDisplay = document.getElementById('cityNameDisplay');
 const countryCodeDisplay = document.getElementById('countryCodeDisplay');
 const latitudeDisplay = document.getElementById('latitudeDisplay');
 const longitudeDisplay = document.getElementById('longitudeDisplay');
-const timezoneOffsetDisplay = document.getElementById('timezoneOffsetDisplay');
+// const timezoneOffsetDisplay = document.getElementById('timezoneOffsetDisplay'); // 已经移除了
 const localTimeDisplay = document.getElementById('localTimeDisplay');
 const solarLongitudeDisplay = document.getElementById('solarLongitude');
 
@@ -160,7 +162,7 @@ export function updateResultsDisplay(baziData, location, gender, grandCycleData,
     clearError();
 
     const {
-        inputUtc8Date, utcDate, timezoneOffsetHours, localDate,
+        inputUtc8Date, utcDate, timezoneOffsetHours, localDate, // utcDate 和 timezoneOffsetHours 会在 console.log 中使用
         yearGanZhi, monthGanZhi, dayGanZhi, hourGanZhi,
         dayMasterAttributes, solarLongitude
     } = baziData;
@@ -168,12 +170,23 @@ export function updateResultsDisplay(baziData, location, gender, grandCycleData,
     const { name: selectedCityName, countryCode: selectedCountryCode, lat: selectedCityLat, lng: selectedCityLng } = location;
 
     inputTimeUTC8Display.textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8';
-    inputTimeUTCDisplay.textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+    
+    // 移除这两行的 DOM 更新
+    // inputTimeUTCDisplay.textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+    // timezoneOffsetDisplay.textContent = timezoneOffsetHours.toFixed(4);
+
+    // 在控制台打印这些信息
+    console.log(`Debug Info:`);
+    console.log(`  Actual UTC Time Used: ${utcDate.toISOString().replace('T', ' ').slice(0, 19)} UTC`);
+    console.log(`  Timezone Offset (based on longitude): ${timezoneOffsetHours.toFixed(4)} hours`);
+    console.log(`  Birth JD: ${baziData.birthJD}`);
+
+
     cityNameDisplay.textContent = selectedCityName;
     countryCodeDisplay.textContent = selectedCountryCode;
     latitudeDisplay.textContent = selectedCityLat.toFixed(4);
     longitudeDisplay.textContent = selectedCityLng.toFixed(4);
-    timezoneOffsetDisplay.textContent = timezoneOffsetHours.toFixed(4);
+    
 
     const localTimeFormatter = new Intl.DateTimeFormat('zh-CN', {
         year: 'numeric',
