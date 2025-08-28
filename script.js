@@ -320,8 +320,8 @@ function calculateGrandCycleStartAge(birthJD, birthMonthTerm, allBaziMonthJDs, d
         // 顺行：从出生日期到下一个节气的时间
         let nextTerm = allBaziMonthJDs.find(term => term.jd > birthJD);
         if (!nextTerm) {
-            console.error("未能找到下一个节气用于大运顺行计算。");
-            return { years: 0, months: 0, days: 0 }; // 防御性返回
+            // 如果找不到下一个节气，说明出生点在当年的最后一个节气之后，但在次年立春之前
+            nextTerm = allBaziMonthJDs[allBaziMonthJDs.length - 1]; // 使用次年立春作为终点
         }
         diffJD = nextTerm.jd - birthJD;
     } else { // backward
@@ -330,28 +330,20 @@ function calculateGrandCycleStartAge(birthJD, birthMonthTerm, allBaziMonthJDs, d
     }
 
     const totalDaysForStartAge = diffJD;
+    // 3天 = 1年
     const years = Math.floor(totalDaysForStartAge / 3);
     const remainingDays = totalDaysForStartAge % 3;
-    const months = Math.floor(remainingDays * 4); // 3天=1年=12个月，所以1天=4个月
-    // 计算剩余天数转换为月后，再将月的零头转为天，这里使用30天为1个月的近似值
-    const days = Math.round((remainingDays * 4 - months) * (30/4)); // 剩余部分乘30/4得到天数
-    // 例如：0.5天 * 4 = 2个月。 2个月 - Math.floor(2个月) = 0。 0 * (30/4) = 0天。
-    // 例如：0.25天 * 4 = 1个月。 1个月 - Math.floor(1个月) = 0。 0 * (30/4) = 0天。
-    // 例如：0.75天 * 4 = 3个月。 3个月 - Math.floor(3个月) = 0。 0 * (30/4) = 0天。
-    // 似乎这部分计算days有误。正确的逻辑应该是：
-    // remainingDays 是 0, 1, 2。
-    // 如果 remainingDays 是 1，就是 4个月。
-    // 如果 remainingDays 是 2，就是 8个月。
-    // 如果要更精确到天，那么 1天 = 4个月 = 120天。
-    // 3天 = 1年。那么 1天 = 1/3 年。
-    // 所以 days = Math.round((totalDaysForStartAge - years * 3 - months / 4) * 30); 这种方式更精确
+    
+    // 1天 = 4个月 (精确)，或者 1年 / 12个月 = 3天 / 12个月 = 0.25天/月
+    const remainingDaysInMonths = remainingDays * 4;
+    const months = Math.floor(remainingDaysInMonths);
+    
+    // 剩余的小数月部分转换为天 (1月 = 30天，或 1/4天/月，所以 1/4 * 30 = 7.5) 
+    // 更准确地说，我们基于 3天=1年的比例来分配天数
+    const daysFraction = remainingDaysInMonths - months;
+    const days = Math.round(daysFraction * (30/4)); 
 
-    // 简化为只显示年和月，天数部分可以忽略或四舍五入到月
-    // 1天 = 4个月，所以0.5天=2个月。如果 days > 0.5，可以算1个月。
-    let finalMonths = months;
-    let finalDays = Math.round((remainingDays * 4 - finalMonths) * 30); // 剩余的月小数部分转天
-
-    return { years, months: finalMonths, days: finalDays };
+    return { years, months, days };
 }
 
 
@@ -368,6 +360,15 @@ function generateGrandCyclePillars(monthGanZhi, direction, numberOfCycles, dayMa
     let currentStemIndex = heavenlyStems.indexOf(monthGanZhi[0]);
     let currentBranchIndex = earthlyBranches.indexOf(monthGanZhi[1]);
 
+    // 跳过月柱本身，从月柱的下一个干支开始计算大运
+    if (direction === "forward") {
+        currentStemIndex = (currentStemIndex + 1) % 10;
+        currentBranchIndex = (currentBranchIndex + 1) % 12;
+    } else { // backward
+        currentStemIndex = (currentStemIndex - 1 + 10) % 10;
+        currentBranchIndex = (currentBranchIndex - 1 + 12) % 12;
+    }
+    
     for (let i = 0; i < numberOfCycles; i++) {
         const ganZhi = heavenlyStems[currentStemIndex] + earthlyBranches[currentBranchIndex];
         const tenGod = getTenGod(dayMasterAttributes, stemAttributes[heavenlyStems[currentStemIndex]]);
@@ -419,7 +420,9 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const second = parseInt(document.getElementById('second').value);
 
     const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
-    const gender = document.getElementById('gender').value;
+    
+    // **** 修改点: 获取选中的性别 radio button 的值 ****
+    const gender = document.querySelector('input[name="gender"]:checked').value;
 
     if (!cityInput) {
         document.getElementById('errorMessage').textContent = '请输入城市名称。';
@@ -600,11 +603,12 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('grand-cycle-item');
 
+        // 大运从起运岁数开始，每十年一运
         const startAge = gcStartYears + (index * 10);
         const endAge = startAge + 9;
 
         itemDiv.innerHTML = `
-            <p class="age-range">${startAge}~${endAge}岁</p>
+            <p class="age-range">${startAge}岁起 ~ ${endAge}岁止</p>
             <p><strong>${gc.ganZhi}</strong> (${gc.tenGod})</p>
         `;
         grandCyclesContainer.appendChild(itemDiv);

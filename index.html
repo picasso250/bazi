@@ -49,13 +49,14 @@
                         <input type="text" id="cityInput" placeholder="请输入城市名称" value="Shanghai" required>
                     </div>
                 </div>
-                <div class="input-group gender-select">
-                    <div class="quarter-width">
-                        <label for="gender">性别:</label>
-                        <select id="gender" required>
-                            <option value="male">男</option>
-                            <option value="female">女</option>
-                        </select>
+                <div class="input-group gender-select full-width">
+                    <label>性别:</label>
+                    <div class="radio-group-gender">
+                        <input type="radio" id="gender_male" name="gender" value="male" checked required>
+                        <label for="gender_male">男 (Male)</label>
+                        
+                        <input type="radio" id="gender_female" name="gender" value="female" required>
+                        <label for="gender_female">女 (Female)</label>
                     </div>
                 </div>
             </fieldset>
