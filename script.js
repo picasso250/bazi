@@ -22,6 +22,110 @@ const baziMonthDefs = [
     { name: "小寒", longitude: 285, branch: "丑", roughMonth: 1, roughDay: 6 }  // Start of 丑月 (Gregorian next year's Jan)
 ];
 
+// --- 新增：天干五行和阴阳属性映射 ---
+const stemAttributes = {
+    "甲": { element: "木", yinYang: "阳" },
+    "乙": { element: "木", yinYang: "阴" },
+    "丙": { element: "火", yinYang: "阳" },
+    "丁": { element: "火", yinYang: "阴" },
+    "戊": { element: "土", yinYang: "阳" },
+    "己": { element: "土", yinYang: "阴" },
+    "庚": { element: "金", yinYang: "阳" },
+    "辛": { element: "金", yinYang: "阴" },
+    "壬": { element: "水", yinYang: "阳" },
+    "癸": { element: "水", yinYang: "阴" },
+};
+
+// --- 新增：地支藏干映射表 ---
+// 每个地支对应一个藏干天干数组
+const earthlyBranchHiddenStems = {
+    "子": ["癸"],
+    "丑": ["己", "癸", "辛"],
+    "寅": ["甲", "丙", "戊"],
+    "卯": ["乙"],
+    "辰": ["戊", "乙", "癸"],
+    "巳": ["丙", "庚", "戊"],
+    "午": ["丁", "己"],
+    "未": ["己", "丁", "乙"],
+    "申": ["庚", "壬", "戊"],
+    "酉": ["辛"],
+    "戌": ["戊", "辛", "丁"],
+    "亥": ["壬", "甲"],
+};
+
+// --- 新增：五行相生相克规则 ---
+// key 生 value
+const produces = {
+    "木": "火",
+    "火": "土",
+    "土": "金",
+    "金": "水",
+    "水": "木",
+};
+
+// key 克 value
+const controls = {
+    "木": "土",
+    "火": "金",
+    "土": "水",
+    "金": "木",
+    "水": "火",
+};
+
+/**
+ * 根据日元属性和目标天干属性，计算目标天干的十神。
+ * @param {object} dayMasterAttr - 日元的五行和阴阳属性 { element: "木", yinYang: "阳" }。
+ * @param {object} targetStemAttr - 目标天干的五行和阴阳属性。
+ * @returns {string} 对应的十神名称。
+ */
+function getTenGod(dayMasterAttr, targetStemAttr) {
+    if (!dayMasterAttr || !targetStemAttr) return ""; // 防御性编程
+
+    const myElement = dayMasterAttr.element;
+    const myYinYang = dayMasterAttr.yinYang;
+    const targetElement = targetStemAttr.element;
+    const targetYinYang = targetStemAttr.yinYang;
+
+    // 与我同类 (比肩/劫财)
+    if (myElement === targetElement) {
+        return myYinYang === targetYinYang ? "比肩" : "劫财";
+    }
+
+    // 我生出 (食神/伤官)
+    if (produces[myElement] === targetElement) {
+        return myYinYang === targetYinYang ? "食神" : "伤官";
+    }
+
+    // 我克制 (正财/偏财)
+    // 注意这里是 "我克" 目标，所以 targetElement 被我克
+    if (controls[myElement] === targetElement) {
+        return myYinYang === targetYinYang ? "偏财" : "正财"; // 我克者为财，同性偏财，异性正财
+    }
+
+    // 克制我 (正官/偏官)
+    // 检查 targetElement 是否 controls 我
+    if (controls[targetElement] === myElement) {
+        return myYinYang === targetYinYang ? "偏官" : "正官"; // 克我者为官杀，同性偏官，异性正官
+    }
+
+    // 生扶我 (正印/偏印)
+    // 检查 targetElement 是否 produces 我
+    if (produces[targetElement] === myElement) {
+        return myYinYang === targetYinYang ? "偏印" : "正印"; // 生我者为印枭，同性偏印，异性正印
+    }
+
+    return "未知"; // 理论上不会发生，除非数据有误
+}
+
+/**
+ * 根据地支获取其所藏天干。
+ * @param {string} earthlyBranch - 地支名称 (e.g., "子")。
+ * @returns {Array<string>} 藏干列表。
+ */
+function getHiddenStems(earthlyBranch) {
+    return earthlyBranchHiddenStems[earthlyBranch] || [];
+}
+
 
 /**
  * 根据公历年份计算其对应的天干地支。
@@ -88,11 +192,41 @@ function findJDForSolarLongitude(year, targetLonDeg, roughMonth, roughDay) {
         // 对于目标黄经 315 度 (立春)，我们寻找黄经从小于 315 变为大于等于 315 的点
         // 如果 currentLon 小于 targetLonDeg，说明立春时刻还在 midJD 之后
         // 如果 currentLon 大于等于 targetLonDeg，说明立春时刻在 midJD 或之前
-        if (currentLon < targetLonDeg) {
-            lowJD = midJD;
-        } else {
-            highJD = midJD;
+        // 注意：这里需要处理黄经跨越0/360度边界的情况
+        let diff = (currentLon - targetLonDeg + 360) % 360;
+        if (diff > 180) { // currentLon 远小于 targetLonDeg (例如 target 15, current 345)
+             highJD = midJD;
+        } else if (diff < 0.0001) { // 接近相等
+            highJD = midJD; // 找到或者非常接近，收敛到此
         }
+        else if (diff > 0.0001 && diff < 180) { // currentLon 略大于 targetLonDeg
+            highJD = midJD;
+        } else { // currentLon 略小于 targetLonDeg
+            lowJD = midJD;
+        }
+
+        // 简化判断，更准确的二分查找对于角度：
+        // 目标是 `targetLonDeg`。我们希望找到 `jd` 使得 `getSolarLongitudeForJD(jd)` 首次达到或超过 `targetLonDeg`。
+        // 如果 `currentLon` 在 `targetLonDeg` 之前（逆时针方向），则 `midJD` 太早。
+        // 如果 `currentLon` 在 `targetLonDeg` 之后（顺时针方向），则 `midJD` 太晚。
+        // 一个更鲁棒的检查：
+        // 判断 `currentLon` 是否“在目标之前”
+        // let isBeforeTarget = false;
+        // if (targetLonDeg > 180) { // 例如立春 315
+        //     isBeforeTarget = (currentLon > targetLonDeg || currentLon < (targetLonDeg + 30) % 360); // 315 到 345 之间
+        // } else { // 例如清明 15
+        //     isBeforeTarget = (currentLon > targetLonDeg && currentLon < (targetLonDeg + 30) % 360); // 15 到 45 之间
+        // }
+
+        // 重新简化判断逻辑 for solar longitude crossing
+        // 如果我们寻找一个时刻，使得太阳黄经从 (targetLonDeg - epsilon) 变为 (targetLonDeg + epsilon)
+        // 假设 solarLon 随时间单调递增
+        if (currentLon < targetLonDeg) {
+             lowJD = midJD;
+        } else {
+             highJD = midJD;
+        }
+
         iterationCount++;
     }
     return highJD; // 返回高边界，它更接近实际时刻（或者说，是黄经首次达到或超过目标值的点）
@@ -108,6 +242,7 @@ function getBaziMonthStartJDs(baziYear) {
     const jdsForBaziYearMonths = [];
 
     // 1. 获取当前八字年的立春 (寅月开始)
+    // roughMonth 和 roughDay 是公历日期，如果 baziYear 是 2023，那么立春 roughMonth 2, roughDay 4 对应的就是 2023年2月4日
     const actualLichunJD_current = findJDForSolarLongitude(baziYear, baziMonthDefs[0].longitude, baziMonthDefs[0].roughMonth, baziMonthDefs[0].roughDay);
     jdsForBaziYearMonths.push({ name: "立春", longitude: baziMonthDefs[0].longitude, branch: baziMonthDefs[0].branch, jd: actualLichunJD_current });
 
@@ -115,8 +250,32 @@ function getBaziMonthStartJDs(baziYear) {
     for (let i = 1; i < baziMonthDefs.length; i++) { // 从惊蛰开始
         const term = baziMonthDefs[i];
         let searchGregorianYear = baziYear;
-        // 小寒 (丑月) 通常发生在公历的下一年1月份
-        if (term.name === "小寒") {
+        // 小寒 (丑月) 和 次年立春 通常发生在公历的下一年1月份
+        // 清明 (辰月) 之后的节气，如果黄经度数小于立春黄经，那也是在同一年。
+        // 关键：节气定义是黄经度数，它会按顺序递增。当黄经从 300 多度跨越 0 度时，公历年份会变化。
+        // baziMonthDefs 是按八字月份顺序排列的，并非公历顺序。
+        // 所以，当遍历到黄经度数小于前一个节气时，说明跨年了。
+        // 更准确的做法是，检查当前的节气的黄经是否小于上一个节气的黄经，如果是，则公历年份加1。
+
+        // 简化的处理，对于小寒（丑月，黄经285度）和之后的节气，如果它的黄经比立春黄经（315度）小，那它应该在下一年
+        // 更通用的判断：如果当前的节气黄经比立春的黄经小（例如从 315 -> 345 -> 15 -> 45...），
+        // 当黄经从 345 -> 15 时，年份不跨越；当黄经从 285 (小寒) 回到 315 (立春) 时，年份才跨越。
+        // 这是一个连续的度数。当前面的节气黄经大于后面的节气黄经时，说明跨越了年度边界（公历年）。
+        // 比如从大雪255到小寒285，再到立春315，这些都是在同一年。
+        // 但如果 baziYear 的立春是 2023年2月4日，那么 2023年的 惊蛰、清明...一直到 大雪、小寒，都应该在 2023年。
+        // 只有到了 **下一个** 立春，才是 2024年的八字开始。
+        // baziMonthDefs 的顺序是 立春 (315), 惊蛰 (345), 清明 (15), 立夏 (45)...小寒 (285)。
+        // 当 longitude 从 345 变为 15 时，虽然黄经度数变小了，但它们是在同一个公历年内的。
+        // 只有当计算到 小寒 (285) 之后的 下一个 立春 (315) 时，才跳到下一年。
+        // 现在的逻辑 `searchGregorianYear = baziYear; if (term.name === "小寒") { searchGregorianYear = baziYear + 1; }`
+        // 这个 `if (term.name === "小寒")` 应该改成 `if (term.longitude < baziMonthDefs[i-1].longitude && term.name !== "立春")`
+        // 或者更简单的，所有节气都基于 baziYear 计算，除了小寒，它通常在下一年。
+
+        // 重新审视，我们只关心计算 `baziYear` 这个八字年对应的月份。
+        // 比如 baziYear = 1989.
+        // 立春 (1989/2/4), 惊蛰 (1989/3/6), 清明 (1989/4/5), ..., 大雪 (1989/12/7), 小寒 (1990/1/5)。
+        // 所以当节气是“小寒”时，需要将公历年份加1。
+        if (term.name === "小寒") { // 小寒通常是下一个公历年的1月，但它仍属于本八字年（上一个立春到当前立春）
             searchGregorianYear = baziYear + 1;
         }
         let jd = findJDForSolarLongitude(searchGregorianYear, term.longitude, term.roughMonth, term.roughDay);
@@ -169,7 +328,6 @@ function getStemForMonth(yearStem, monthBranch) {
 
 /**
  * 根据当地时间的小时数（0-23）获取时柱地支。
- * 子时 (23-00) 跨两天，但在这里我们只根据输入的“当地时间”来决定地支。
  * @param {number} localHour - 当地时间的小时数 (0-23)。
  * @returns {string} 对应的时支。
  */
@@ -234,10 +392,17 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('result').style.display = 'none';
     document.getElementById('errorMessage').style.display = 'none';
     document.getElementById('errorMessage').textContent = '';
-    document.getElementById('yearPillarDisplay').textContent = ''; // 清空年柱显示
-    document.getElementById('monthPillarDisplay').textContent = ''; // 清空月柱显示
-    document.getElementById('dayPillarDisplay').textContent = ''; // 清空日柱显示
-    document.getElementById('hourPillarDisplay').textContent = ''; // 清空时柱显示
+    // 清空四柱显示
+    document.getElementById('yearPillarDisplay').textContent = '';
+    document.getElementById('monthPillarDisplay').textContent = '';
+    document.getElementById('dayPillarDisplay').textContent = '';
+    document.getElementById('hourPillarDisplay').textContent = '';
+    // 清空藏干显示
+    document.getElementById('yearBranchHiddenStems').innerHTML = '';
+    document.getElementById('monthBranchHiddenStems').innerHTML = '';
+    document.getElementById('dayBranchHiddenStems').innerHTML = '';
+    document.getElementById('hourBranchHiddenStems').innerHTML = '';
+
 
     // 获取 UTC+8 日期/时间输入
     const year = parseInt(document.getElementById('year').value);
@@ -284,8 +449,8 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     // 根据经度计算时区偏移 (15度经度约等于1小时)
     const timezoneOffsetHours = cityLng / 15;
     
-    // 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“当地时间”，未考虑夏令时等复杂因素)
-    // localDate 内部存储的是一个 UTC 时间戳，其值是 utcDate + timezoneOffsetHours
+    // 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“真太阳时”)
+    // localDate 内部存储的是一个 UTC 时间戳，其值是 utcDate + timezoneOffsetHours 的效果
     const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
 
     // 使用 astronomia 库计算太阳黄经
@@ -342,22 +507,25 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const referenceJD = astronomia.julian.DateToJD(new Date(Date.UTC(1900, 0, 1, 0, 0, 0)));
     const referenceGanZhiIndex = 10; // 甲戌
 
-    let effectiveDayForPillarDate = new Date(localDate); // 从当地出生时间开始判断
-    // 应用子时换日规则：如果当地时间 >= 23:00，则日柱属于下一个公历日
-    // 关键修正：使用 getUTCHours() 来获取 localDate 的小时部分，因为 localDate 内部存储的是 UTC 时间
-    if (effectiveDayForPillarDate.getUTCHours() >= 23) { 
-        effectiveDayForPillarDate.setUTCDate(effectiveDayForPillarDate.getUTCDate() + 1); // 将当地日期前进一天
-    }
+    // 确定八字日柱所属的公历日期（考虑子时换日）
+    // localDate 是已经考虑经度偏移的当地时间，但其内部时间戳是UTC。
+    // getUTCHours() 获取的是这个内部UTC时间的小时部分，即当地小时。
+    const localHourEffective = localDate.getUTCHours(); 
+    
+    let dateForDayPillar = new Date(Date.UTC(
+        localDate.getUTCFullYear(),
+        localDate.getUTCMonth(),
+        localDate.getUTCDate(),
+        0, 0, 0 // 只取年月日，小时分钟秒设为0
+    ));
 
-    // 获取用于计算日柱的有效公历日期的 00:00:00 UTC 对应的 Julian Day
-    const effectiveJDForDayPillarCalc = astronomia.julian.DateToJD(
-        new Date(Date.UTC(
-            effectiveDayForPillarDate.getUTCFullYear(), // 使用 UTC getter
-            effectiveDayForPillarDate.getUTCMonth(),
-            effectiveDayForPillarDate.getUTCDate(),
-            0, 0, 0
-        ))
-    );
+    // 八字日柱子时换日规则：如果当地真太阳时是 23:00-23:59，日柱算作下一天。
+    if (localHourEffective >= 23) {
+        dateForDayPillar.setUTCDate(dateForDayPillar.getUTCDate() + 1); // 日期加一天
+    }
+    // 00:00-00:59 的子时则算作当天，无需额外处理。
+
+    const effectiveJDForDayPillarCalc = astronomia.julian.DateToJD(dateForDayPillar);
 
     // 计算从参考 Julian Day 到有效 Julian Day 的总天数差
     const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD);
@@ -375,15 +543,48 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
 
     // --- 时柱计算逻辑 ---
     // 获取经过子时换日规则调整后的当地时间的小时数，用于确定时支。
-    const localHourForHourPillar = effectiveDayForPillarDate.getUTCHours();
-    
-    const hourBranch = getBranchForHour(localHourForHourPillar);
+    // 这里直接使用 localHourEffective 即可，因为时支不受日柱换日影响，只看当时的小时
+    const hourBranch = getBranchForHour(localHourEffective);
     
     // 日干使用已经计算好的 effective day's stem
     const hourStem = getStemForHour(dayGanZhi[0], hourBranch); // dayGanZhi[0] 是日干
 
     const hourGanZhi = hourStem + hourBranch;
     // --- 时柱计算逻辑结束 ---
+
+    // --- 新增：十神和藏干计算逻辑 ---
+
+    // 1. 获取日元（日柱天干）的属性
+    const dayMasterStem = dayGanZhi[0]; // 例如 "甲"
+    const dayMasterAttributes = stemAttributes[dayMasterStem];
+
+    // 2. 计算天干的十神并更新显示
+    document.getElementById('yearPillarDisplay').textContent = `${yearGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[yearGanZhi[0]])})`;
+    document.getElementById('monthPillarDisplay').textContent = `${monthGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[monthGanZhi[0]])})`;
+    document.getElementById('dayPillarDisplay').textContent = `${dayGanZhi} (日元)`; // 日柱天干是日元，不计算十神
+    document.getElementById('hourPillarDisplay').textContent = `${hourGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[hourGanZhi[0]])})`;
+
+    // 3. 计算地支藏干及其十神
+    const pillars = [
+        { branch: yearGanZhi[1], displayId: 'yearBranchHiddenStems' },
+        { branch: monthGanZhi[1], displayId: 'monthBranchHiddenStems' },
+        { branch: dayGanZhi[1], displayId: 'dayBranchHiddenStems' },
+        { branch: hourGanZhi[1], displayId: 'hourBranchHiddenStems' },
+    ];
+
+    pillars.forEach(pillar => {
+        const hiddenStems = getHiddenStems(pillar.branch);
+        const container = document.getElementById(pillar.displayId);
+        
+        hiddenStems.forEach(stem => {
+            const tenGod = getTenGod(dayMasterAttributes, stemAttributes[stem]);
+            const p = document.createElement('p');
+            p.textContent = `${stem} (${tenGod})`;
+            container.appendChild(p);
+        });
+    });
+
+    // --- 十神和藏干计算逻辑结束 ---
 
 
     // 显示结果
@@ -409,11 +610,5 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('localTimeDisplay').textContent = localTimeFormatter.format(localDate);
 
     document.getElementById('solarLongitude').textContent = solarLongitude.toFixed(4);
-    // document.getElementById('solarTerm').textContent = currentSolarTerm; // 移除此行
-    document.getElementById('yearPillarDisplay').textContent = yearGanZhi; // 显示年柱
-    document.getElementById('monthPillarDisplay').textContent = monthGanZhi; // 显示月柱
-    document.getElementById('dayPillarDisplay').textContent = dayGanZhi; // 显示日柱
-    document.getElementById('hourPillarDisplay').textContent = hourGanZhi; // 显示时柱
-    
     document.getElementById('result').style.display = 'block';
 });
