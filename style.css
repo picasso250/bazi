@@ -34,6 +34,11 @@ legend {
     flex: 1 1 calc(33% - 10px);
     min-width: 120px;
 }
+/* NEW: Rule for time input group to display 5 items per row */
+.input-group.time-inputs-group > div {
+    flex: 1 1 calc(20% - 8px); /* For 5 items with 10px gap: (100% - 4*10px) / 5 = 20% - 8px */
+}
+
 .input-group.full-width > div {
         flex: 1 1 100%;
 }
@@ -88,7 +93,7 @@ button:hover { background-color: #0056b3; }
 
 .radio-group-gender input[type="radio"] {
     /* 隐藏原生的单选按钮 */
-    display: none; 
+    display: none;
 }
 
 .radio-group-gender label {

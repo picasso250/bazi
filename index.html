@@ -13,7 +13,7 @@
         <form id="combinedQueryForm">
             <fieldset>
                 <legend>输入时间 (UTC+8)</legend>
-                <div class="input-group">
+                <div class="input-group time-inputs-group"> <!-- Added 'time-inputs-group' class -->
                     <div>
                         <label for="year">年份:</label>
                         <input type="number" id="year" value="1989" min="1900" max="2100" required>
@@ -34,10 +34,7 @@
                         <label for="minute">分钟:</label>
                         <input type="number" id="minute" value="5" min="0" max="59" required>
                     </div>
-                    <div>
-                        <label for="second">秒钟:</label>
-                        <input type="number" id="second" value="0" min="0" max="59" required>
-                    </div>
+                    <!-- REMOVED: The 'second' input field is removed as per request -->
                 </div>
             </fieldset>
 
@@ -54,7 +51,7 @@
                     <div class="radio-group-gender">
                         <input type="radio" id="gender_male" name="gender" value="male" checked required>
                         <label for="gender_male">男 (Male)</label>
-                        
+
                         <input type="radio" id="gender_female" name="gender" value="female" required>
                         <label for="gender_female">女 (Female)</label>
                     </div>

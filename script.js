@@ -333,15 +333,15 @@ function calculateGrandCycleStartAge(birthJD, birthMonthTerm, allBaziMonthJDs, d
     // 3天 = 1年
     const years = Math.floor(totalDaysForStartAge / 3);
     const remainingDays = totalDaysForStartAge % 3;
-    
+
     // 1天 = 4个月 (精确)，或者 1年 / 12个月 = 3天 / 12个月 = 0.25天/月
     const remainingDaysInMonths = remainingDays * 4;
     const months = Math.floor(remainingDaysInMonths);
-    
-    // 剩余的小数月部分转换为天 (1月 = 30天，或 1/4天/月，所以 1/4 * 30 = 7.5) 
+
+    // 剩余的小数月部分转换为天 (1月 = 30天，或 1/4天/月，所以 1/4 * 30 = 7.5)
     // 更准确地说，我们基于 3天=1年的比例来分配天数
     const daysFraction = remainingDaysInMonths - months;
-    const days = Math.round(daysFraction * (30/4)); 
+    const days = Math.round(daysFraction * (30/4));
 
     return { years, months, days };
 }
@@ -368,7 +368,7 @@ function generateGrandCyclePillars(monthGanZhi, direction, numberOfCycles, dayMa
         currentStemIndex = (currentStemIndex - 1 + 10) % 10;
         currentBranchIndex = (currentBranchIndex - 1 + 12) % 12;
     }
-    
+
     for (let i = 0; i < numberOfCycles; i++) {
         const ganZhi = heavenlyStems[currentStemIndex] + earthlyBranches[currentBranchIndex];
         const tenGod = getTenGod(dayMasterAttributes, stemAttributes[heavenlyStems[currentStemIndex]]);
@@ -417,10 +417,11 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const day = parseInt(document.getElementById('day').value);
     const hour = parseInt(document.getElementById('hour').value);
     const minute = parseInt(document.getElementById('minute').value);
-    const second = parseInt(document.getElementById('second').value);
+    // const second = parseInt(document.getElementById('second').value); // Removed second input, always 0
+    const second = 0; // Default to 0 seconds
 
     const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
-    
+
     // **** 修改点: 获取选中的性别 radio button 的值 ****
     const gender = document.querySelector('input[name="gender"]:checked').value;
 
@@ -431,10 +432,10 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     }
 
     // 原始输入的UTC+8时间
-    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second)); // Use `second` variable which is now 0
 
     // 转换为 UTC 时间
-    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second));
+    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second)); // Use `second` variable which is now 0
     const birthJD = astronomia.julian.DateToJD(utcDate);
 
     // 搜索城市数据
