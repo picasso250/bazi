@@ -128,6 +128,9 @@ export function displayError(message) {
     errorMessageDisplay.textContent = message;
     errorMessageDisplay.style.display = 'block';
     resultSection.style.display = 'none'; // Hide results if there's an error
+    // --- 优化：错误信息出现时也滚动到错误信息 ---
+    errorMessageDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // --- 结束优化 ---
 }
 
 export function clearError() {
@@ -234,7 +237,12 @@ export function updateResultsDisplay(baziData, location, gender, grandCycleData,
 
     // Current Year Pillar
     currentGregorianYearDisplay.textContent = new Date().getUTCFullYear();
-    currentYearPillarDisplay.textContent = `${currentYearGanZhi} (${currentYearTenGod})`;
+    const currentYearPillarStrong = document.getElementById('currentYearPillarDisplay');
+    currentYearPillarStrong.textContent = `${currentYearGanZhi} (${currentYearTenGod})`;
+
 
     resultSection.style.display = 'block';
+    // --- 优化：滚动到结果部分 ---
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // --- 结束优化 ---
 }
