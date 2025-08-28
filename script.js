@@ -199,6 +199,66 @@ function getSolarTermByLongitude(lon) {
     return "未知";
 }
 
+/**
+ * 根据当地时间的小时数（0-23）获取时柱地支。
+ * 子时 (23-00) 跨两天，但在这里我们只根据输入的“当地时间”来决定地支。
+ * @param {number} localHour - 当地时间的小时数 (0-23)。
+ * @returns {string} 对应的时支。
+ */
+function getBranchForHour(localHour) {
+    if (localHour >= 23 || localHour < 1) return "子"; // 23:00-00:59
+    if (localHour >= 1 && localHour < 3) return "丑";
+    if (localHour >= 3 && localHour < 5) return "寅";
+    if (localHour >= 5 && localHour < 7) return "卯";
+    if (localHour >= 7 && localHour < 9) return "辰";
+    if (localHour >= 9 && localHour < 11) return "巳";
+    if (localHour >= 11 && localHour < 13) return "午";
+    if (localHour >= 13 && localHour < 15) return "未";
+    if (localHour >= 15 && localHour < 17) return "申";
+    if (localHour >= 17 && localHour < 19) return "酉";
+    if (localHour >= 19 && localHour < 21) return "戌";
+    if (localHour >= 21 && localHour < 23) return "亥";
+    return ""; // Should not happen with valid hour input
+}
+
+/**
+ * 根据日干和时支，计算时干。
+ * 使用五鼠遁时歌诀。
+ * @param {string} dayStem - 日干 (e.g., "甲", "乙")。
+ * @param {string} hourBranch - 时地支 (e.g., "子", "丑")。
+ * @returns {string} 时干。
+ */
+function getStemForHour(dayStem, hourBranch) {
+    const dayStemIndex = heavenlyStems.indexOf(dayStem);
+
+    // 根据日干确定子时 (Zi hour) 的天干 (五鼠遁时歌诀)
+    let ziHourStemIndex;
+    if (dayStemIndex === heavenlyStems.indexOf("甲") || dayStemIndex === heavenlyStems.indexOf("己")) {
+        ziHourStemIndex = heavenlyStems.indexOf("甲"); // 甲己还加甲
+    } else if (dayStemIndex === heavenlyStems.indexOf("乙") || dayStemIndex === heavenlyStems.indexOf("庚")) {
+        ziHourStemIndex = heavenlyStems.indexOf("丙"); // 乙庚丙作初
+    } else if (dayStemIndex === heavenlyStems.indexOf("丙") || dayStemIndex === heavenlyStems.indexOf("辛")) {
+        ziHourStemIndex = heavenlyStems.indexOf("戊"); // 丙辛从戊起
+    } else if (dayStemIndex === heavenlyStems.indexOf("丁") || dayStemIndex === heavenlyStems.indexOf("壬")) {
+        ziHourStemIndex = heavenlyStems.indexOf("庚"); // 丁壬庚子居
+    } else { // 戊 or 癸
+        ziHourStemIndex = heavenlyStems.indexOf("壬"); // 戊癸何方发 (壬子居)
+    }
+
+    // 获取时地支和子地支在 earthlyBranches 数组中的实际索引
+    const hourBranchActualIndex = earthlyBranches.indexOf(hourBranch);
+    const ziBranchActualIndex = earthlyBranches.indexOf("子");
+
+    // 计算时地支相对于子时地支的偏移量 (0-11)
+    const offset = (hourBranchActualIndex - ziBranchActualIndex + 12) % 12;
+
+    // 计算最终的时干索引
+    const hourStemIndex = (ziHourStemIndex + offset) % 10;
+
+    return heavenlyStems[hourStemIndex];
+}
+
+
 document.getElementById('combinedQueryForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -209,6 +269,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('yearPillarDisplay').textContent = ''; // 清空年柱显示
     document.getElementById('monthPillarDisplay').textContent = ''; // 清空月柱显示
     document.getElementById('dayPillarDisplay').textContent = ''; // 清空日柱显示
+    document.getElementById('hourPillarDisplay').textContent = ''; // 清空时柱显示
 
     // 获取 UTC+8 日期/时间输入
     const year = parseInt(document.getElementById('year').value);
@@ -347,6 +408,18 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const dayGanZhi = heavenlyStems[dayStemIndex] + earthlyBranches[dayBranchIndex];
     // --- 日柱计算逻辑结束 ---
 
+    // --- 时柱计算逻辑 ---
+    // 获取经过子时换日规则调整后的当地时间的小时数，用于确定时支。
+    const localHourForHourPillar = effectiveDayForPillarDate.getUTCHours();
+    
+    const hourBranch = getBranchForHour(localHourForHourPillar);
+    
+    // 日干使用已经计算好的 effective day's stem
+    const hourStem = getStemForHour(dayGanZhi[0], hourBranch); // dayGanZhi[0] 是日干
+
+    const hourGanZhi = hourStem + hourBranch;
+    // --- 时柱计算逻辑结束 ---
+
 
     // 显示结果
     document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8'; // 填充原始输入UTC+8时间
@@ -375,6 +448,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('yearPillarDisplay').textContent = yearGanZhi; // 显示年柱
     document.getElementById('monthPillarDisplay').textContent = monthGanZhi; // 显示月柱
     document.getElementById('dayPillarDisplay').textContent = dayGanZhi; // 显示日柱
+    document.getElementById('hourPillarDisplay').textContent = hourGanZhi; // 显示时柱
     
     document.getElementById('result').style.display = 'block';
 });
