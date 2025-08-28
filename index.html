@@ -86,16 +86,20 @@
         <div id="errorMessage" class="error-message"></div>
 
         <div id="result" class="result" style="display: none;">
-            <h2>查询结果</h2>
+            <!-- Removed h2 "查询结果" -->
             <p>输入时间 (UTC+8): <strong id="inputTimeUTC8"></strong></p>
             <p>查询城市: <strong id="cityNameDisplay"></strong> (<strong id="countryCodeDisplay"></strong>)</p>
             <p>纬度: <strong id="latitudeDisplay"></strong>, 经度: <strong id="longitudeDisplay"></strong></p>
             <p>当地时间: <strong id="localTimeDisplay"></strong></p>
             <p>太阳黄经: <strong id="solarLongitude"></strong> 度</p>
-            <p>八字年柱: <strong id="yearPillarDisplay"></strong></p>
-            <p>八字月柱: <strong id="monthPillarDisplay"></strong></p>
-            <p>八字日柱: <strong id="dayPillarDisplay"></strong></p>
-            <p>八字时柱: <strong id="hourPillarDisplay"></strong></p>
+
+            <!-- 四柱显示改为横向布局 -->
+            <div class="bazi-pillars-container">
+                <p>年柱: <strong id="yearPillarDisplay"></strong></p>
+                <p>月柱: <strong id="monthPillarDisplay"></strong></p>
+                <p>日柱: <strong id="dayPillarDisplay"></strong></p>
+                <p>时柱: <strong id="hourPillarDisplay"></strong></p>
+            </div>
 
             <h3>四柱藏干及十神</h3>
             <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 20px;">
