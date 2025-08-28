@@ -167,38 +167,6 @@ function getStemForMonth(yearStem, monthBranch) {
     return heavenlyStems[monthStemIndex];
 }
 
-// 更加精确的节气判断函数 (保持不变，但在此项目中可能不是核心，因为我们主要看月起始节气)
-function getSolarTermByLongitude(lon) {
-    lon = (lon % 360 + 360) % 360;
-
-    const terms = [
-        { name: "春分", longitude: 0 }, { name: "清明", longitude: 15 }, { name: "谷雨", longitude: 30 },
-        { name: "立夏", longitude: 45 }, { name: "小满", longitude: 60 }, { name: "芒种", longitude: 75 },
-        { name: "夏至", longitude: 90 }, { name: "小暑", longitude: 105 }, { name: "大暑", longitude: 120 },
-        { name: "立秋", longitude: 135 }, { name: "处暑", longitude: 150 }, { name: "白露", longitude: 165 },
-        { name: "秋分", longitude: 180 }, { name: "寒露", longitude: 195 }, { name: "霜降", longitude: 210 },
-        { name: "立冬", longitude: 225 }, { name: "小雪", longitude: 240 }, { name: "大雪", longitude: 255 },
-        { name: "冬至", longitude: 270 }, { name: "小寒", longitude: 285 }, { name: "大寒", longitude: 300 },
-        { name: "立春", longitude: 315 }, { name: "雨水", longitude: 330 }, { name: "惊蛰", longitude: 345 }
-    ];
-
-    for (let i = 0; i < terms.length; i++) {
-        const currentTerm = terms[i];
-        const nextTerm = terms[(i + 1) % terms.length];
-
-        if (currentTerm.longitude <= nextTerm.longitude) {
-            if (lon >= currentTerm.longitude && lon < nextTerm.longitude) {
-                return currentTerm.name;
-            }
-        } else {
-            if (lon >= currentTerm.longitude || lon < nextTerm.longitude) {
-                return currentTerm.name;
-            }
-        }
-    }
-    return "未知";
-}
-
 /**
  * 根据当地时间的小时数（0-23）获取时柱地支。
  * 子时 (23-00) 跨两天，但在这里我们只根据输入的“当地时间”来决定地支。
@@ -325,9 +293,6 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     let solarLongitude = astronomia.solar.trueLongitude(T).lon * 180 / Math.PI;
     solarLongitude = (solarLongitude % 360 + 360) % 360;
 
-    // 判断当前节气 (此处的节气是指24节气之一，不是八字月份的起始节气)
-    const currentSolarTerm = getSolarTermByLongitude(solarLongitude);
-
     // --- 年柱计算逻辑 ---
     // 查找当年立春的 Julian Day (立春黄经为 315 度)
     let lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4); 
@@ -444,7 +409,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('localTimeDisplay').textContent = localTimeFormatter.format(localDate);
 
     document.getElementById('solarLongitude').textContent = solarLongitude.toFixed(4);
-    document.getElementById('solarTerm').textContent = currentSolarTerm;
+    // document.getElementById('solarTerm').textContent = currentSolarTerm; // 移除此行
     document.getElementById('yearPillarDisplay').textContent = yearGanZhi; // 显示年柱
     document.getElementById('monthPillarDisplay').textContent = monthGanZhi; // 显示月柱
     document.getElementById('dayPillarDisplay').textContent = dayGanZhi; // 显示日柱

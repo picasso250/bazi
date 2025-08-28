@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UTC+8时间与城市经纬度查询八字</title> <!-- 修改标题 -->
+    <title>UTC+8时间与城市经纬度查询八字</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; }
         .container { max-width: 700px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
@@ -84,11 +84,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>UTC+8时间与城市经纬度查询八字</h1> <!-- 修改标题 -->
+        <h1>UTC+8时间与城市经纬度查询八字</h1>
 
         <form id="combinedQueryForm">
             <fieldset>
-                <legend>输入时间 (UTC+8)</legend> <!-- 修改图例 -->
+                <legend>输入时间 (UTC+8)</legend>
                 <div class="input-group">
                     <div>
                         <label for="year">年份:</label>
@@ -134,18 +134,18 @@
 
         <div id="result" class="result" style="display: none;">
             <h2>查询结果</h2>
-            <p>输入时间 (UTC+8): <strong id="inputTimeUTC8"></strong></p> <!-- 新增用于显示UTC+8时间的元素 -->
-            <p>实际用于计算的UTC时间: <strong id="inputTimeUTC"></strong></p> <!-- 修改显示UTC时间描述 -->
+            <p>输入时间 (UTC+8): <strong id="inputTimeUTC8"></strong></p>
+            <p>实际用于计算的UTC时间: <strong id="inputTimeUTC"></strong></p>
             <p>查询城市: <strong id="cityNameDisplay"></strong> (<strong id="countryCodeDisplay"></strong>)</p>
             <p>纬度: <strong id="latitudeDisplay"></strong>, 经度: <strong id="longitudeDisplay"></strong></p>
             <p>根据经度计算的时区偏移: <strong id="timezoneOffsetDisplay"></strong> 小时</p>
             <p>当地时间: <strong id="localTimeDisplay"></strong></p>
             <p>太阳黄经: <strong id="solarLongitude"></strong> 度</p>
-            <p>当前节气: <strong id="solarTerm"></strong></p>
+            <!-- <p>当前节气: <strong id="solarTerm"></strong></p> --> <!-- 移除此行 -->
             <p>八字年柱: <strong id="yearPillarDisplay"></strong></p>
             <p>八字月柱: <strong id="monthPillarDisplay"></strong></p>
             <p>八字日柱: <strong id="dayPillarDisplay"></strong></p>
-            <p>八字时柱: <strong id="hourPillarDisplay"></strong></p> <!-- Added this line -->
+            <p>八字时柱: <strong id="hourPillarDisplay"></strong></p>
         </div>
     </div>
 
