@@ -97,19 +97,17 @@ function getTenGod(dayMasterAttr, targetStemAttr) {
     }
 
     // 我克制 (正财/偏财)
-    // 注意这里是 "我克" 目标，所以 targetElement 被我克
     if (controls[myElement] === targetElement) {
         return myYinYang === targetYinYang ? "偏财" : "正财"; // 我克者为财，同性偏财，异性正财
     }
 
     // 克制我 (正官/偏官)
-    // 检查 targetElement 是否 controls 我
+    // 关键修改在这里：将“偏官”显示为“偏官 (七杀)”
     if (controls[targetElement] === myElement) {
-        return myYinYang === targetYinYang ? "偏官" : "正官"; // 克我者为官杀，同性偏官，异性正官
+        return myYinYang === targetYinYang ? "偏官 (七杀)" : "正官"; // 克我者为官杀，同性偏官(七杀)，异性正官
     }
 
     // 生扶我 (正印/偏印)
-    // 检查 targetElement 是否 produces 我
     if (produces[targetElement] === myElement) {
         return myYinYang === targetYinYang ? "偏印" : "正印"; // 生我者为印枭，同性偏印，异性正印
     }
@@ -189,38 +187,7 @@ function findJDForSolarLongitude(year, targetLonDeg, roughMonth, roughDay) {
         let midJD = (lowJD + highJD) / 2;
         let currentLon = getSolarLongitudeForJD(midJD);
 
-        // 对于目标黄经 315 度 (立春)，我们寻找黄经从小于 315 变为大于等于 315 的点
-        // 如果 currentLon 小于 targetLonDeg，说明立春时刻还在 midJD 之后
-        // 如果 currentLon 大于等于 targetLonDeg，说明立春时刻在 midJD 或之前
-        // 注意：这里需要处理黄经跨越0/360度边界的情况
-        let diff = (currentLon - targetLonDeg + 360) % 360;
-        if (diff > 180) { // currentLon 远小于 targetLonDeg (例如 target 15, current 345)
-             highJD = midJD;
-        } else if (diff < 0.0001) { // 接近相等
-            highJD = midJD; // 找到或者非常接近，收敛到此
-        }
-        else if (diff > 0.0001 && diff < 180) { // currentLon 略大于 targetLonDeg
-            highJD = midJD;
-        } else { // currentLon 略小于 targetLonDeg
-            lowJD = midJD;
-        }
-
-        // 简化判断，更准确的二分查找对于角度：
-        // 目标是 `targetLonDeg`。我们希望找到 `jd` 使得 `getSolarLongitudeForJD(jd)` 首次达到或超过 `targetLonDeg`。
-        // 如果 `currentLon` 在 `targetLonDeg` 之前（逆时针方向），则 `midJD` 太早。
-        // 如果 `currentLon` 在 `targetLonDeg` 之后（顺时针方向），则 `midJD` 太晚。
-        // 一个更鲁棒的检查：
-        // 判断 `currentLon` 是否“在目标之前”
-        // let isBeforeTarget = false;
-        // if (targetLonDeg > 180) { // 例如立春 315
-        //     isBeforeTarget = (currentLon > targetLonDeg || currentLon < (targetLonDeg + 30) % 360); // 315 到 345 之间
-        // } else { // 例如清明 15
-        //     isBeforeTarget = (currentLon > targetLonDeg && currentLon < (targetLonDeg + 30) % 360); // 15 到 45 之间
-        // }
-
-        // 重新简化判断逻辑 for solar longitude crossing
-        // 如果我们寻找一个时刻，使得太阳黄经从 (targetLonDeg - epsilon) 变为 (targetLonDeg + epsilon)
-        // 假设 solarLon 随时间单调递增
+        // 如果 solarLon 随时间单调递增，且我们寻找首次达到或超过 targetLonDeg 的点
         if (currentLon < targetLonDeg) {
              lowJD = midJD;
         } else {
@@ -237,12 +204,11 @@ function findJDForSolarLongitude(year, targetLonDeg, roughMonth, roughDay) {
  * 返回的节气是按八字月份的顺序排列的。
  * @param {number} baziYear - 八字年份 (由立春确定的年份)。
  * @returns {Array<{name: string, longitude: number, branch: string, jd: number}>} 包含所有节气信息的数组。
- */
+*/
 function getBaziMonthStartJDs(baziYear) {
     const jdsForBaziYearMonths = [];
 
     // 1. 获取当前八字年的立春 (寅月开始)
-    // roughMonth 和 roughDay 是公历日期，如果 baziYear 是 2023，那么立春 roughMonth 2, roughDay 4 对应的就是 2023年2月4日
     const actualLichunJD_current = findJDForSolarLongitude(baziYear, baziMonthDefs[0].longitude, baziMonthDefs[0].roughMonth, baziMonthDefs[0].roughDay);
     jdsForBaziYearMonths.push({ name: "立春", longitude: baziMonthDefs[0].longitude, branch: baziMonthDefs[0].branch, jd: actualLichunJD_current });
 
@@ -250,32 +216,8 @@ function getBaziMonthStartJDs(baziYear) {
     for (let i = 1; i < baziMonthDefs.length; i++) { // 从惊蛰开始
         const term = baziMonthDefs[i];
         let searchGregorianYear = baziYear;
-        // 小寒 (丑月) 和 次年立春 通常发生在公历的下一年1月份
-        // 清明 (辰月) 之后的节气，如果黄经度数小于立春黄经，那也是在同一年。
-        // 关键：节气定义是黄经度数，它会按顺序递增。当黄经从 300 多度跨越 0 度时，公历年份会变化。
-        // baziMonthDefs 是按八字月份顺序排列的，并非公历顺序。
-        // 所以，当遍历到黄经度数小于前一个节气时，说明跨年了。
-        // 更准确的做法是，检查当前的节气的黄经是否小于上一个节气的黄经，如果是，则公历年份加1。
-
-        // 简化的处理，对于小寒（丑月，黄经285度）和之后的节气，如果它的黄经比立春黄经（315度）小，那它应该在下一年
-        // 更通用的判断：如果当前的节气黄经比立春的黄经小（例如从 315 -> 345 -> 15 -> 45...），
-        // 当黄经从 345 -> 15 时，年份不跨越；当黄经从 285 (小寒) 回到 315 (立春) 时，年份才跨越。
-        // 这是一个连续的度数。当前面的节气黄经大于后面的节气黄经时，说明跨越了年度边界（公历年）。
-        // 比如从大雪255到小寒285，再到立春315，这些都是在同一年。
-        // 但如果 baziYear 的立春是 2023年2月4日，那么 2023年的 惊蛰、清明...一直到 大雪、小寒，都应该在 2023年。
-        // 只有到了 **下一个** 立春，才是 2024年的八字开始。
-        // baziMonthDefs 的顺序是 立春 (315), 惊蛰 (345), 清明 (15), 立夏 (45)...小寒 (285)。
-        // 当 longitude 从 345 变为 15 时，虽然黄经度数变小了，但它们是在同一个公历年内的。
-        // 只有当计算到 小寒 (285) 之后的 下一个 立春 (315) 时，才跳到下一年。
-        // 现在的逻辑 `searchGregorianYear = baziYear; if (term.name === "小寒") { searchGregorianYear = baziYear + 1; }`
-        // 这个 `if (term.name === "小寒")` 应该改成 `if (term.longitude < baziMonthDefs[i-1].longitude && term.name !== "立春")`
-        // 或者更简单的，所有节气都基于 baziYear 计算，除了小寒，它通常在下一年。
-
-        // 重新审视，我们只关心计算 `baziYear` 这个八字年对应的月份。
-        // 比如 baziYear = 1989.
-        // 立春 (1989/2/4), 惊蛰 (1989/3/6), 清明 (1989/4/5), ..., 大雪 (1989/12/7), 小寒 (1990/1/5)。
-        // 所以当节气是“小寒”时，需要将公历年份加1。
-        if (term.name === "小寒") { // 小寒通常是下一个公历年的1月，但它仍属于本八字年（上一个立春到当前立春）
+        // 小寒 (丑月) 通常发生在公历的下一年1月份
+        if (term.name === "小寒") { 
             searchGregorianYear = baziYear + 1;
         }
         let jd = findJDForSolarLongitude(searchGregorianYear, term.longitude, term.roughMonth, term.roughDay);
@@ -536,10 +478,9 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('yearPillarDisplay').textContent = `${yearGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[yearGanZhi[0]])})`;
     document.getElementById('monthPillarDisplay').textContent = `${monthGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[monthGanZhi[0]])})`;
     
-    // <-- 修改此处：日柱显示增加性别标识 -->
+    // 日柱显示增加性别标识
     let dayPillarGenderText = gender === 'male' ? '(日元 - 元男)' : '(日元 - 元女)';
     document.getElementById('dayPillarDisplay').textContent = `${dayGanZhi} ${dayPillarGenderText}`; 
-    // <-------------------------------------->
 
     document.getElementById('hourPillarDisplay').textContent = `${hourGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[hourGanZhi[0]])})`;
 
@@ -564,6 +505,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     });
 
     // --- 十神和藏干计算逻辑结束 ---
+
 
     // 显示结果
     document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8'; 
