@@ -413,6 +413,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const second = parseInt(document.getElementById('second').value);
 
     const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
+    const gender = document.getElementById('gender').value; // <-- 新增：获取性别输入
 
     if (!cityInput) {
         document.getElementById('errorMessage').textContent = '请输入城市名称。';
@@ -421,13 +422,11 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     }
 
     // 原始输入的UTC+8时间
-    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second)); // 这只是为了格式化显示原始输入
+    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second)); 
 
     // 组合成一个 Date 对象（UTC时间）
-    // 注意：Date对象的月份是从0开始的，所以需要 month - 1
-    // 用户输入的是UTC+8时间，所以需要将小时减去8，得到对应的UTC时间。
-    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second)); // 关键修改点
-    const birthJD = astronomia.julian.DateToJD(utcDate); // 出生时间的 Julian Day
+    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second)); 
+    const birthJD = astronomia.julian.DateToJD(utcDate); 
 
     // 搜索城市数据
     const foundCities = cities.filter(city =>
@@ -440,7 +439,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         return;
     }
 
-    const selectedCity = foundCities[0]; // 为简化示例，只取第一个匹配的城市
+    const selectedCity = foundCities[0]; 
 
     // 显式将经纬度字符串转换为浮点数
     const cityLat = parseFloat(selectedCity.lat);
@@ -450,7 +449,6 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const timezoneOffsetHours = cityLng / 15;
     
     // 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“真太阳时”)
-    // localDate 内部存储的是一个 UTC 时间戳，其值是 utcDate + timezoneOffsetHours 的效果
     const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
 
     // 使用 astronomia 库计算太阳黄经
@@ -459,34 +457,26 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     solarLongitude = (solarLongitude % 360 + 360) % 360;
 
     // --- 年柱计算逻辑 ---
-    // 查找当年立春的 Julian Day (立春黄经为 315 度)
     let lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4); 
 
     let baziYear;
-    // 比较出生时间 (UTC) 与立春时间 (UTC)
     if (birthJD < lichunJDCurrentGregorianYear) {
-        // 如果出生时间在当年立春之前，则年柱为前一年的干支
         baziYear = year - 1;
     } else {
-        // 如果出生时间在当年立春或之后，则年柱为当年的干支
         baziYear = year;
     }
-
-    // 计算年柱干支
     const yearGanZhi = getGanZhiForYear(baziYear);
     // --- 年柱计算逻辑结束 ---
 
     // --- 月柱计算逻辑 ---
-    const baziMonthJDs = getBaziMonthStartJDs(baziYear); // 获取八字年内的所有月起始节气JDs
+    const baziMonthJDs = getBaziMonthStartJDs(baziYear); 
 
     let monthBranch = "";
     let monthGan = "";
 
-    // 遍历节气JDs，找到出生时间所属的八字月份
-    // baziMonthJDs 包含13个元素：从当前八字年立春到次年立春
     for (let i = 0; i < baziMonthJDs.length - 1; i++) {
         const currentTerm = baziMonthJDs[i];
-        const nextTerm = baziMonthJDs[i + 1]; // 下一个节气是当前月的结束边界
+        const nextTerm = baziMonthJDs[i + 1]; 
 
         if (birthJD >= currentTerm.jd && birthJD < nextTerm.jd) {
             monthBranch = currentTerm.branch;
@@ -495,45 +485,34 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     }
 
     if (monthBranch) {
-        // 修正：从 yearGanZhi 中提取年干（第一个字符）传递给 getStemForMonth
         monthGan = getStemForMonth(yearGanZhi[0], monthBranch); 
     }
-
     const monthGanZhi = monthGan + monthBranch;
     // --- 月柱计算逻辑结束 ---
 
     // --- 日柱计算逻辑 ---
-    // 参考点：1900年1月1日 00:00:00 UTC 是 甲戌日 (Sexagenary Index 10)
     const referenceJD = astronomia.julian.DateToJD(new Date(Date.UTC(1900, 0, 1, 0, 0, 0)));
     const referenceGanZhiIndex = 10; // 甲戌
 
-    // 确定八字日柱所属的公历日期（考虑子时换日）
-    // localDate 是已经考虑经度偏移的当地时间，但其内部时间戳是UTC。
-    // getUTCHours() 获取的是这个内部UTC时间的小时部分，即当地小时。
     const localHourEffective = localDate.getUTCHours(); 
     
     let dateForDayPillar = new Date(Date.UTC(
         localDate.getUTCFullYear(),
         localDate.getUTCMonth(),
         localDate.getUTCDate(),
-        0, 0, 0 // 只取年月日，小时分钟秒设为0
+        0, 0, 0 
     ));
 
-    // 八字日柱子时换日规则：如果当地真太阳时是 23:00-23:59，日柱算作下一天。
     if (localHourEffective >= 23) {
-        dateForDayPillar.setUTCDate(dateForDayPillar.getUTCDate() + 1); // 日期加一天
+        dateForDayPillar.setUTCDate(dateForDayPillar.getUTCDate() + 1); 
     }
-    // 00:00-00:59 的子时则算作当天，无需额外处理。
 
     const effectiveJDForDayPillarCalc = astronomia.julian.DateToJD(dateForDayPillar);
-
-    // 计算从参考 Julian Day 到有效 Julian Day 的总天数差
     const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD);
     
-    // 根据天数差计算日柱的干支索引
     let dayGanZhiIndex = (referenceGanZhiIndex + daysDifference) % 60;
     if (dayGanZhiIndex < 0) {
-        dayGanZhiIndex += 60; // 确保索引为正数
+        dayGanZhiIndex += 60; 
     }
 
     const dayStemIndex = dayGanZhiIndex % 10;
@@ -542,26 +521,26 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     // --- 日柱计算逻辑结束 ---
 
     // --- 时柱计算逻辑 ---
-    // 获取经过子时换日规则调整后的当地时间的小时数，用于确定时支。
-    // 这里直接使用 localHourEffective 即可，因为时支不受日柱换日影响，只看当时的小时
     const hourBranch = getBranchForHour(localHourEffective);
-    
-    // 日干使用已经计算好的 effective day's stem
-    const hourStem = getStemForHour(dayGanZhi[0], hourBranch); // dayGanZhi[0] 是日干
-
+    const hourStem = getStemForHour(dayGanZhi[0], hourBranch); 
     const hourGanZhi = hourStem + hourBranch;
     // --- 时柱计算逻辑结束 ---
 
-    // --- 新增：十神和藏干计算逻辑 ---
+    // --- 十神和藏干计算逻辑 ---
 
     // 1. 获取日元（日柱天干）的属性
-    const dayMasterStem = dayGanZhi[0]; // 例如 "甲"
+    const dayMasterStem = dayGanZhi[0]; 
     const dayMasterAttributes = stemAttributes[dayMasterStem];
 
     // 2. 计算天干的十神并更新显示
     document.getElementById('yearPillarDisplay').textContent = `${yearGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[yearGanZhi[0]])})`;
     document.getElementById('monthPillarDisplay').textContent = `${monthGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[monthGanZhi[0]])})`;
-    document.getElementById('dayPillarDisplay').textContent = `${dayGanZhi} (日元)`; // 日柱天干是日元，不计算十神
+    
+    // <-- 修改此处：日柱显示增加性别标识 -->
+    let dayPillarGenderText = gender === 'male' ? '(日元 - 元男)' : '(日元 - 元女)';
+    document.getElementById('dayPillarDisplay').textContent = `${dayGanZhi} ${dayPillarGenderText}`; 
+    // <-------------------------------------->
+
     document.getElementById('hourPillarDisplay').textContent = `${hourGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[hourGanZhi[0]])})`;
 
     // 3. 计算地支藏干及其十神
@@ -586,17 +565,15 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
 
     // --- 十神和藏干计算逻辑结束 ---
 
-
     // 显示结果
-    document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8'; // 填充原始输入UTC+8时间
-    document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC'; // 填充实际用于计算的UTC时间
+    document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8'; 
+    document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC'; 
     document.getElementById('cityNameDisplay').textContent = selectedCity.name;
     document.getElementById('countryCodeDisplay').textContent = selectedCity.country;
     document.getElementById('latitudeDisplay').textContent = cityLat.toFixed(4);
     document.getElementById('longitudeDisplay').textContent = cityLng.toFixed(4);
     document.getElementById('timezoneOffsetDisplay').textContent = timezoneOffsetHours.toFixed(4);
     
-    // 关键修正：使用 Intl.DateTimeFormat 配合 timeZone: 'UTC' 来显示 localDate 的实际计算值
     const localTimeFormatter = new Intl.DateTimeFormat('zh-CN', {
         year: 'numeric',
         month: '2-digit',
@@ -605,7 +582,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         minute: '2-digit',
         second: '2-digit',
         hour12: false,
-        timeZone: 'UTC' // 强制按照 UTC 来格式化 localDate 的内部时间戳
+        timeZone: 'UTC' 
     });
     document.getElementById('localTimeDisplay').textContent = localTimeFormatter.format(localDate);
 

@@ -80,6 +80,39 @@
             margin-top: 20px;
             display: none; /* Hidden by default */
         }
+        /* 新增一些样式以确保性别选择框显示良好 */
+        .input-group select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: #fff; /* Ensure it matches other inputs */
+            cursor: pointer;
+            -webkit-appearance: none; /* Remove default arrow on WebKit */
+            -moz-appearance: none;    /* Remove default arrow on Firefox */
+            appearance: none;         /* Remove default arrow */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.2L146.2%20268.6%2018.8%2074.6a17.6%2017.6%200%200%200-25.2-24.6c-9.5%209.7-9.3%2025.2.4%2034.7l131.6%20136%20131.6-136c9.6-9.6%209.5-25.1-.1-34.7z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+
+        /* Adjust input-group for 4 columns where needed, or flexible for smaller screens */
+        @media (min-width: 600px) {
+            .input-group > div {
+                flex: 1 1 calc(33% - 10px); /* 3 columns */
+            }
+            /* Make gender input full width in its own row if desired, or make it fit 3/4 */
+            .input-group.gender-select > div {
+                 flex: 1 1 100%; /* For gender, can make it full width */
+            }
+            .input-group.gender-select > div.quarter-width {
+                flex: 1 1 calc(25% - 10px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -118,11 +151,20 @@
             </fieldset>
 
             <fieldset>
-                <legend>输入城市</legend>
+                <legend>基本信息</legend>
                 <div class="input-group full-width">
                     <div>
                         <label for="cityInput">城市名称 (例如: Shanghai):</label>
-                        <input type="text" id="cityInput" placeholder="请输入城市名称" required>
+                        <input type="text" id="cityInput" placeholder="请输入城市名称" value="Shanghai" required>
+                    </div>
+                </div>
+                <div class="input-group gender-select"> <!-- New group for gender -->
+                    <div class="quarter-width"> <!-- Adjust width as needed -->
+                        <label for="gender">性别:</label>
+                        <select id="gender" required>
+                            <option value="male">男</option>
+                            <option value="female">女</option>
+                        </select>
                     </div>
                 </div>
             </fieldset>
@@ -141,7 +183,6 @@
             <p>根据经度计算的时区偏移: <strong id="timezoneOffsetDisplay"></strong> 小时</p>
             <p>当地时间: <strong id="localTimeDisplay"></strong></p>
             <p>太阳黄经: <strong id="solarLongitude"></strong> 度</p>
-            <!-- <p>当前节气: <strong id="solarTerm"></strong></p> --> <!-- 移除此行 -->
             <p>八字年柱: <strong id="yearPillarDisplay"></strong></p>
             <p>八字月柱: <strong id="monthPillarDisplay"></strong></p>
             <p>八字日柱: <strong id="dayPillarDisplay"></strong></p>
