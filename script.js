@@ -497,9 +497,13 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         const container = document.getElementById(pillar.displayId);
         
         hiddenStems.forEach(stem => {
-            const tenGod = getTenGod(dayMasterAttributes, stemAttributes[stem]);
+            const stemAttributesForHidden = stemAttributes[stem]; 
+            const element = stemAttributesForHidden.element; // 获取五行属性，例如 "木"
+            const tenGod = getTenGod(dayMasterAttributes, stemAttributesForHidden);
             const p = document.createElement('p');
-            p.textContent = `${stem} (${tenGod})`;
+            
+            // 修改这里：给 <rt> 标签添加一个基于五行的类名，例如 "element-木"
+            p.innerHTML = `<ruby>${stem}<rp>(</rp><rt class="element-${element}">${element}</rt><rp>)</rp></ruby> (${tenGod})`;
             container.appendChild(p);
         });
     });

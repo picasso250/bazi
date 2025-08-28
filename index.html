@@ -10,7 +10,7 @@
         h1 { text-align: center; color: #0056b3; margin-bottom: 30px; }
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
         input[type="number"], input[type="text"] {
-            width: calc(100% - 22px); /* Subtract padding and border */
+            width: calc(100% - 22px);
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
@@ -35,14 +35,14 @@
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            flex-wrap: wrap;
         }
         .input-group > div {
-            flex: 1 1 calc(33% - 10px); /* Adjust for 3 columns on larger screens */
-            min-width: 120px; /* Minimum width for inputs */
+            flex: 1 1 calc(33% - 10px);
+            min-width: 120px;
         }
         .input-group.full-width > div {
-             flex: 1 1 100%; /* For city input */
+             flex: 1 1 100%;
         }
         button {
             display: block;
@@ -78,9 +78,8 @@
             padding: 10px;
             border-radius: 4px;
             margin-top: 20px;
-            display: none; /* Hidden by default */
+            display: none;
         }
-        /* 新增一些样式以确保性别选择框显示良好 */
         .input-group select {
             width: calc(100% - 22px);
             padding: 10px;
@@ -89,30 +88,43 @@
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 16px;
-            background-color: #fff; /* Ensure it matches other inputs */
+            background-color: #fff;
             cursor: pointer;
-            -webkit-appearance: none; /* Remove default arrow on WebKit */
-            -moz-appearance: none;    /* Remove default arrow on Firefox */
-            appearance: none;         /* Remove default arrow */
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.2L146.2%20268.6%2018.8%2074.6a17.6%2017.6%200%200%200-25.2-24.6c-9.5%209.7-9.3%2025.2.4%2034.7l131.6%20136%20131.6-136c9.6-9.6%209.5-25.1-.1-34.7z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.2L146.2%20268.6%2018.8%2074.6a17.6%2017.6%200%200%200-25.2-24.6c-9.5%209.7-9.3%2025.2.4%2034.7l131.6%20136%20131.6-136c9.6-9.6%209.5-25.1-.1-34.7z%22%2F%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
             background-position: right 10px center;
             background-size: 12px;
         }
 
-        /* Adjust input-group for 4 columns where needed, or flexible for smaller screens */
         @media (min-width: 600px) {
             .input-group > div {
-                flex: 1 1 calc(33% - 10px); /* 3 columns */
+                flex: 1 1 calc(33% - 10px);
             }
-            /* Make gender input full width in its own row if desired, or make it fit 3/4 */
             .input-group.gender-select > div {
-                 flex: 1 1 100%; /* For gender, can make it full width */
+                 flex: 1 1 100%;
             }
             .input-group.gender-select > div.quarter-width {
                 flex: 1 1 calc(25% - 10px);
             }
         }
+
+        /* ----- 新增五行颜色样式 ----- */
+        .element-木 { color: #2E8B57; /* 绿色系，例如 SeaGreen */ }
+        .element-火 { color: #DC143C; /* 红色系，例如 Crimson */ }
+        .element-土 { color: #B8860B; /* 黄土色系，例如 DarkGoldenrod */ }
+        .element-金 { color: #808080; /* 灰色系，例如 Gray */ }
+        .element-水 { color: #4682B4; /* 蓝色系，例如 SteelBlue */ }
+
+        rt {
+            font-size: 0.7em;
+            /* 移除了之前的 'color: #666;' 因为现在会通过 specific element-X 类来设置颜色 */
+            text-align: center;
+        }
+        /* ----- 结束新增五行颜色样式 ----- */
+
     </style>
 </head>
 <body>
