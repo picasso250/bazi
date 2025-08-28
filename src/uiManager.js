@@ -53,6 +53,10 @@ const grandCyclesContainer = document.getElementById('grandCyclesDisplay');
 const currentGregorianYearDisplay = document.getElementById('currentGregorianYearDisplay');
 const currentYearPillarDisplay = document.getElementById('currentYearPillarDisplay');
 
+// --- 新增：下一年流年 DOM 引用 ---
+const nextGregorianYearDisplay = document.getElementById('nextGregorianYearDisplay');
+const nextYearPillarDisplay = document.getElementById('nextYearPillarDisplay');
+
 
 // --- 辅助函数：填充省份/直辖市下拉框 ---
 export function populateProvinces() {
@@ -179,10 +183,18 @@ export function clearResults() {
     grandCyclesContainer.innerHTML = '';
     currentGregorianYearDisplay.textContent = '';
     currentYearPillarDisplay.textContent = '';
+    // --- 新增：清除下一年流年显示 ---
+    nextGregorianYearDisplay.textContent = '';
+    nextYearPillarDisplay.textContent = '';
 }
 
 
-export function updateResultsDisplay(baziData, location, gender, grandCycleData, currentYearGanZhi, currentYearTenGod, getTenGod, getHiddenStems) {
+export function updateResultsDisplay(
+    baziData, location, gender, grandCycleData,
+    currentGregorianYear, currentYearGanZhi, currentYearTenGod,
+    nextGregorianYear, nextYearGanZhi, nextYearTenGod, // <-- 接收下一年流年数据
+    getTenGod, getHiddenStems
+) {
     clearError();
 
     const {
@@ -279,9 +291,12 @@ export function updateResultsDisplay(baziData, location, gender, grandCycleData,
     });
 
     // Current Year Pillar
-    currentGregorianYearDisplay.textContent = new Date().getUTCFullYear();
-    const currentYearPillarStrong = document.getElementById('currentYearPillarDisplay');
-    currentYearPillarStrong.textContent = `${currentYearGanZhi} (${currentYearTenGod})`;
+    currentGregorianYearDisplay.textContent = currentGregorianYear;
+    currentYearPillarDisplay.textContent = `${currentYearGanZhi} (${currentYearTenGod})`;
+
+    // --- 新增：下一年流年显示 ---
+    nextGregorianYearDisplay.textContent = nextGregorianYear;
+    nextYearPillarDisplay.textContent = `${nextYearGanZhi} (${nextYearTenGod})`;
 
 
     resultSection.style.display = 'block';

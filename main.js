@@ -84,15 +84,24 @@ document.getElementById('combinedQueryForm').addEventListener('submit', async fu
     const currentYearGanZhi = getGanZhiForYear(currentGregorianYear);
     const currentYearTenGod = getTenGod(baziData.dayMasterAttributes, stemAttributes[currentYearGanZhi[0]]);
 
+    // --- 下一年流年计算 ---
+    const nextGregorianYear = currentGregorianYear + 1;
+    const nextYearGanZhi = getGanZhiForYear(nextGregorianYear);
+    const nextYearTenGod = getTenGod(baziData.dayMasterAttributes, stemAttributes[nextYearGanZhi[0]]);
+
     // Update UI with all calculated data
     updateResultsDisplay(
         baziData,
         selectedLocation,
         gender,
         grandCycleData,
+        currentGregorianYear,
         currentYearGanZhi,
         currentYearTenGod,
-        getTenGod, // Pass getTenGod function
-        getHiddenStems // Pass getHiddenStems function
+        nextGregorianYear, // <-- 新增：传递下一年公历年份
+        nextYearGanZhi,    // <-- 新增：传递下一年干支
+        nextYearTenGod,    // <-- 新增：传递下一年十神
+        getTenGod,
+        getHiddenStems
     );
 });
