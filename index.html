@@ -86,38 +86,53 @@
         <div id="errorMessage" class="error-message"></div>
 
         <div id="result" class="result" style="display: none;">
-            <!-- Removed h2 "查询结果" -->
             <p>输入时间 (UTC+8): <strong id="inputTimeUTC8"></strong></p>
             <p>查询城市: <strong id="cityNameDisplay"></strong> (<strong id="countryCodeDisplay"></strong>)</p>
             <p>纬度: <strong id="latitudeDisplay"></strong>, 经度: <strong id="longitudeDisplay"></strong></p>
             <p>当地时间: <strong id="localTimeDisplay"></strong></p>
             <p>太阳黄经: <strong id="solarLongitude"></strong> 度</p>
 
-            <!-- 四柱显示改为横向布局 -->
+            <!-- 四柱显示改为横向布局 (只保留这一套新的结构) -->
             <div class="bazi-pillars-container">
-                <p>年柱: <strong id="yearPillarDisplay"></strong></p>
-                <p>月柱: <strong id="monthPillarDisplay"></strong></p>
-                <p>日柱: <strong id="dayPillarDisplay"></strong></p>
-                <p>时柱: <strong id="hourPillarDisplay"></strong></p>
+                <div class="bazi-pillar-item">
+                    <p class="pillar-label">年柱</p>
+                    <p class="pillar-ganzhi" id="yearPillarGanZhiDisplay"></p>
+                    <p class="pillar-tengod" id="yearPillarTenGodDisplay"></p>
+                </div>
+                <div class="bazi-pillar-item">
+                    <p class="pillar-label">月柱</p>
+                    <p class="pillar-ganzhi" id="monthPillarGanZhiDisplay"></p>
+                    <p class="pillar-tengod" id="monthPillarTenGodDisplay"></p>
+                </div>
+                <div class="bazi-pillar-item">
+                    <p class="pillar-label">日柱</p>
+                    <p class="pillar-ganzhi" id="dayPillarGanZhiDisplay"></p>
+                    <p class="pillar-tengod" id="dayPillarTenGodDisplay"></p>
+                </div>
+                <div class="bazi-pillar-item">
+                    <p class="pillar-label">时柱</p>
+                    <p class="pillar-ganzhi" id="hourPillarGanZhiDisplay"></p>
+                    <p class="pillar-tengod" id="hourPillarTenGodDisplay"></p>
+                </div>
             </div>
 
-            <h3>四柱藏干及十神</h3>
+            <h3>四柱藏干</h3>
             <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 20px;">
                 <div style="flex: 1;">
                     <p>年支藏干</p>
-                    <div id="yearBranchHiddenStems"></div>
+                    <div id="yearBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
                 </div>
                 <div style="flex: 1;">
                     <p>月支藏干</p>
-                    <div id="monthBranchHiddenStems"></div>
+                    <div id="monthBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
                 </div>
                 <div style="flex: 1;">
                     <p>日支藏干</p>
-                    <div id="dayBranchHiddenStems"></div>
+                    <div id="dayBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
                 </div>
                 <div style="flex: 1;">
                     <p>时支藏干</p>
-                    <div id="hourBranchHiddenStems"></div>
+                    <div id="hourBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
                 </div>
             </div>
 

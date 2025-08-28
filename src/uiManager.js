@@ -24,10 +24,22 @@ const longitudeDisplay = document.getElementById('longitudeDisplay');
 const localTimeDisplay = document.getElementById('localTimeDisplay');
 const solarLongitudeDisplay = document.getElementById('solarLongitude');
 
-const yearPillarDisplay = document.getElementById('yearPillarDisplay');
-const monthPillarDisplay = document.getElementById('monthPillarDisplay');
-const dayPillarDisplay = document.getElementById('dayPillarDisplay');
-const hourPillarDisplay = document.getElementById('hourPillarDisplay');
+// 移除旧的四柱显示引用
+// const yearPillarDisplay = document.getElementById('yearPillarDisplay');
+// const monthPillarDisplay = document.getElementById('monthPillarDisplay');
+// const dayPillarDisplay = document.getElementById('dayPillarDisplay');
+// const hourPillarDisplay = document.getElementById('hourPillarDisplay');
+
+// 新增四柱干支和十神的单独显示引用
+const yearPillarGanZhiDisplay = document.getElementById('yearPillarGanZhiDisplay');
+const yearPillarTenGodDisplay = document.getElementById('yearPillarTenGodDisplay');
+const monthPillarGanZhiDisplay = document.getElementById('monthPillarGanZhiDisplay');
+const monthPillarTenGodDisplay = document.getElementById('monthPillarTenGodDisplay');
+const dayPillarGanZhiDisplay = document.getElementById('dayPillarGanZhiDisplay');
+const dayPillarTenGodDisplay = document.getElementById('dayPillarTenGodDisplay');
+const hourPillarGanZhiDisplay = document.getElementById('hourPillarGanZhiDisplay');
+const hourPillarTenGodDisplay = document.getElementById('hourPillarTenGodDisplay');
+
 
 const yearBranchHiddenStemsContainer = document.getElementById('yearBranchHiddenStems');
 const monthBranchHiddenStemsContainer = document.getElementById('monthBranchHiddenStems');
@@ -142,10 +154,22 @@ export function clearError() {
 
 export function clearResults() {
     resultSection.style.display = 'none';
-    yearPillarDisplay.textContent = '';
-    monthPillarDisplay.textContent = '';
-    dayPillarDisplay.textContent = '';
-    hourPillarDisplay.textContent = '';
+    // 清除旧的四柱显示
+    // yearPillarDisplay.textContent = '';
+    // monthPillarDisplay.textContent = '';
+    // dayPillarDisplay.textContent = '';
+    // hourPillarDisplay.textContent = '';
+
+    // 清除新的四柱干支和十神显示
+    yearPillarGanZhiDisplay.textContent = '';
+    yearPillarTenGodDisplay.textContent = '';
+    monthPillarGanZhiDisplay.textContent = '';
+    monthPillarTenGodDisplay.textContent = '';
+    dayPillarGanZhiDisplay.textContent = '';
+    dayPillarTenGodDisplay.textContent = '';
+    hourPillarGanZhiDisplay.textContent = '';
+    hourPillarTenGodDisplay.textContent = '';
+
     yearBranchHiddenStemsContainer.innerHTML = '';
     monthBranchHiddenStemsContainer.innerHTML = '';
     dayBranchHiddenStemsContainer.innerHTML = '';
@@ -202,13 +226,19 @@ export function updateResultsDisplay(baziData, location, gender, grandCycleData,
 
     solarLongitudeDisplay.textContent = solarLongitude.toFixed(4);
 
-    yearPillarDisplay.textContent = `${yearGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[yearGanZhi[0]])})`;
-    monthPillarDisplay.textContent = `${monthGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[monthGanZhi[0]])})`;
+    // 更新四柱显示，分为干支和十神两行
+    yearPillarGanZhiDisplay.textContent = yearGanZhi;
+    yearPillarTenGodDisplay.textContent = getTenGod(dayMasterAttributes, stemAttributes[yearGanZhi[0]]);
 
-    let dayPillarGenderText = gender === 'male' ? '(日元 - 元男)' : '(日元 - 元女)';
-    dayPillarDisplay.textContent = `${dayGanZhi} ${dayPillarGenderText}`;
+    monthPillarGanZhiDisplay.textContent = monthGanZhi;
+    monthPillarTenGodDisplay.textContent = getTenGod(dayMasterAttributes, stemAttributes[monthGanZhi[0]]);
 
-    hourPillarDisplay.textContent = `${hourGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[hourGanZhi[0]])})`;
+    dayPillarGanZhiDisplay.textContent = dayGanZhi;
+    let dayPillarTenGodText = gender === 'male' ? '日元 - 元男' : '日元 - 元女';
+    dayPillarTenGodDisplay.textContent = dayPillarTenGodText;
+
+    hourPillarGanZhiDisplay.textContent = hourGanZhi;
+    hourPillarTenGodDisplay.textContent = getTenGod(dayMasterAttributes, stemAttributes[hourGanZhi[0]]);
 
     const pillars = [
         { branch: yearGanZhi[1], container: yearBranchHiddenStemsContainer },

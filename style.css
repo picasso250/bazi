@@ -236,27 +236,48 @@ rt {
 .bazi-pillars-container {
     display: flex;
     justify-content: space-around;
-    text-align: center;
+    text-align: center; /* Center text within each pillar item */
     margin-top: 15px;
     margin-bottom: 15px; /* Add margin below as well */
     flex-wrap: wrap; /* Allow wrapping on smaller screens */
     gap: 10px; /* Space between pillars */
 }
 
-.bazi-pillars-container p {
-    flex: 1 1 20%; /* Allow each pillar to take about 25% width, with flex-wrap */
-    min-width: 80px; /* Ensure they don't get too small */
-    padding: 8px 5px; /* Adjust padding */
+/* New container for each pillar (Year, Month, Day, Hour) */
+.bazi-pillar-item {
+    flex: 1 1 20%; /* Each item takes roughly 20% of the container width, allowing for 4 items per row */
+    min-width: 80px; /* Minimum width for responsiveness */
+    padding: 8px 5px; /* Padding inside each pillar box */
     border: 1px solid #cceeff;
     border-radius: 5px;
     background-color: #f0f8ff;
-    margin: 0; /* Remove default paragraph margins */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    line-height: 1.3; /* Adjust line height for better appearance */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    display: flex; /* Use flexbox for internal layout of label, ganzhi, tengod */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center content vertically if space allows */
+    align-items: center; /* Center items horizontally within the column */
 }
 
-.bazi-pillars-container strong {
-    display: block; /* Make the strong element a block for better vertical alignment within its flex item */
+.bazi-pillar-item p {
+    margin: 0; /* Remove default paragraph margins */
+    line-height: 1.2; /* Adjust line height for better appearance */
+}
+
+.bazi-pillar-item .pillar-label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 3px; /* Space below the pillar label */
+}
+
+.bazi-pillar-item .pillar-ganzhi {
     font-size: 1.3em; /* Make the gan-zhi larger */
-    margin-top: 5px;
+    font-weight: bold;
+    color: #0056b3; /* Apply a distinct color for gan-zhi */
+    margin-top: 5px; /* Space above gan-zhi */
+    margin-bottom: 3px; /* Space below gan-zhi */
+}
+
+.bazi-pillar-item .pillar-tengod {
+    font-size: 0.95em; /* Font size for Ten God */
+    color: #333; /* Slightly darker color than label */
 }
