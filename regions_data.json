@@ -1,0 +1,3759 @@
+[
+  {
+    "id": "65",
+    "name": "新疆维吾尔自治区",
+    "center_lon": 84.9023,
+    "center_lat": 42.148,
+    "level": "province",
+    "children": [
+      {
+        "id": "6528",
+        "name": "巴音郭楞蒙古自治州",
+        "center_lon": 88.1653,
+        "center_lat": 39.6002,
+        "level": "city_county"
+      },
+      {
+        "id": "6532",
+        "name": "和田地区",
+        "center_lon": 81.167,
+        "center_lat": 36.9855,
+        "level": "city_county"
+      },
+      {
+        "id": "6522",
+        "name": "哈密地区",
+        "center_lon": 93.7793,
+        "center_lat": 42.9236,
+        "level": "city_county"
+      },
+      {
+        "id": "6529",
+        "name": "阿克苏地区",
+        "center_lon": 82.9797,
+        "center_lat": 41.0229,
+        "level": "city_county"
+      },
+      {
+        "id": "6543",
+        "name": "阿勒泰地区",
+        "center_lon": 88.2971,
+        "center_lat": 47.0929,
+        "level": "city_county"
+      },
+      {
+        "id": "6531",
+        "name": "喀什地区",
+        "center_lon": 77.168,
+        "center_lat": 37.8534,
+        "level": "city_county"
+      },
+      {
+        "id": "6542",
+        "name": "塔城地区",
+        "center_lon": 86.6272,
+        "center_lat": 45.8514,
+        "level": "city_county"
+      },
+      {
+        "id": "6523",
+        "name": "昌吉回族自治州",
+        "center_lon": 89.6814,
+        "center_lat": 44.4507,
+        "level": "city_county"
+      },
+      {
+        "id": "6530",
+        "name": "克孜勒苏柯尔克孜自治州",
+        "center_lon": 74.6301,
+        "center_lat": 39.5233,
+        "level": "city_county"
+      },
+      {
+        "id": "6521",
+        "name": "吐鲁番地区",
+        "center_lon": 89.6375,
+        "center_lat": 42.4127,
+        "level": "city_county"
+      },
+      {
+        "id": "6540",
+        "name": "伊犁哈萨克自治州",
+        "center_lon": 82.5513,
+        "center_lat": 43.5498,
+        "level": "city_county"
+      },
+      {
+        "id": "6527",
+        "name": "博尔塔拉蒙古自治州",
+        "center_lon": 81.8481,
+        "center_lat": 44.6979,
+        "level": "city_county"
+      },
+      {
+        "id": "6501",
+        "name": "乌鲁木齐市",
+        "center_lon": 87.9236,
+        "center_lat": 43.5883,
+        "level": "city_county"
+      },
+      {
+        "id": "6502",
+        "name": "克拉玛依市",
+        "center_lon": 85.2869,
+        "center_lat": 45.5054,
+        "level": "city_county"
+      },
+      {
+        "id": "659002",
+        "name": "阿拉尔市",
+        "center_lon": 81.2769,
+        "center_lat": 40.6549,
+        "level": "city_county"
+      },
+      {
+        "id": "659003",
+        "name": "图木舒克市",
+        "center_lon": 79.1345,
+        "center_lat": 39.8749,
+        "level": "city_county"
+      },
+      {
+        "id": "659004",
+        "name": "五家渠市",
+        "center_lon": 87.5391,
+        "center_lat": 44.3024,
+        "level": "city_county"
+      },
+      {
+        "id": "659001",
+        "name": "石河子市",
+        "center_lon": 86.0229,
+        "center_lat": 44.2914,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "54",
+    "name": "西藏自治区",
+    "center_lon": 87.8695,
+    "center_lat": 31.6846,
+    "level": "province",
+    "children": [
+      {
+        "id": "5424",
+        "name": "那曲地区",
+        "center_lon": 88.1982,
+        "center_lat": 33.3215,
+        "level": "city_county"
+      },
+      {
+        "id": "5425",
+        "name": "阿里地区",
+        "center_lon": 82.3645,
+        "center_lat": 32.7667,
+        "level": "city_county"
+      },
+      {
+        "id": "5423",
+        "name": "日喀则地区",
+        "center_lon": 86.2427,
+        "center_lat": 29.5093,
+        "level": "city_county"
+      },
+      {
+        "id": "5426",
+        "name": "林芝地区",
+        "center_lon": 95.4602,
+        "center_lat": 29.1138,
+        "level": "city_county"
+      },
+      {
+        "id": "5421",
+        "name": "昌都地区",
+        "center_lon": 97.0203,
+        "center_lat": 30.7068,
+        "level": "city_county"
+      },
+      {
+        "id": "5422",
+        "name": "山南地区",
+        "center_lon": 92.2083,
+        "center_lat": 28.3392,
+        "level": "city_county"
+      },
+      {
+        "id": "5401",
+        "name": "拉萨市",
+        "center_lon": 91.1865,
+        "center_lat": 30.1465,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "15",
+    "name": "内蒙古自治区",
+    "center_lon": 112.5977,
+    "center_lat": 46.3408,
+    "level": "province",
+    "children": [
+      {
+        "id": "1507",
+        "name": "呼伦贝尔市",
+        "center_lon": 120.8057,
+        "center_lat": 50.2185,
+        "level": "city_county"
+      },
+      {
+        "id": "1529",
+        "name": "阿拉善盟",
+        "center_lon": 102.019,
+        "center_lat": 40.1001,
+        "level": "city_county"
+      },
+      {
+        "id": "1525",
+        "name": "锡林郭勒盟",
+        "center_lon": 115.6421,
+        "center_lat": 44.176,
+        "level": "city_county"
+      },
+      {
+        "id": "1506",
+        "name": "鄂尔多斯市",
+        "center_lon": 108.9734,
+        "center_lat": 39.2487,
+        "level": "city_county"
+      },
+      {
+        "id": "1504",
+        "name": "赤峰市",
+        "center_lon": 118.6743,
+        "center_lat": 43.2642,
+        "level": "city_county"
+      },
+      {
+        "id": "1508",
+        "name": "巴彦淖尔市",
+        "center_lon": 107.5562,
+        "center_lat": 41.3196,
+        "level": "city_county"
+      },
+      {
+        "id": "1505",
+        "name": "通辽市",
+        "center_lon": 121.4758,
+        "center_lat": 43.9673,
+        "level": "city_county"
+      },
+      {
+        "id": "1509",
+        "name": "乌兰察布市",
+        "center_lon": 112.5769,
+        "center_lat": 41.77,
+        "level": "city_county"
+      },
+      {
+        "id": "1522",
+        "name": "兴安盟",
+        "center_lon": 121.3879,
+        "center_lat": 46.1426,
+        "level": "city_county"
+      },
+      {
+        "id": "1502",
+        "name": "包头市",
+        "center_lon": 110.3467,
+        "center_lat": 41.4899,
+        "level": "city_county"
+      },
+      {
+        "id": "1501",
+        "name": "呼和浩特市",
+        "center_lon": 111.4124,
+        "center_lat": 40.4901,
+        "level": "city_county"
+      },
+      {
+        "id": "1503",
+        "name": "乌海市",
+        "center_lon": 106.886,
+        "center_lat": 39.4739,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "63",
+    "name": "青海省",
+    "center_lon": 95.2402,
+    "center_lat": 35.4199,
+    "level": "province",
+    "children": [
+      {
+        "id": "6328",
+        "name": "海西蒙古族藏族自治州",
+        "center_lon": 94.9768,
+        "center_lat": 37.1118,
+        "level": "city_county"
+      },
+      {
+        "id": "6327",
+        "name": "玉树藏族自治州",
+        "center_lon": 93.5925,
+        "center_lat": 33.9368,
+        "level": "city_county"
+      },
+      {
+        "id": "6326",
+        "name": "果洛藏族自治州",
+        "center_lon": 99.3823,
+        "center_lat": 34.0466,
+        "level": "city_county"
+      },
+      {
+        "id": "6325",
+        "name": "海南藏族自治州",
+        "center_lon": 100.3711,
+        "center_lat": 35.9418,
+        "level": "city_county"
+      },
+      {
+        "id": "6322",
+        "name": "海北藏族自治州",
+        "center_lon": 100.3711,
+        "center_lat": 37.9138,
+        "level": "city_county"
+      },
+      {
+        "id": "6323",
+        "name": "黄南藏族自治州",
+        "center_lon": 101.5686,
+        "center_lat": 35.1178,
+        "level": "city_county"
+      },
+      {
+        "id": "6321",
+        "name": "海东地区",
+        "center_lon": 102.3706,
+        "center_lat": 36.2988,
+        "level": "city_county"
+      },
+      {
+        "id": "6301",
+        "name": "西宁市",
+        "center_lon": 101.4038,
+        "center_lat": 36.8207,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "51",
+    "name": "四川省",
+    "center_lon": 101.9199,
+    "center_lat": 30.1904,
+    "level": "province",
+    "children": [
+      {
+        "id": "5133",
+        "name": "甘孜藏族自治州",
+        "center_lon": 99.9207,
+        "center_lat": 31.0803,
+        "level": "city_county"
+      },
+      {
+        "id": "5132",
+        "name": "阿坝藏族羌族自治州",
+        "center_lon": 102.4805,
+        "center_lat": 32.4536,
+        "level": "city_county"
+      },
+      {
+        "id": "5134",
+        "name": "凉山彝族自治州",
+        "center_lon": 101.9641,
+        "center_lat": 27.6746,
+        "level": "city_county"
+      },
+      {
+        "id": "5107",
+        "name": "绵阳市",
+        "center_lon": 104.7327,
+        "center_lat": 31.8713,
+        "level": "city_county"
+      },
+      {
+        "id": "5117",
+        "name": "达州市",
+        "center_lon": 107.6111,
+        "center_lat": 31.333,
+        "level": "city_county"
+      },
+      {
+        "id": "5108",
+        "name": "广元市",
+        "center_lon": 105.6885,
+        "center_lat": 32.2284,
+        "level": "city_county"
+      },
+      {
+        "id": "5118",
+        "name": "雅安市",
+        "center_lon": 102.6672,
+        "center_lat": 29.8938,
+        "level": "city_county"
+      },
+      {
+        "id": "5115",
+        "name": "宜宾市",
+        "center_lon": 104.6558,
+        "center_lat": 28.548,
+        "level": "city_county"
+      },
+      {
+        "id": "5111",
+        "name": "乐山市",
+        "center_lon": 103.5791,
+        "center_lat": 29.1742,
+        "level": "city_county"
+      },
+      {
+        "id": "5113",
+        "name": "南充市",
+        "center_lon": 106.2048,
+        "center_lat": 31.1517,
+        "level": "city_county"
+      },
+      {
+        "id": "5119",
+        "name": "巴中市",
+        "center_lon": 107.0618,
+        "center_lat": 31.9977,
+        "level": "city_county"
+      },
+      {
+        "id": "5105",
+        "name": "泸州市",
+        "center_lon": 105.4578,
+        "center_lat": 28.493,
+        "level": "city_county"
+      },
+      {
+        "id": "5101",
+        "name": "成都市",
+        "center_lon": 103.9526,
+        "center_lat": 30.7617,
+        "level": "city_county"
+      },
+      {
+        "id": "5120",
+        "name": "资阳市",
+        "center_lon": 104.9744,
+        "center_lat": 30.1575,
+        "level": "city_county"
+      },
+      {
+        "id": "5104",
+        "name": "攀枝花市",
+        "center_lon": 101.6895,
+        "center_lat": 26.7133,
+        "level": "city_county"
+      },
+      {
+        "id": "5114",
+        "name": "眉山市",
+        "center_lon": 103.8098,
+        "center_lat": 30.0146,
+        "level": "city_county"
+      },
+      {
+        "id": "5116",
+        "name": "广安市",
+        "center_lon": 106.6333,
+        "center_lat": 30.4376,
+        "level": "city_county"
+      },
+      {
+        "id": "5106",
+        "name": "德阳市",
+        "center_lon": 104.48,
+        "center_lat": 31.1133,
+        "level": "city_county"
+      },
+      {
+        "id": "5110",
+        "name": "内江市",
+        "center_lon": 104.8535,
+        "center_lat": 29.6136,
+        "level": "city_county"
+      },
+      {
+        "id": "5109",
+        "name": "遂宁市",
+        "center_lon": 105.5347,
+        "center_lat": 30.6683,
+        "level": "city_county"
+      },
+      {
+        "id": "5103",
+        "name": "自贡市",
+        "center_lon": 104.6667,
+        "center_lat": 29.2786,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "23",
+    "name": "黑龙江省",
+    "center_lon": 126.1445,
+    "center_lat": 48.7156,
+    "level": "province",
+    "children": [
+      {
+        "id": "2311",
+        "name": "黑河市",
+        "center_lon": 127.1448,
+        "center_lat": 49.2957,
+        "level": "city_county"
+      },
+      {
+        "id": "2327",
+        "name": "大兴安岭地区",
+        "center_lon": 124.1016,
+        "center_lat": 52.2345,
+        "level": "city_county"
+      },
+      {
+        "id": "2301",
+        "name": "哈尔滨市",
+        "center_lon": 127.9688,
+        "center_lat": 45.368,
+        "level": "city_county"
+      },
+      {
+        "id": "2302",
+        "name": "齐齐哈尔市",
+        "center_lon": 124.541,
+        "center_lat": 47.5818,
+        "level": "city_county"
+      },
+      {
+        "id": "2310",
+        "name": "牡丹江市",
+        "center_lon": 129.7815,
+        "center_lat": 44.7089,
+        "level": "city_county"
+      },
+      {
+        "id": "2312",
+        "name": "绥化市",
+        "center_lon": 126.7163,
+        "center_lat": 46.8018,
+        "level": "city_county"
+      },
+      {
+        "id": "2307",
+        "name": "伊春市",
+        "center_lon": 129.1992,
+        "center_lat": 47.9608,
+        "level": "city_county"
+      },
+      {
+        "id": "2308",
+        "name": "佳木斯市",
+        "center_lon": 133.0005,
+        "center_lat": 47.5763,
+        "level": "city_county"
+      },
+      {
+        "id": "2303",
+        "name": "鸡西市",
+        "center_lon": 132.7917,
+        "center_lat": 45.7361,
+        "level": "city_county"
+      },
+      {
+        "id": "2305",
+        "name": "双鸭山市",
+        "center_lon": 133.5938,
+        "center_lat": 46.7523,
+        "level": "city_county"
+      },
+      {
+        "id": "2306",
+        "name": "大庆市",
+        "center_lon": 124.7717,
+        "center_lat": 46.4282,
+        "level": "city_county"
+      },
+      {
+        "id": "2304",
+        "name": "鹤岗市",
+        "center_lon": 130.4407,
+        "center_lat": 47.7081,
+        "level": "city_county"
+      },
+      {
+        "id": "2309",
+        "name": "七台河市",
+        "center_lon": 131.2756,
+        "center_lat": 45.9558,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "62",
+    "name": "甘肃省",
+    "center_lon": 99.7129,
+    "center_lat": 38.166,
+    "level": "province",
+    "children": [
+      {
+        "id": "6209",
+        "name": "酒泉市",
+        "center_lon": 96.2622,
+        "center_lat": 40.4517,
+        "level": "city_county"
+      },
+      {
+        "id": "6207",
+        "name": "张掖市",
+        "center_lon": 99.7998,
+        "center_lat": 38.7433,
+        "level": "city_county"
+      },
+      {
+        "id": "6230",
+        "name": "甘南藏族自治州",
+        "center_lon": 102.9199,
+        "center_lat": 34.6893,
+        "level": "city_county"
+      },
+      {
+        "id": "6206",
+        "name": "武威市",
+        "center_lon": 103.0188,
+        "center_lat": 38.1061,
+        "level": "city_county"
+      },
+      {
+        "id": "6212",
+        "name": "陇南市",
+        "center_lon": 105.304,
+        "center_lat": 33.5632,
+        "level": "city_county"
+      },
+      {
+        "id": "6210",
+        "name": "庆阳市",
+        "center_lon": 107.5342,
+        "center_lat": 36.2,
+        "level": "city_county"
+      },
+      {
+        "id": "6204",
+        "name": "白银市",
+        "center_lon": 104.8645,
+        "center_lat": 36.5076,
+        "level": "city_county"
+      },
+      {
+        "id": "6211",
+        "name": "定西市",
+        "center_lon": 104.5569,
+        "center_lat": 35.0848,
+        "level": "city_county"
+      },
+      {
+        "id": "6205",
+        "name": "天水市",
+        "center_lon": 105.6445,
+        "center_lat": 34.6289,
+        "level": "city_county"
+      },
+      {
+        "id": "6201",
+        "name": "兰州市",
+        "center_lon": 103.5901,
+        "center_lat": 36.3043,
+        "level": "city_county"
+      },
+      {
+        "id": "6208",
+        "name": "平凉市",
+        "center_lon": 107.0728,
+        "center_lat": 35.321,
+        "level": "city_county"
+      },
+      {
+        "id": "6229",
+        "name": "临夏回族自治州",
+        "center_lon": 103.2715,
+        "center_lat": 35.5737,
+        "level": "city_county"
+      },
+      {
+        "id": "6203",
+        "name": "金昌市",
+        "center_lon": 102.074,
+        "center_lat": 38.5126,
+        "level": "city_county"
+      },
+      {
+        "id": "6202",
+        "name": "嘉峪关市",
+        "center_lon": 98.1738,
+        "center_lat": 39.8035,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "53",
+    "name": "云南省",
+    "center_lon": 101.0652,
+    "center_lat": 25.1807,
+    "level": "province",
+    "children": [
+      {
+        "id": "5308",
+        "name": "普洱市",
+        "center_lon": 100.7446,
+        "center_lat": 23.4229,
+        "level": "city_county"
+      },
+      {
+        "id": "5325",
+        "name": "红河哈尼族彝族自治州",
+        "center_lon": 103.0408,
+        "center_lat": 23.6041,
+        "level": "city_county"
+      },
+      {
+        "id": "5326",
+        "name": "文山壮族苗族自治州",
+        "center_lon": 104.8865,
+        "center_lat": 23.5712,
+        "level": "city_county"
+      },
+      {
+        "id": "5303",
+        "name": "曲靖市",
+        "center_lon": 103.9417,
+        "center_lat": 25.7025,
+        "level": "city_county"
+      },
+      {
+        "id": "5323",
+        "name": "楚雄彝族自治州",
+        "center_lon": 101.6016,
+        "center_lat": 25.3619,
+        "level": "city_county"
+      },
+      {
+        "id": "5329",
+        "name": "大理白族自治州",
+        "center_lon": 99.9536,
+        "center_lat": 25.6805,
+        "level": "city_county"
+      },
+      {
+        "id": "5309",
+        "name": "临沧市",
+        "center_lon": 99.613,
+        "center_lat": 24.0546,
+        "level": "city_county"
+      },
+      {
+        "id": "5334",
+        "name": "迪庆藏族自治州",
+        "center_lon": 99.4592,
+        "center_lat": 27.9327,
+        "level": "city_county"
+      },
+      {
+        "id": "5306",
+        "name": "昭通市",
+        "center_lon": 104.0955,
+        "center_lat": 27.6031,
+        "level": "city_county"
+      },
+      {
+        "id": "5301",
+        "name": "昆明市",
+        "center_lon": 102.9199,
+        "center_lat": 25.4663,
+        "level": "city_county"
+      },
+      {
+        "id": "5307",
+        "name": "丽江市",
+        "center_lon": 100.448,
+        "center_lat": 26.955,
+        "level": "city_county"
+      },
+      {
+        "id": "5328",
+        "name": "西双版纳傣族自治州",
+        "center_lon": 100.8984,
+        "center_lat": 21.8628,
+        "level": "city_county"
+      },
+      {
+        "id": "5305",
+        "name": "保山市",
+        "center_lon": 99.0637,
+        "center_lat": 24.9884,
+        "level": "city_county"
+      },
+      {
+        "id": "5304",
+        "name": "玉溪市",
+        "center_lon": 101.9312,
+        "center_lat": 23.8898,
+        "level": "city_county"
+      },
+      {
+        "id": "5333",
+        "name": "怒江傈僳族自治州",
+        "center_lon": 99.1516,
+        "center_lat": 26.5594,
+        "level": "city_county"
+      },
+      {
+        "id": "5331",
+        "name": "德宏傣族景颇族自治州",
+        "center_lon": 98.1299,
+        "center_lat": 24.5874,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "45",
+    "name": "广西壮族自治区",
+    "center_lon": 107.7813,
+    "center_lat": 23.6426,
+    "level": "province",
+    "children": [
+      {
+        "id": "4510",
+        "name": "百色市",
+        "center_lon": 106.6003,
+        "center_lat": 23.9227,
+        "level": "city_county"
+      },
+      {
+        "id": "4512",
+        "name": "河池市",
+        "center_lon": 107.8638,
+        "center_lat": 24.5819,
+        "level": "city_county"
+      },
+      {
+        "id": "4503",
+        "name": "桂林市",
+        "center_lon": 110.5554,
+        "center_lat": 25.318,
+        "level": "city_county"
+      },
+      {
+        "id": "4501",
+        "name": "南宁市",
+        "center_lon": 108.479,
+        "center_lat": 23.1152,
+        "level": "city_county"
+      },
+      {
+        "id": "4502",
+        "name": "柳州市",
+        "center_lon": 109.3799,
+        "center_lat": 24.9774,
+        "level": "city_county"
+      },
+      {
+        "id": "4514",
+        "name": "崇左市",
+        "center_lon": 107.3364,
+        "center_lat": 22.4725,
+        "level": "city_county"
+      },
+      {
+        "id": "4513",
+        "name": "来宾市",
+        "center_lon": 109.7095,
+        "center_lat": 23.8403,
+        "level": "city_county"
+      },
+      {
+        "id": "4509",
+        "name": "玉林市",
+        "center_lon": 110.2148,
+        "center_lat": 22.3792,
+        "level": "city_county"
+      },
+      {
+        "id": "4504",
+        "name": "梧州市",
+        "center_lon": 110.9949,
+        "center_lat": 23.5052,
+        "level": "city_county"
+      },
+      {
+        "id": "4511",
+        "name": "贺州市",
+        "center_lon": 111.3135,
+        "center_lat": 24.4006,
+        "level": "city_county"
+      },
+      {
+        "id": "4507",
+        "name": "钦州市",
+        "center_lon": 109.0283,
+        "center_lat": 22.0935,
+        "level": "city_county"
+      },
+      {
+        "id": "4508",
+        "name": "贵港市",
+        "center_lon": 109.9402,
+        "center_lat": 23.3459,
+        "level": "city_county"
+      },
+      {
+        "id": "4506",
+        "name": "防城港市",
+        "center_lon": 108.0505,
+        "center_lat": 21.9287,
+        "level": "city_county"
+      },
+      {
+        "id": "4505",
+        "name": "北海市",
+        "center_lon": 109.314,
+        "center_lat": 21.6211,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "43",
+    "name": "湖南省",
+    "center_lon": 111.5332,
+    "center_lat": 27.3779,
+    "level": "province",
+    "children": [
+      {
+        "id": "4312",
+        "name": "怀化市",
+        "center_lon": 109.9512,
+        "center_lat": 27.4438,
+        "level": "city_county"
+      },
+      {
+        "id": "4311",
+        "name": "永州市",
+        "center_lon": 111.709,
+        "center_lat": 25.752,
+        "level": "city_county"
+      },
+      {
+        "id": "4305",
+        "name": "邵阳市",
+        "center_lon": 110.9619,
+        "center_lat": 26.8121,
+        "level": "city_county"
+      },
+      {
+        "id": "4310",
+        "name": "郴州市",
+        "center_lon": 113.2361,
+        "center_lat": 25.8673,
+        "level": "city_county"
+      },
+      {
+        "id": "4307",
+        "name": "常德市",
+        "center_lon": 111.4014,
+        "center_lat": 29.2676,
+        "level": "city_county"
+      },
+      {
+        "id": "4331",
+        "name": "湘西土家族苗族自治州",
+        "center_lon": 109.7864,
+        "center_lat": 28.6743,
+        "level": "city_county"
+      },
+      {
+        "id": "4304",
+        "name": "衡阳市",
+        "center_lon": 112.4121,
+        "center_lat": 26.7902,
+        "level": "city_county"
+      },
+      {
+        "id": "4306",
+        "name": "岳阳市",
+        "center_lon": 113.2361,
+        "center_lat": 29.1357,
+        "level": "city_county"
+      },
+      {
+        "id": "4309",
+        "name": "益阳市",
+        "center_lon": 111.731,
+        "center_lat": 28.3832,
+        "level": "city_county"
+      },
+      {
+        "id": "4301",
+        "name": "长沙市",
+        "center_lon": 113.0823,
+        "center_lat": 28.2568,
+        "level": "city_county"
+      },
+      {
+        "id": "4302",
+        "name": "株洲市",
+        "center_lon": 113.5327,
+        "center_lat": 27.0319,
+        "level": "city_county"
+      },
+      {
+        "id": "4308",
+        "name": "张家界市",
+        "center_lon": 110.5115,
+        "center_lat": 29.328,
+        "level": "city_county"
+      },
+      {
+        "id": "4313",
+        "name": "娄底市",
+        "center_lon": 111.6431,
+        "center_lat": 27.7185,
+        "level": "city_county"
+      },
+      {
+        "id": "4303",
+        "name": "湘潭市",
+        "center_lon": 112.5439,
+        "center_lat": 27.7075,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "61",
+    "name": "陕西省",
+    "center_lon": 109.5996,
+    "center_lat": 35.7396,
+    "level": "province",
+    "children": [
+      {
+        "id": "6108",
+        "name": "榆林市",
+        "center_lon": 109.8743,
+        "center_lat": 38.205,
+        "level": "city_county"
+      },
+      {
+        "id": "6106",
+        "name": "延安市",
+        "center_lon": 109.1052,
+        "center_lat": 36.4252,
+        "level": "city_county"
+      },
+      {
+        "id": "6107",
+        "name": "汉中市",
+        "center_lon": 106.886,
+        "center_lat": 33.0139,
+        "level": "city_county"
+      },
+      {
+        "id": "6109",
+        "name": "安康市",
+        "center_lon": 109.1162,
+        "center_lat": 32.7722,
+        "level": "city_county"
+      },
+      {
+        "id": "6110",
+        "name": "商洛市",
+        "center_lon": 109.8083,
+        "center_lat": 33.761,
+        "level": "city_county"
+      },
+      {
+        "id": "6103",
+        "name": "宝鸡市",
+        "center_lon": 107.1826,
+        "center_lat": 34.3433,
+        "level": "city_county"
+      },
+      {
+        "id": "6105",
+        "name": "渭南市",
+        "center_lon": 109.7864,
+        "center_lat": 35.0299,
+        "level": "city_county"
+      },
+      {
+        "id": "6104",
+        "name": "咸阳市",
+        "center_lon": 108.4131,
+        "center_lat": 34.8706,
+        "level": "city_county"
+      },
+      {
+        "id": "6101",
+        "name": "西安市",
+        "center_lon": 109.1162,
+        "center_lat": 34.2004,
+        "level": "city_county"
+      },
+      {
+        "id": "6102",
+        "name": "铜川市",
+        "center_lon": 109.0393,
+        "center_lat": 35.1947,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "44",
+    "name": "广东省",
+    "center_lon": 113.4668,
+    "center_lat": 22.8076,
+    "level": "province",
+    "children": [
+      {
+        "id": "4418",
+        "name": "清远市",
+        "center_lon": 112.9175,
+        "center_lat": 24.3292,
+        "level": "city_county"
+      },
+      {
+        "id": "4402",
+        "name": "韶关市",
+        "center_lon": 113.7964,
+        "center_lat": 24.7028,
+        "level": "city_county"
+      },
+      {
+        "id": "4408",
+        "name": "湛江市",
+        "center_lon": 110.3577,
+        "center_lat": 20.9894,
+        "level": "city_county"
+      },
+      {
+        "id": "4414",
+        "name": "梅州市",
+        "center_lon": 116.1255,
+        "center_lat": 24.1534,
+        "level": "city_county"
+      },
+      {
+        "id": "4416",
+        "name": "河源市",
+        "center_lon": 114.917,
+        "center_lat": 23.9722,
+        "level": "city_county"
+      },
+      {
+        "id": "4412",
+        "name": "肇庆市",
+        "center_lon": 112.1265,
+        "center_lat": 23.5822,
+        "level": "city_county"
+      },
+      {
+        "id": "4413",
+        "name": "惠州市",
+        "center_lon": 114.6204,
+        "center_lat": 23.1647,
+        "level": "city_county"
+      },
+      {
+        "id": "4409",
+        "name": "茂名市",
+        "center_lon": 111.0059,
+        "center_lat": 22.0221,
+        "level": "city_county"
+      },
+      {
+        "id": "4407",
+        "name": "江门市",
+        "center_lon": 112.6318,
+        "center_lat": 22.1484,
+        "level": "city_county"
+      },
+      {
+        "id": "4417",
+        "name": "阳江市",
+        "center_lon": 111.8298,
+        "center_lat": 22.0715,
+        "level": "city_county"
+      },
+      {
+        "id": "4453",
+        "name": "云浮市",
+        "center_lon": 111.7859,
+        "center_lat": 22.8516,
+        "level": "city_county"
+      },
+      {
+        "id": "4401",
+        "name": "广州市",
+        "center_lon": 113.5107,
+        "center_lat": 23.2196,
+        "level": "city_county"
+      },
+      {
+        "id": "4415",
+        "name": "汕尾市",
+        "center_lon": 115.5762,
+        "center_lat": 23.0438,
+        "level": "city_county"
+      },
+      {
+        "id": "4452",
+        "name": "揭阳市",
+        "center_lon": 116.1255,
+        "center_lat": 23.313,
+        "level": "city_county"
+      },
+      {
+        "id": "4404",
+        "name": "珠海市",
+        "center_lon": 113.7305,
+        "center_lat": 22.1155,
+        "level": "city_county"
+      },
+      {
+        "id": "4406",
+        "name": "佛山市",
+        "center_lon": 112.8955,
+        "center_lat": 23.1097,
+        "level": "city_county"
+      },
+      {
+        "id": "4451",
+        "name": "潮州市",
+        "center_lon": 116.7847,
+        "center_lat": 23.8293,
+        "level": "city_county"
+      },
+      {
+        "id": "4405",
+        "name": "汕头市",
+        "center_lon": 117.1692,
+        "center_lat": 23.3405,
+        "level": "city_county"
+      },
+      {
+        "id": "4403",
+        "name": "深圳市",
+        "center_lon": 114.5435,
+        "center_lat": 22.5439,
+        "level": "city_county"
+      },
+      {
+        "id": "4419",
+        "name": "东莞市",
+        "center_lon": 113.8953,
+        "center_lat": 22.901,
+        "level": "city_county"
+      },
+      {
+        "id": "4420",
+        "name": "中山市",
+        "center_lon": 113.4229,
+        "center_lat": 22.478,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "22",
+    "name": "吉林省",
+    "center_lon": 125.7746,
+    "center_lat": 43.5938,
+    "level": "province",
+    "children": [
+      {
+        "id": "2224",
+        "name": "延边朝鲜族自治州",
+        "center_lon": 129.397,
+        "center_lat": 43.2587,
+        "level": "city_county"
+      },
+      {
+        "id": "2202",
+        "name": "吉林市",
+        "center_lon": 126.8372,
+        "center_lat": 43.6047,
+        "level": "city_county"
+      },
+      {
+        "id": "2208",
+        "name": "白城市",
+        "center_lon": 123.0029,
+        "center_lat": 45.2637,
+        "level": "city_county"
+      },
+      {
+        "id": "2207",
+        "name": "松原市",
+        "center_lon": 124.0906,
+        "center_lat": 44.7198,
+        "level": "city_county"
+      },
+      {
+        "id": "2201",
+        "name": "长春市",
+        "center_lon": 125.8154,
+        "center_lat": 44.2584,
+        "level": "city_county"
+      },
+      {
+        "id": "2206",
+        "name": "白山市",
+        "center_lon": 127.2217,
+        "center_lat": 42.0941,
+        "level": "city_county"
+      },
+      {
+        "id": "2205",
+        "name": "通化市",
+        "center_lon": 125.9583,
+        "center_lat": 41.8579,
+        "level": "city_county"
+      },
+      {
+        "id": "2203",
+        "name": "四平市",
+        "center_lon": 124.541,
+        "center_lat": 43.4894,
+        "level": "city_county"
+      },
+      {
+        "id": "2204",
+        "name": "辽源市",
+        "center_lon": 125.343,
+        "center_lat": 42.7643,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "name": "河北省",
+    "center_lon": 115.4004,
+    "center_lat": 39.4688,
+    "level": "province",
+    "children": [
+      {
+        "id": "1308",
+        "name": "承德市",
+        "center_lon": 117.5757,
+        "center_lat": 41.4075,
+        "level": "city_county"
+      },
+      {
+        "id": "1307",
+        "name": "张家口市",
+        "center_lon": 115.1477,
+        "center_lat": 40.8527,
+        "level": "city_county"
+      },
+      {
+        "id": "1306",
+        "name": "保定市",
+        "center_lon": 115.0488,
+        "center_lat": 39.0948,
+        "level": "city_county"
+      },
+      {
+        "id": "1302",
+        "name": "唐山市",
+        "center_lon": 118.4766,
+        "center_lat": 39.6826,
+        "level": "city_county"
+      },
+      {
+        "id": "1309",
+        "name": "沧州市",
+        "center_lon": 116.8286,
+        "center_lat": 38.2104,
+        "level": "city_county"
+      },
+      {
+        "id": "1301",
+        "name": "石家庄市",
+        "center_lon": 114.4995,
+        "center_lat": 38.1006,
+        "level": "city_county"
+      },
+      {
+        "id": "1305",
+        "name": "邢台市",
+        "center_lon": 114.8071,
+        "center_lat": 37.2821,
+        "level": "city_county"
+      },
+      {
+        "id": "1304",
+        "name": "邯郸市",
+        "center_lon": 114.4775,
+        "center_lat": 36.535,
+        "level": "city_county"
+      },
+      {
+        "id": "1303",
+        "name": "秦皇岛市",
+        "center_lon": 119.2126,
+        "center_lat": 40.0232,
+        "level": "city_county"
+      },
+      {
+        "id": "1311",
+        "name": "衡水市",
+        "center_lon": 115.8838,
+        "center_lat": 37.7161,
+        "level": "city_county"
+      },
+      {
+        "id": "1310",
+        "name": "廊坊市",
+        "center_lon": 116.521,
+        "center_lat": 39.0509,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "42",
+    "name": "湖北省",
+    "center_lon": 112.2363,
+    "center_lat": 31.1572,
+    "level": "province",
+    "children": [
+      {
+        "id": "4228",
+        "name": "恩施土家族苗族自治州",
+        "center_lon": 109.5007,
+        "center_lat": 30.2563,
+        "level": "city_county"
+      },
+      {
+        "id": "4203",
+        "name": "十堰市",
+        "center_lon": 110.5115,
+        "center_lat": 32.3877,
+        "level": "city_county"
+      },
+      {
+        "id": "4205",
+        "name": "宜昌市",
+        "center_lon": 111.1707,
+        "center_lat": 30.7617,
+        "level": "city_county"
+      },
+      {
+        "id": "4206",
+        "name": "襄樊市",
+        "center_lon": 111.9397,
+        "center_lat": 31.9263,
+        "level": "city_county"
+      },
+      {
+        "id": "4211",
+        "name": "黄冈市",
+        "center_lon": 115.2686,
+        "center_lat": 30.6628,
+        "level": "city_county"
+      },
+      {
+        "id": "4210",
+        "name": "荆州市",
+        "center_lon": 113.291,
+        "center_lat": 30.0092,
+        "level": "city_county"
+      },
+      {
+        "id": "4208",
+        "name": "荆门市",
+        "center_lon": 112.6758,
+        "center_lat": 30.9979,
+        "level": "city_county"
+      },
+      {
+        "id": "4212",
+        "name": "咸宁市",
+        "center_lon": 114.2578,
+        "center_lat": 29.6631,
+        "level": "city_county"
+      },
+      {
+        "id": "4213",
+        "name": "随州市",
+        "center_lon": 113.4338,
+        "center_lat": 31.8768,
+        "level": "city_county"
+      },
+      {
+        "id": "4209",
+        "name": "孝感市",
+        "center_lon": 113.9502,
+        "center_lat": 31.1188,
+        "level": "city_county"
+      },
+      {
+        "id": "4201",
+        "name": "武汉市",
+        "center_lon": 114.3896,
+        "center_lat": 30.6628,
+        "level": "city_county"
+      },
+      {
+        "id": "4202",
+        "name": "黄石市",
+        "center_lon": 115.0159,
+        "center_lat": 29.9213,
+        "level": "city_county"
+      },
+      {
+        "id": "429021",
+        "name": "神农架林区",
+        "center_lon": 110.4565,
+        "center_lat": 31.5802,
+        "level": "city_county"
+      },
+      {
+        "id": "429006",
+        "name": "天门市",
+        "center_lon": 113.0273,
+        "center_lat": 30.6409,
+        "level": "city_county"
+      },
+      {
+        "id": "429004",
+        "name": "仙桃市",
+        "center_lon": 113.3789,
+        "center_lat": 30.3003,
+        "level": "city_county"
+      },
+      {
+        "id": "429005",
+        "name": "潜江市",
+        "center_lon": 112.7637,
+        "center_lat": 30.3607,
+        "level": "city_county"
+      },
+      {
+        "id": "4207",
+        "name": "鄂州市",
+        "center_lon": 114.7302,
+        "center_lat": 30.4102,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "52",
+    "name": "贵州省",
+    "center_lon": 106.6113,
+    "center_lat": 26.9385,
+    "level": "province",
+    "children": [
+      {
+        "id": "5203",
+        "name": "遵义市",
+        "center_lon": 106.908,
+        "center_lat": 28.1744,
+        "level": "city_county"
+      },
+      {
+        "id": "5226",
+        "name": "黔东南苗族侗族自治州",
+        "center_lon": 108.4241,
+        "center_lat": 26.4166,
+        "level": "city_county"
+      },
+      {
+        "id": "5224",
+        "name": "毕节地区",
+        "center_lon": 105.1611,
+        "center_lat": 27.0648,
+        "level": "city_county"
+      },
+      {
+        "id": "5227",
+        "name": "黔南布依族苗族自治州",
+        "center_lon": 107.2485,
+        "center_lat": 25.8398,
+        "level": "city_county"
+      },
+      {
+        "id": "5222",
+        "name": "铜仁地区",
+        "center_lon": 108.6218,
+        "center_lat": 28.0096,
+        "level": "city_county"
+      },
+      {
+        "id": "5223",
+        "name": "黔西南布依族苗族自治州",
+        "center_lon": 105.5347,
+        "center_lat": 25.3949,
+        "level": "city_county"
+      },
+      {
+        "id": "5202",
+        "name": "六盘水市",
+        "center_lon": 104.7546,
+        "center_lat": 26.0925,
+        "level": "city_county"
+      },
+      {
+        "id": "5204",
+        "name": "安顺市",
+        "center_lon": 105.9082,
+        "center_lat": 25.9882,
+        "level": "city_county"
+      },
+      {
+        "id": "5201",
+        "name": "贵阳市",
+        "center_lon": 106.6992,
+        "center_lat": 26.7682,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "37",
+    "name": "山东省",
+    "center_lon": 118.7402,
+    "center_lat": 36.4307,
+    "level": "province",
+    "children": [
+      {
+        "id": "3706",
+        "name": "烟台市",
+        "center_lon": 120.7397,
+        "center_lat": 37.5128,
+        "level": "city_county"
+      },
+      {
+        "id": "3713",
+        "name": "临沂市",
+        "center_lon": 118.3118,
+        "center_lat": 35.2936,
+        "level": "city_county"
+      },
+      {
+        "id": "3707",
+        "name": "潍坊市",
+        "center_lon": 119.0918,
+        "center_lat": 36.524,
+        "level": "city_county"
+      },
+      {
+        "id": "3702",
+        "name": "青岛市",
+        "center_lon": 120.4651,
+        "center_lat": 36.3373,
+        "level": "city_county"
+      },
+      {
+        "id": "3729",
+        "name": "菏泽市",
+        "center_lon": 115.6201,
+        "center_lat": 35.2057,
+        "level": "city_county"
+      },
+      {
+        "id": "3708",
+        "name": "济宁市",
+        "center_lon": 116.8286,
+        "center_lat": 35.3375,
+        "level": "city_county"
+      },
+      {
+        "id": "3714",
+        "name": "德州市",
+        "center_lon": 116.6858,
+        "center_lat": 37.2107,
+        "level": "city_county"
+      },
+      {
+        "id": "3723",
+        "name": "滨州市",
+        "center_lon": 117.8174,
+        "center_lat": 37.4963,
+        "level": "city_county"
+      },
+      {
+        "id": "3715",
+        "name": "聊城市",
+        "center_lon": 115.9167,
+        "center_lat": 36.4032,
+        "level": "city_county"
+      },
+      {
+        "id": "3705",
+        "name": "东营市",
+        "center_lon": 118.7073,
+        "center_lat": 37.5513,
+        "level": "city_county"
+      },
+      {
+        "id": "3701",
+        "name": "济南市",
+        "center_lon": 117.1582,
+        "center_lat": 36.8701,
+        "level": "city_county"
+      },
+      {
+        "id": "3709",
+        "name": "泰安市",
+        "center_lon": 117.0264,
+        "center_lat": 36.0516,
+        "level": "city_county"
+      },
+      {
+        "id": "3710",
+        "name": "威海市",
+        "center_lon": 121.9482,
+        "center_lat": 37.1393,
+        "level": "city_county"
+      },
+      {
+        "id": "3711",
+        "name": "日照市",
+        "center_lon": 119.2786,
+        "center_lat": 35.5023,
+        "level": "city_county"
+      },
+      {
+        "id": "3703",
+        "name": "淄博市",
+        "center_lon": 118.0371,
+        "center_lat": 36.6064,
+        "level": "city_county"
+      },
+      {
+        "id": "3704",
+        "name": "枣庄市",
+        "center_lon": 117.323,
+        "center_lat": 34.8926,
+        "level": "city_county"
+      },
+      {
+        "id": "3712",
+        "name": "莱芜市",
+        "center_lon": 117.6526,
+        "center_lat": 36.2714,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "36",
+    "name": "江西省",
+    "center_lon": 116.0156,
+    "center_lat": 27.29,
+    "level": "province",
+    "children": [
+      {
+        "id": "3607",
+        "name": "赣州市",
+        "center_lon": 115.2795,
+        "center_lat": 25.8124,
+        "level": "city_county"
+      },
+      {
+        "id": "3608",
+        "name": "吉安市",
+        "center_lon": 114.884,
+        "center_lat": 26.9659,
+        "level": "city_county"
+      },
+      {
+        "id": "3611",
+        "name": "上饶市",
+        "center_lon": 117.8613,
+        "center_lat": 28.7292,
+        "level": "city_county"
+      },
+      {
+        "id": "3604",
+        "name": "九江市",
+        "center_lon": 115.4224,
+        "center_lat": 29.3774,
+        "level": "city_county"
+      },
+      {
+        "id": "3610",
+        "name": "抚州市",
+        "center_lon": 116.4441,
+        "center_lat": 27.4933,
+        "level": "city_county"
+      },
+      {
+        "id": "3609",
+        "name": "宜春市",
+        "center_lon": 115.0159,
+        "center_lat": 28.3228,
+        "level": "city_county"
+      },
+      {
+        "id": "3601",
+        "name": "南昌市",
+        "center_lon": 116.0046,
+        "center_lat": 28.6633,
+        "level": "city_county"
+      },
+      {
+        "id": "3602",
+        "name": "景德镇市",
+        "center_lon": 117.334,
+        "center_lat": 29.3225,
+        "level": "city_county"
+      },
+      {
+        "id": "3603",
+        "name": "萍乡市",
+        "center_lon": 113.9282,
+        "center_lat": 27.4823,
+        "level": "city_county"
+      },
+      {
+        "id": "3606",
+        "name": "鹰潭市",
+        "center_lon": 117.0813,
+        "center_lat": 28.2349,
+        "level": "city_county"
+      },
+      {
+        "id": "3605",
+        "name": "新余市",
+        "center_lon": 114.95,
+        "center_lat": 27.8174,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "41",
+    "name": "河南省",
+    "center_lon": 113.0668,
+    "center_lat": 33.8818,
+    "level": "province",
+    "children": [
+      {
+        "id": "4113",
+        "name": "南阳市",
+        "center_lon": 112.4011,
+        "center_lat": 33.0359,
+        "level": "city_county"
+      },
+      {
+        "id": "4115",
+        "name": "信阳市",
+        "center_lon": 114.8291,
+        "center_lat": 32.0197,
+        "level": "city_county"
+      },
+      {
+        "id": "4103",
+        "name": "洛阳市",
+        "center_lon": 112.0605,
+        "center_lat": 34.3158,
+        "level": "city_county"
+      },
+      {
+        "id": "4117",
+        "name": "驻马店市",
+        "center_lon": 114.1589,
+        "center_lat": 32.9041,
+        "level": "city_county"
+      },
+      {
+        "id": "4116",
+        "name": "周口市",
+        "center_lon": 114.873,
+        "center_lat": 33.6951,
+        "level": "city_county"
+      },
+      {
+        "id": "4114",
+        "name": "商丘市",
+        "center_lon": 115.741,
+        "center_lat": 34.2828,
+        "level": "city_county"
+      },
+      {
+        "id": "4112",
+        "name": "三门峡市",
+        "center_lon": 110.8301,
+        "center_lat": 34.3158,
+        "level": "city_county"
+      },
+      {
+        "id": "4107",
+        "name": "新乡市",
+        "center_lon": 114.2029,
+        "center_lat": 35.3595,
+        "level": "city_county"
+      },
+      {
+        "id": "4104",
+        "name": "平顶山市",
+        "center_lon": 112.9724,
+        "center_lat": 33.739,
+        "level": "city_county"
+      },
+      {
+        "id": "4101",
+        "name": "郑州市",
+        "center_lon": 113.4668,
+        "center_lat": 34.6234,
+        "level": "city_county"
+      },
+      {
+        "id": "4105",
+        "name": "安阳市",
+        "center_lon": 114.5325,
+        "center_lat": 36.0022,
+        "level": "city_county"
+      },
+      {
+        "id": "4102",
+        "name": "开封市",
+        "center_lon": 114.5764,
+        "center_lat": 34.6124,
+        "level": "city_county"
+      },
+      {
+        "id": "4108",
+        "name": "焦作市",
+        "center_lon": 112.8406,
+        "center_lat": 35.1508,
+        "level": "city_county"
+      },
+      {
+        "id": "4110",
+        "name": "许昌市",
+        "center_lon": 113.6975,
+        "center_lat": 34.0466,
+        "level": "city_county"
+      },
+      {
+        "id": "4109",
+        "name": "濮阳市",
+        "center_lon": 115.1917,
+        "center_lat": 35.799,
+        "level": "city_county"
+      },
+      {
+        "id": "4111",
+        "name": "漯河市",
+        "center_lon": 113.8733,
+        "center_lat": 33.6951,
+        "level": "city_county"
+      },
+      {
+        "id": "4106",
+        "name": "鹤壁市",
+        "center_lon": 114.3787,
+        "center_lat": 35.744,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "name": "辽宁省",
+    "center_lon": 122.0438,
+    "center_lat": 41.0889,
+    "level": "province",
+    "children": [
+      {
+        "id": "2102",
+        "name": "大连市",
+        "center_lon": 122.2229,
+        "center_lat": 39.4409,
+        "level": "city_county"
+      },
+      {
+        "id": "2113",
+        "name": "朝阳市",
+        "center_lon": 120.0696,
+        "center_lat": 41.4899,
+        "level": "city_county"
+      },
+      {
+        "id": "2106",
+        "name": "丹东市",
+        "center_lon": 124.541,
+        "center_lat": 40.4242,
+        "level": "city_county"
+      },
+      {
+        "id": "2112",
+        "name": "铁岭市",
+        "center_lon": 124.2773,
+        "center_lat": 42.7423,
+        "level": "city_county"
+      },
+      {
+        "id": "2101",
+        "name": "沈阳市",
+        "center_lon": 123.1238,
+        "center_lat": 42.1216,
+        "level": "city_county"
+      },
+      {
+        "id": "2104",
+        "name": "抚顺市",
+        "center_lon": 124.585,
+        "center_lat": 41.8579,
+        "level": "city_county"
+      },
+      {
+        "id": "2114",
+        "name": "葫芦岛市",
+        "center_lon": 120.1575,
+        "center_lat": 40.578,
+        "level": "city_county"
+      },
+      {
+        "id": "2109",
+        "name": "阜新市",
+        "center_lon": 122.0032,
+        "center_lat": 42.2699,
+        "level": "city_county"
+      },
+      {
+        "id": "2107",
+        "name": "锦州市",
+        "center_lon": 121.6626,
+        "center_lat": 41.4294,
+        "level": "city_county"
+      },
+      {
+        "id": "2103",
+        "name": "鞍山市",
+        "center_lon": 123.0798,
+        "center_lat": 40.6055,
+        "level": "city_county"
+      },
+      {
+        "id": "2105",
+        "name": "本溪市",
+        "center_lon": 124.1455,
+        "center_lat": 41.1987,
+        "level": "city_county"
+      },
+      {
+        "id": "2108",
+        "name": "营口市",
+        "center_lon": 122.4316,
+        "center_lat": 40.4297,
+        "level": "city_county"
+      },
+      {
+        "id": "2110",
+        "name": "辽阳市",
+        "center_lon": 123.4094,
+        "center_lat": 41.1383,
+        "level": "city_county"
+      },
+      {
+        "id": "2111",
+        "name": "盘锦市",
+        "center_lon": 121.9482,
+        "center_lat": 41.0449,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "name": "山西省",
+    "center_lon": 112.4121,
+    "center_lat": 37.6611,
+    "level": "province",
+    "children": [
+      {
+        "id": "1409",
+        "name": "忻州市",
+        "center_lon": 112.4561,
+        "center_lat": 38.8971,
+        "level": "city_county"
+      },
+      {
+        "id": "1411",
+        "name": "吕梁市",
+        "center_lon": 111.3574,
+        "center_lat": 37.7325,
+        "level": "city_county"
+      },
+      {
+        "id": "1410",
+        "name": "临汾市",
+        "center_lon": 111.4783,
+        "center_lat": 36.1615,
+        "level": "city_county"
+      },
+      {
+        "id": "1407",
+        "name": "晋中市",
+        "center_lon": 112.7747,
+        "center_lat": 37.37,
+        "level": "city_county"
+      },
+      {
+        "id": "1408",
+        "name": "运城市",
+        "center_lon": 111.1487,
+        "center_lat": 35.2002,
+        "level": "city_county"
+      },
+      {
+        "id": "1402",
+        "name": "大同市",
+        "center_lon": 113.7854,
+        "center_lat": 39.8035,
+        "level": "city_county"
+      },
+      {
+        "id": "1404",
+        "name": "长治市",
+        "center_lon": 112.8625,
+        "center_lat": 36.4746,
+        "level": "city_county"
+      },
+      {
+        "id": "1406",
+        "name": "朔州市",
+        "center_lon": 113.0713,
+        "center_lat": 39.6991,
+        "level": "city_county"
+      },
+      {
+        "id": "1405",
+        "name": "晋城市",
+        "center_lon": 112.7856,
+        "center_lat": 35.6342,
+        "level": "city_county"
+      },
+      {
+        "id": "1401",
+        "name": "太原市",
+        "center_lon": 112.3352,
+        "center_lat": 37.9413,
+        "level": "city_county"
+      },
+      {
+        "id": "1403",
+        "name": "阳泉市",
+        "center_lon": 113.4778,
+        "center_lat": 38.0951,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "34",
+    "name": "安徽省",
+    "center_lon": 117.2461,
+    "center_lat": 32.0361,
+    "level": "province",
+    "children": [
+      {
+        "id": "3415",
+        "name": "六安市",
+        "center_lon": 116.3123,
+        "center_lat": 31.8329,
+        "level": "city_county"
+      },
+      {
+        "id": "3408",
+        "name": "安庆市",
+        "center_lon": 116.7517,
+        "center_lat": 30.5255,
+        "level": "city_county"
+      },
+      {
+        "id": "3411",
+        "name": "滁州市",
+        "center_lon": 118.1909,
+        "center_lat": 32.536,
+        "level": "city_county"
+      },
+      {
+        "id": "3418",
+        "name": "宣城市",
+        "center_lon": 118.8062,
+        "center_lat": 30.6244,
+        "level": "city_county"
+      },
+      {
+        "id": "3412",
+        "name": "阜阳市",
+        "center_lon": 115.7629,
+        "center_lat": 32.9919,
+        "level": "city_county"
+      },
+      {
+        "id": "3413",
+        "name": "宿州市",
+        "center_lon": 117.5208,
+        "center_lat": 33.6841,
+        "level": "city_county"
+      },
+      {
+        "id": "3410",
+        "name": "黄山市",
+        "center_lon": 118.0481,
+        "center_lat": 29.9542,
+        "level": "city_county"
+      },
+      {
+        "id": "3414",
+        "name": "巢湖市",
+        "center_lon": 117.7734,
+        "center_lat": 31.4978,
+        "level": "city_county"
+      },
+      {
+        "id": "3416",
+        "name": "亳州市",
+        "center_lon": 116.1914,
+        "center_lat": 33.4698,
+        "level": "city_county"
+      },
+      {
+        "id": "3417",
+        "name": "池州市",
+        "center_lon": 117.3889,
+        "center_lat": 30.2014,
+        "level": "city_county"
+      },
+      {
+        "id": "3401",
+        "name": "合肥市",
+        "center_lon": 117.29,
+        "center_lat": 32.0581,
+        "level": "city_county"
+      },
+      {
+        "id": "3403",
+        "name": "蚌埠市",
+        "center_lon": 117.4109,
+        "center_lat": 33.1073,
+        "level": "city_county"
+      },
+      {
+        "id": "3402",
+        "name": "芜湖市",
+        "center_lon": 118.3557,
+        "center_lat": 31.0858,
+        "level": "city_county"
+      },
+      {
+        "id": "3406",
+        "name": "淮北市",
+        "center_lon": 116.6968,
+        "center_lat": 33.6896,
+        "level": "city_county"
+      },
+      {
+        "id": "3404",
+        "name": "淮南市",
+        "center_lon": 116.7847,
+        "center_lat": 32.7722,
+        "level": "city_county"
+      },
+      {
+        "id": "3405",
+        "name": "马鞍山市",
+        "center_lon": 118.6304,
+        "center_lat": 31.5363,
+        "level": "city_county"
+      },
+      {
+        "id": "3407",
+        "name": "铜陵市",
+        "center_lon": 117.9382,
+        "center_lat": 30.9375,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "35",
+    "name": "福建省",
+    "center_lon": 118.3008,
+    "center_lat": 25.9277,
+    "level": "province",
+    "children": [
+      {
+        "id": "3507",
+        "name": "南平市",
+        "center_lon": 118.136,
+        "center_lat": 27.2845,
+        "level": "city_county"
+      },
+      {
+        "id": "3504",
+        "name": "三明市",
+        "center_lon": 117.5317,
+        "center_lat": 26.3013,
+        "level": "city_county"
+      },
+      {
+        "id": "3508",
+        "name": "龙岩市",
+        "center_lon": 116.8066,
+        "center_lat": 25.2026,
+        "level": "city_county"
+      },
+      {
+        "id": "3509",
+        "name": "宁德市",
+        "center_lon": 119.6521,
+        "center_lat": 26.9824,
+        "level": "city_county"
+      },
+      {
+        "id": "3501",
+        "name": "福州市",
+        "center_lon": 119.4543,
+        "center_lat": 25.9222,
+        "level": "city_county"
+      },
+      {
+        "id": "3506",
+        "name": "漳州市",
+        "center_lon": 117.5757,
+        "center_lat": 24.3732,
+        "level": "city_county"
+      },
+      {
+        "id": "3505",
+        "name": "泉州市",
+        "center_lon": 118.3228,
+        "center_lat": 25.1147,
+        "level": "city_county"
+      },
+      {
+        "id": "3503",
+        "name": "莆田市",
+        "center_lon": 119.0918,
+        "center_lat": 25.3455,
+        "level": "city_county"
+      },
+      {
+        "id": "3502",
+        "name": "厦门市",
+        "center_lon": 118.1689,
+        "center_lat": 24.6478,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "33",
+    "name": "浙江省",
+    "center_lon": 120.498,
+    "center_lat": 29.0918,
+    "level": "province",
+    "children": [
+      {
+        "id": "3311",
+        "name": "丽水市",
+        "center_lon": 119.5642,
+        "center_lat": 28.1854,
+        "level": "city_county"
+      },
+      {
+        "id": "3301",
+        "name": "杭州市",
+        "center_lon": 119.5313,
+        "center_lat": 29.8773,
+        "level": "city_county"
+      },
+      {
+        "id": "3303",
+        "name": "温州市",
+        "center_lon": 120.498,
+        "center_lat": 27.8119,
+        "level": "city_county"
+      },
+      {
+        "id": "3302",
+        "name": "宁波市",
+        "center_lon": 121.5967,
+        "center_lat": 29.6466,
+        "level": "city_county"
+      },
+      {
+        "id": "3309",
+        "name": "舟山市",
+        "center_lon": 122.2559,
+        "center_lat": 30.2234,
+        "level": "city_county"
+      },
+      {
+        "id": "3310",
+        "name": "台州市",
+        "center_lon": 121.1353,
+        "center_lat": 28.6688,
+        "level": "city_county"
+      },
+      {
+        "id": "3307",
+        "name": "金华市",
+        "center_lon": 120.0037,
+        "center_lat": 29.1028,
+        "level": "city_county"
+      },
+      {
+        "id": "3308",
+        "name": "衢州市",
+        "center_lon": 118.6853,
+        "center_lat": 28.8666,
+        "level": "city_county"
+      },
+      {
+        "id": "3306",
+        "name": "绍兴市",
+        "center_lon": 120.564,
+        "center_lat": 29.7565,
+        "level": "city_county"
+      },
+      {
+        "id": "3304",
+        "name": "嘉兴市",
+        "center_lon": 120.9155,
+        "center_lat": 30.6354,
+        "level": "city_county"
+      },
+      {
+        "id": "3305",
+        "name": "湖州市",
+        "center_lon": 119.8608,
+        "center_lat": 30.7782,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "32",
+    "name": "江苏省",
+    "center_lon": 118.8586,
+    "center_lat": 32.915,
+    "level": "province",
+    "children": [
+      {
+        "id": "3209",
+        "name": "盐城市",
+        "center_lon": 120.2234,
+        "center_lat": 33.5577,
+        "level": "city_county"
+      },
+      {
+        "id": "3203",
+        "name": "徐州市",
+        "center_lon": 117.5208,
+        "center_lat": 34.3268,
+        "level": "city_county"
+      },
+      {
+        "id": "3206",
+        "name": "南通市",
+        "center_lon": 121.1023,
+        "center_lat": 32.1625,
+        "level": "city_county"
+      },
+      {
+        "id": "3208",
+        "name": "淮安市",
+        "center_lon": 118.927,
+        "center_lat": 33.4039,
+        "level": "city_county"
+      },
+      {
+        "id": "3205",
+        "name": "苏州市",
+        "center_lon": 120.6519,
+        "center_lat": 31.3989,
+        "level": "city_county"
+      },
+      {
+        "id": "3213",
+        "name": "宿迁市",
+        "center_lon": 118.5535,
+        "center_lat": 33.7775,
+        "level": "city_county"
+      },
+      {
+        "id": "3207",
+        "name": "连云港市",
+        "center_lon": 119.1248,
+        "center_lat": 34.552,
+        "level": "city_county"
+      },
+      {
+        "id": "3210",
+        "name": "扬州市",
+        "center_lon": 119.4653,
+        "center_lat": 32.8162,
+        "level": "city_county"
+      },
+      {
+        "id": "3201",
+        "name": "南京市",
+        "center_lon": 118.8062,
+        "center_lat": 31.9208,
+        "level": "city_county"
+      },
+      {
+        "id": "3212",
+        "name": "泰州市",
+        "center_lon": 120.0586,
+        "center_lat": 32.5525,
+        "level": "city_county"
+      },
+      {
+        "id": "3202",
+        "name": "无锡市",
+        "center_lon": 120.3442,
+        "center_lat": 31.5527,
+        "level": "city_county"
+      },
+      {
+        "id": "3204",
+        "name": "常州市",
+        "center_lon": 119.4543,
+        "center_lat": 31.5582,
+        "level": "city_county"
+      },
+      {
+        "id": "3211",
+        "name": "镇江市",
+        "center_lon": 119.4763,
+        "center_lat": 31.9702,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "50",
+    "name": "重庆市",
+    "center_lon": 107.7539,
+    "center_lat": 30.1904,
+    "level": "province",
+    "children": [
+      {
+        "id": "500242",
+        "name": "酉阳土家族苗族自治县",
+        "center_lon": 108.8196,
+        "center_lat": 28.8666,
+        "level": "city_county"
+      },
+      {
+        "id": "500236",
+        "name": "奉节县",
+        "center_lon": 109.3909,
+        "center_lat": 30.9265,
+        "level": "city_county"
+      },
+      {
+        "id": "500238",
+        "name": "巫溪县",
+        "center_lon": 109.3359,
+        "center_lat": 31.4813,
+        "level": "city_county"
+      },
+      {
+        "id": "500234",
+        "name": "开县",
+        "center_lon": 108.4131,
+        "center_lat": 31.2561,
+        "level": "city_county"
+      },
+      {
+        "id": "500243",
+        "name": "彭水苗族土家族自治县",
+        "center_lon": 108.2043,
+        "center_lat": 29.3994,
+        "level": "city_county"
+      },
+      {
+        "id": "500235",
+        "name": "云阳县",
+        "center_lon": 108.8306,
+        "center_lat": 31.0089,
+        "level": "city_county"
+      },
+      {
+        "id": "500101",
+        "name": "万州区",
+        "center_lon": 108.3911,
+        "center_lat": 30.6958,
+        "level": "city_county"
+      },
+      {
+        "id": "500229",
+        "name": "城口县",
+        "center_lon": 108.7756,
+        "center_lat": 31.9098,
+        "level": "city_county"
+      },
+      {
+        "id": "500116",
+        "name": "江津区",
+        "center_lon": 106.2158,
+        "center_lat": 28.9874,
+        "level": "city_county"
+      },
+      {
+        "id": "500240",
+        "name": "石柱土家族自治县",
+        "center_lon": 108.2813,
+        "center_lat": 30.1025,
+        "level": "city_county"
+      },
+      {
+        "id": "500237",
+        "name": "巫山县",
+        "center_lon": 109.8853,
+        "center_lat": 31.1188,
+        "level": "city_county"
+      },
+      {
+        "id": "500102",
+        "name": "涪陵区",
+        "center_lon": 107.3364,
+        "center_lat": 29.6796,
+        "level": "city_county"
+      },
+      {
+        "id": "500230",
+        "name": "丰都县",
+        "center_lon": 107.8418,
+        "center_lat": 29.9048,
+        "level": "city_county"
+      },
+      {
+        "id": "500232",
+        "name": "武隆县",
+        "center_lon": 107.655,
+        "center_lat": 29.35,
+        "level": "city_county"
+      },
+      {
+        "id": "500119",
+        "name": "南川区",
+        "center_lon": 107.1716,
+        "center_lat": 29.1302,
+        "level": "city_county"
+      },
+      {
+        "id": "500241",
+        "name": "秀山土家族苗族自治县",
+        "center_lon": 109.0173,
+        "center_lat": 28.5205,
+        "level": "city_county"
+      },
+      {
+        "id": "500114",
+        "name": "黔江区",
+        "center_lon": 108.7207,
+        "center_lat": 29.4708,
+        "level": "city_county"
+      },
+      {
+        "id": "500117",
+        "name": "合川区",
+        "center_lon": 106.3257,
+        "center_lat": 30.108,
+        "level": "city_county"
+      },
+      {
+        "id": "500222",
+        "name": "綦江县",
+        "center_lon": 106.6553,
+        "center_lat": 28.8171,
+        "level": "city_county"
+      },
+      {
+        "id": "500233",
+        "name": "忠县",
+        "center_lon": 107.8967,
+        "center_lat": 30.3223,
+        "level": "city_county"
+      },
+      {
+        "id": "500228",
+        "name": "梁平县",
+        "center_lon": 107.7429,
+        "center_lat": 30.6519,
+        "level": "city_county"
+      },
+      {
+        "id": "500113",
+        "name": "巴南区",
+        "center_lon": 106.7322,
+        "center_lat": 29.4214,
+        "level": "city_county"
+      },
+      {
+        "id": "500223",
+        "name": "潼南县",
+        "center_lon": 105.7764,
+        "center_lat": 30.1135,
+        "level": "city_county"
+      },
+      {
+        "id": "500118",
+        "name": "永川区",
+        "center_lon": 105.8643,
+        "center_lat": 29.2566,
+        "level": "city_county"
+      },
+      {
+        "id": "500231",
+        "name": "垫江县",
+        "center_lon": 107.4573,
+        "center_lat": 30.2454,
+        "level": "city_county"
+      },
+      {
+        "id": "500112",
+        "name": "渝北区",
+        "center_lon": 106.7212,
+        "center_lat": 29.8499,
+        "level": "city_county"
+      },
+      {
+        "id": "500115",
+        "name": "长寿区",
+        "center_lon": 107.1606,
+        "center_lat": 29.9762,
+        "level": "city_county"
+      },
+      {
+        "id": "500225",
+        "name": "大足县",
+        "center_lon": 105.7544,
+        "center_lat": 29.6136,
+        "level": "city_county"
+      },
+      {
+        "id": "500224",
+        "name": "铜梁县",
+        "center_lon": 106.0291,
+        "center_lat": 29.8059,
+        "level": "city_county"
+      },
+      {
+        "id": "500226",
+        "name": "荣昌县",
+        "center_lon": 105.5127,
+        "center_lat": 29.4708,
+        "level": "city_county"
+      },
+      {
+        "id": "500227",
+        "name": "璧山县",
+        "center_lon": 106.2048,
+        "center_lat": 29.5807,
+        "level": "city_county"
+      },
+      {
+        "id": "500109",
+        "name": "北碚区",
+        "center_lon": 106.5674,
+        "center_lat": 29.8883,
+        "level": "city_county"
+      },
+      {
+        "id": "500110",
+        "name": "万盛区",
+        "center_lon": 106.908,
+        "center_lat": 28.9325,
+        "level": "city_county"
+      },
+      {
+        "id": "500107",
+        "name": "九龙坡区",
+        "center_lon": 106.3586,
+        "center_lat": 29.4049,
+        "level": "city_county"
+      },
+      {
+        "id": "500106",
+        "name": "沙坪坝区",
+        "center_lon": 106.3696,
+        "center_lat": 29.6191,
+        "level": "city_county"
+      },
+      {
+        "id": "500108",
+        "name": "南岸区",
+        "center_lon": 106.6663,
+        "center_lat": 29.5367,
+        "level": "city_county"
+      },
+      {
+        "id": "500105",
+        "name": "江北区",
+        "center_lon": 106.8311,
+        "center_lat": 29.6191,
+        "level": "city_county"
+      },
+      {
+        "id": "500104",
+        "name": "大渡口区",
+        "center_lon": 106.4905,
+        "center_lat": 29.4214,
+        "level": "city_county"
+      },
+      {
+        "id": "500111",
+        "name": "双桥区",
+        "center_lon": 105.7874,
+        "center_lat": 29.4928,
+        "level": "city_county"
+      },
+      {
+        "id": "500103",
+        "name": "渝中区",
+        "center_lon": 106.5344,
+        "center_lat": 29.5477,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "64",
+    "name": "宁夏回族自治区",
+    "center_lon": 105.9961,
+    "center_lat": 37.3096,
+    "level": "province",
+    "children": [
+      {
+        "id": "6403",
+        "name": "吴忠市",
+        "center_lon": 106.853,
+        "center_lat": 37.3755,
+        "level": "city_county"
+      },
+      {
+        "id": "6405",
+        "name": "中卫市",
+        "center_lon": 105.4028,
+        "center_lat": 36.9525,
+        "level": "city_county"
+      },
+      {
+        "id": "6404",
+        "name": "固原市",
+        "center_lon": 106.1389,
+        "center_lat": 35.9363,
+        "level": "city_county"
+      },
+      {
+        "id": "6401",
+        "name": "银川市",
+        "center_lon": 106.3586,
+        "center_lat": 38.1775,
+        "level": "city_county"
+      },
+      {
+        "id": "6402",
+        "name": "石嘴山市",
+        "center_lon": 106.4795,
+        "center_lat": 39.0015,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "46",
+    "name": "海南省",
+    "center_lon": 109.9512,
+    "center_lat": 19.2041,
+    "level": "province",
+    "children": [
+      {
+        "id": "469003",
+        "name": "儋州市",
+        "center_lon": 109.3291,
+        "center_lat": 19.5653,
+        "level": "city_county"
+      },
+      {
+        "id": "469005",
+        "name": "文昌市",
+        "center_lon": 110.8905,
+        "center_lat": 19.7823,
+        "level": "city_county"
+      },
+      {
+        "id": "469033",
+        "name": "乐东黎族自治县",
+        "center_lon": 109.0283,
+        "center_lat": 18.6301,
+        "level": "city_county"
+      },
+      {
+        "id": "4602",
+        "name": "三亚市",
+        "center_lon": 109.3716,
+        "center_lat": 18.3698,
+        "level": "city_county"
+      },
+      {
+        "id": "469036",
+        "name": "琼中黎族苗族自治县",
+        "center_lon": 109.8413,
+        "center_lat": 19.0736,
+        "level": "city_county"
+      },
+      {
+        "id": "469007",
+        "name": "东方市",
+        "center_lon": 108.8498,
+        "center_lat": 19.0414,
+        "level": "city_county"
+      },
+      {
+        "id": "4601",
+        "name": "海口市",
+        "center_lon": 110.3893,
+        "center_lat": 19.8516,
+        "level": "city_county"
+      },
+      {
+        "id": "469006",
+        "name": "万宁市",
+        "center_lon": 110.3137,
+        "center_lat": 18.8388,
+        "level": "city_county"
+      },
+      {
+        "id": "469027",
+        "name": "澄迈县",
+        "center_lon": 109.9937,
+        "center_lat": 19.7314,
+        "level": "city_county"
+      },
+      {
+        "id": "469030",
+        "name": "白沙黎族自治县",
+        "center_lon": 109.3703,
+        "center_lat": 19.211,
+        "level": "city_county"
+      },
+      {
+        "id": "469002",
+        "name": "琼海市",
+        "center_lon": 110.4208,
+        "center_lat": 19.224,
+        "level": "city_county"
+      },
+      {
+        "id": "469031",
+        "name": "昌江黎族自治县",
+        "center_lon": 109.0407,
+        "center_lat": 19.2137,
+        "level": "city_county"
+      },
+      {
+        "id": "469028",
+        "name": "临高县",
+        "center_lon": 109.6957,
+        "center_lat": 19.8063,
+        "level": "city_county"
+      },
+      {
+        "id": "469034",
+        "name": "陵水黎族自治县",
+        "center_lon": 109.9924,
+        "center_lat": 18.5415,
+        "level": "city_county"
+      },
+      {
+        "id": "469026",
+        "name": "屯昌县",
+        "center_lon": 110.0377,
+        "center_lat": 19.362,
+        "level": "city_county"
+      },
+      {
+        "id": "469025",
+        "name": "定安县",
+        "center_lon": 110.3384,
+        "center_lat": 19.4698,
+        "level": "city_county"
+      },
+      {
+        "id": "469035",
+        "name": "保亭黎族苗族自治县",
+        "center_lon": 109.6284,
+        "center_lat": 18.6108,
+        "level": "city_county"
+      },
+      {
+        "id": "469001",
+        "name": "五指山市",
+        "center_lon": 109.5282,
+        "center_lat": 18.8299,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "71",
+    "name": "台湾省",
+    "center_lon": 120.0254,
+    "center_lat": 23.5986,
+    "level": "province",
+    "children": [
+      {
+        "id": "7001",
+        "name": "高雄市",
+        "center_lon": 120.60854272677904,
+        "center_lat": 22.979137962850558,
+        "level": "city_county"
+      },
+      {
+        "id": "7002",
+        "name": "屏东县",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7003",
+        "name": "台南市",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7004",
+        "name": "新竹市",
+        "center_lon": 120.95931684488576,
+        "center_lat": 24.78190424793857,
+        "level": "city_county"
+      },
+      {
+        "id": "7005",
+        "name": "新竹县",
+        "center_lon": 121.1634549830874,
+        "center_lat": 24.692545330300632,
+        "level": "city_county"
+      },
+      {
+        "id": "7006",
+        "name": "宜兰县",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7007",
+        "name": "基隆市",
+        "center_lon": 121.70397220265511,
+        "center_lat": 25.113554463439286,
+        "level": "city_county"
+      },
+      {
+        "id": "7008",
+        "name": "苗栗县",
+        "center_lon": 120.9419415369585,
+        "center_lat": 24.51988157659173,
+        "level": "city_county"
+      },
+      {
+        "id": "7009",
+        "name": "台北市",
+        "center_lon": 121.55870975145393,
+        "center_lat": 25.08823639624272,
+        "level": "city_county"
+      },
+      {
+        "id": "7010",
+        "name": "新北市",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7011",
+        "name": "桃园县",
+        "center_lon": 121.22750457153529,
+        "center_lat": 24.859564411781278,
+        "level": "city_county"
+      },
+      {
+        "id": "7012",
+        "name": "彰化县",
+        "center_lon": 120.46403601456208,
+        "center_lat": 23.98978091934434,
+        "level": "city_county"
+      },
+      {
+        "id": "7013",
+        "name": "嘉义县",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7014",
+        "name": "嘉义市",
+        "center_lon": 120.4412585797698,
+        "center_lat": 23.481306056929014,
+        "level": "city_county"
+      },
+      {
+        "id": "7015",
+        "name": "花莲县",
+        "center_lon": 121.38071719700287,
+        "center_lat": 23.73954610861601,
+        "level": "city_county"
+      },
+      {
+        "id": "7016",
+        "name": "南投县",
+        "center_lon": 120.98809858583107,
+        "center_lat": 23.84008260752634,
+        "level": "city_county"
+      },
+      {
+        "id": "7017",
+        "name": "台中市",
+        "center_lon": 120.9660606761162,
+        "center_lat": 24.23336963981076,
+        "level": "city_county"
+      },
+      {
+        "id": "7018",
+        "name": "云林县",
+        "center_lon": 120.43246668028229,
+        "center_lat": 23.673316106696305,
+        "level": "city_county"
+      },
+      {
+        "id": "7019",
+        "name": "台东县",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7020",
+        "name": "澎湖县",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7021",
+        "name": "金门",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": "7022",
+        "name": "马祖",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "name": "北京市",
+    "center_lon": 116.4551,
+    "center_lat": 40.2539,
+    "level": "province",
+    "children": [
+      {
+        "id": "110228",
+        "name": "密云县",
+        "center_lon": 117.0923,
+        "center_lat": 40.5121,
+        "level": "city_county"
+      },
+      {
+        "id": "110116",
+        "name": "怀柔区",
+        "center_lon": 116.6377,
+        "center_lat": 40.6219,
+        "level": "city_county"
+      },
+      {
+        "id": "110111",
+        "name": "房山区",
+        "center_lon": 115.8453,
+        "center_lat": 39.7163,
+        "level": "city_county"
+      },
+      {
+        "id": "110229",
+        "name": "延庆县",
+        "center_lon": 116.1543,
+        "center_lat": 40.5286,
+        "level": "city_county"
+      },
+      {
+        "id": "110109",
+        "name": "门头沟区",
+        "center_lon": 115.8,
+        "center_lat": 39.9957,
+        "level": "city_county"
+      },
+      {
+        "id": "110114",
+        "name": "昌平区",
+        "center_lon": 116.1777,
+        "center_lat": 40.2134,
+        "level": "city_county"
+      },
+      {
+        "id": "110115",
+        "name": "大兴区",
+        "center_lon": 116.4716,
+        "center_lat": 39.6352,
+        "level": "city_county"
+      },
+      {
+        "id": "110113",
+        "name": "顺义区",
+        "center_lon": 116.7242,
+        "center_lat": 40.1619,
+        "level": "city_county"
+      },
+      {
+        "id": "110117",
+        "name": "平谷区",
+        "center_lon": 117.1706,
+        "center_lat": 40.2052,
+        "level": "city_county"
+      },
+      {
+        "id": "110112",
+        "name": "通州区",
+        "center_lon": 116.7297,
+        "center_lat": 39.8131,
+        "level": "city_county"
+      },
+      {
+        "id": "110105",
+        "name": "朝阳区",
+        "center_lon": 116.4977,
+        "center_lat": 39.949,
+        "level": "city_county"
+      },
+      {
+        "id": "110108",
+        "name": "海淀区",
+        "center_lon": 116.2202,
+        "center_lat": 40.0239,
+        "level": "city_county"
+      },
+      {
+        "id": "110106",
+        "name": "丰台区",
+        "center_lon": 116.2683,
+        "center_lat": 39.8309,
+        "level": "city_county"
+      },
+      {
+        "id": "110107",
+        "name": "石景山区",
+        "center_lon": 116.1887,
+        "center_lat": 39.9346,
+        "level": "city_county"
+      },
+      {
+        "id": "110102",
+        "name": "西城区",
+        "center_lon": 116.3631,
+        "center_lat": 39.9353,
+        "level": "city_county"
+      },
+      {
+        "id": "110101",
+        "name": "东城区",
+        "center_lon": 116.418,
+        "center_lat": 39.9367,
+        "level": "city_county"
+      },
+      {
+        "id": "110104",
+        "name": "宣武区",
+        "center_lon": 116.3603,
+        "center_lat": 39.8852,
+        "level": "city_county"
+      },
+      {
+        "id": "110103",
+        "name": "崇文区",
+        "center_lon": 116.4166,
+        "center_lat": 39.8811,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "name": "天津市",
+    "center_lon": 117.4219,
+    "center_lat": 39.4189,
+    "level": "province",
+    "children": [
+      {
+        "id": "120225",
+        "name": "蓟县",
+        "center_lon": 117.4672,
+        "center_lat": 40.004,
+        "level": "city_county"
+      },
+      {
+        "id": "120114",
+        "name": "武清区",
+        "center_lon": 117.0621,
+        "center_lat": 39.4121,
+        "level": "city_county"
+      },
+      {
+        "id": "120115",
+        "name": "宝坻区",
+        "center_lon": 117.4274,
+        "center_lat": 39.5913,
+        "level": "city_county"
+      },
+      {
+        "id": "120223",
+        "name": "静海县",
+        "center_lon": 116.9824,
+        "center_lat": 38.8312,
+        "level": "city_county"
+      },
+      {
+        "id": "120221",
+        "name": "宁河县",
+        "center_lon": 117.6801,
+        "center_lat": 39.3853,
+        "level": "city_county"
+      },
+      {
+        "id": "120109",
+        "name": "大港区",
+        "center_lon": 117.3875,
+        "center_lat": 38.757,
+        "level": "city_county"
+      },
+      {
+        "id": "120107",
+        "name": "塘沽区",
+        "center_lon": 117.6801,
+        "center_lat": 38.9987,
+        "level": "city_county"
+      },
+      {
+        "id": "120111",
+        "name": "西青区",
+        "center_lon": 117.1829,
+        "center_lat": 39.0022,
+        "level": "city_county"
+      },
+      {
+        "id": "120113",
+        "name": "北辰区",
+        "center_lon": 117.1761,
+        "center_lat": 39.2548,
+        "level": "city_county"
+      },
+      {
+        "id": "120110",
+        "name": "东丽区",
+        "center_lon": 117.4013,
+        "center_lat": 39.1223,
+        "level": "city_county"
+      },
+      {
+        "id": "120108",
+        "name": "汉沽区",
+        "center_lon": 117.8888,
+        "center_lat": 39.2191,
+        "level": "city_county"
+      },
+      {
+        "id": "120112",
+        "name": "津南区",
+        "center_lon": 117.3958,
+        "center_lat": 38.9603,
+        "level": "city_county"
+      },
+      {
+        "id": "120103",
+        "name": "河西区",
+        "center_lon": 117.2365,
+        "center_lat": 39.0804,
+        "level": "city_county"
+      },
+      {
+        "id": "120102",
+        "name": "河东区",
+        "center_lon": 117.2571,
+        "center_lat": 39.1209,
+        "level": "city_county"
+      },
+      {
+        "id": "120104",
+        "name": "南开区",
+        "center_lon": 117.1527,
+        "center_lat": 39.1065,
+        "level": "city_county"
+      },
+      {
+        "id": "120105",
+        "name": "河北区",
+        "center_lon": 117.2145,
+        "center_lat": 39.1615,
+        "level": "city_county"
+      },
+      {
+        "id": "120106",
+        "name": "红桥区",
+        "center_lon": 117.1596,
+        "center_lat": 39.1663,
+        "level": "city_county"
+      },
+      {
+        "id": "120101",
+        "name": "和平区",
+        "center_lon": 117.2008,
+        "center_lat": 39.1189,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "31",
+    "name": "上海市",
+    "center_lon": 121.4648,
+    "center_lat": 31.2891,
+    "level": "province",
+    "children": [
+      {
+        "id": "310230",
+        "name": "崇明县",
+        "center_lon": 121.5637,
+        "center_lat": 31.5383,
+        "level": "city_county"
+      },
+      {
+        "id": "310119",
+        "name": "南汇区",
+        "center_lon": 121.8755,
+        "center_lat": 30.954,
+        "level": "city_county"
+      },
+      {
+        "id": "310120",
+        "name": "奉贤区",
+        "center_lon": 121.5747,
+        "center_lat": 30.8475,
+        "level": "city_county"
+      },
+      {
+        "id": "310115",
+        "name": "浦东新区",
+        "center_lon": 121.6928,
+        "center_lat": 31.2561,
+        "level": "city_county"
+      },
+      {
+        "id": "310116",
+        "name": "金山区",
+        "center_lon": 121.2657,
+        "center_lat": 30.8112,
+        "level": "city_county"
+      },
+      {
+        "id": "310118",
+        "name": "青浦区",
+        "center_lon": 121.1751,
+        "center_lat": 31.1909,
+        "level": "city_county"
+      },
+      {
+        "id": "310117",
+        "name": "松江区",
+        "center_lon": 121.1984,
+        "center_lat": 31.0268,
+        "level": "city_county"
+      },
+      {
+        "id": "310114",
+        "name": "嘉定区",
+        "center_lon": 121.2437,
+        "center_lat": 31.3625,
+        "level": "city_county"
+      },
+      {
+        "id": "310113",
+        "name": "宝山区",
+        "center_lon": 121.4346,
+        "center_lat": 31.4051,
+        "level": "city_county"
+      },
+      {
+        "id": "310112",
+        "name": "闵行区",
+        "center_lon": 121.4992,
+        "center_lat": 31.0838,
+        "level": "city_county"
+      },
+      {
+        "id": "310110",
+        "name": "杨浦区",
+        "center_lon": 121.528,
+        "center_lat": 31.2966,
+        "level": "city_county"
+      },
+      {
+        "id": "310107",
+        "name": "普陀区",
+        "center_lon": 121.3879,
+        "center_lat": 31.2602,
+        "level": "city_county"
+      },
+      {
+        "id": "310104",
+        "name": "徐汇区",
+        "center_lon": 121.4333,
+        "center_lat": 31.1607,
+        "level": "city_county"
+      },
+      {
+        "id": "310105",
+        "name": "长宁区",
+        "center_lon": 121.3852,
+        "center_lat": 31.2115,
+        "level": "city_county"
+      },
+      {
+        "id": "310108",
+        "name": "闸北区",
+        "center_lon": 121.4511,
+        "center_lat": 31.2794,
+        "level": "city_county"
+      },
+      {
+        "id": "310109",
+        "name": "虹口区",
+        "center_lon": 121.4882,
+        "center_lat": 31.2788,
+        "level": "city_county"
+      },
+      {
+        "id": "310101",
+        "name": "黄浦区",
+        "center_lon": 121.4868,
+        "center_lat": 31.219,
+        "level": "city_county"
+      },
+      {
+        "id": "310103",
+        "name": "卢湾区",
+        "center_lon": 121.4758,
+        "center_lat": 31.2074,
+        "level": "city_county"
+      },
+      {
+        "id": "310106",
+        "name": "静安区",
+        "center_lon": 121.4484,
+        "center_lat": 31.2286,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "81",
+    "name": "香港特别行政区",
+    "center_lon": 114.1178,
+    "center_lat": 22.3242,
+    "level": "province",
+    "children": [
+      {
+        "id": 3682,
+        "name": "中西区",
+        "center_lon": 114.13913007909488,
+        "center_lat": 22.273053048894383,
+        "level": "city_county"
+      },
+      {
+        "id": 6655,
+        "name": "湾仔区",
+        "center_lon": 114.17874347827893,
+        "center_lat": 22.26879837419476,
+        "level": "city_county"
+      },
+      {
+        "id": 6656,
+        "name": "东区",
+        "center_lon": 114.21517988394066,
+        "center_lat": 22.27037181215144,
+        "level": "city_county"
+      },
+      {
+        "id": 6657,
+        "name": "南区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6658,
+        "name": "油水旺区",
+        "center_lon": 114.16828545401137,
+        "center_lat": 22.305887892597426,
+        "level": "city_county"
+      },
+      {
+        "id": 6659,
+        "name": "九龙市",
+        "center_lon": 114.19244328386134,
+        "center_lat": 22.319535667106422,
+        "level": "city_county"
+      },
+      {
+        "id": 6660,
+        "name": "深水埗区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6661,
+        "name": "黄大仙区",
+        "center_lon": 114.20981946839368,
+        "center_lat": 22.344388749291355,
+        "level": "city_county"
+      },
+      {
+        "id": 6662,
+        "name": "观塘区",
+        "center_lon": 114.22430341961473,
+        "center_lat": 22.308111184197756,
+        "level": "city_county"
+      },
+      {
+        "id": 6663,
+        "name": "西贡区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6664,
+        "name": "沙田区",
+        "center_lon": 114.20124501229753,
+        "center_lat": 22.38870180684826,
+        "level": "city_county"
+      },
+      {
+        "id": 6665,
+        "name": "葵青区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6666,
+        "name": "荃湾区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6667,
+        "name": "屯门区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6668,
+        "name": "元朗区",
+        "center_lon": 114.0403048399115,
+        "center_lat": 22.452584783552965,
+        "level": "city_county"
+      },
+      {
+        "id": 6669,
+        "name": "北区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6670,
+        "name": "大埔区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      },
+      {
+        "id": 6671,
+        "name": "离岛区",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      }
+    ]
+  },
+  {
+    "id": "82",
+    "name": "澳门特别行政区",
+    "center_lon": 111.5547,
+    "center_lat": 22.1484,
+    "level": "province",
+    "children": [
+      {
+        "id": 3681,
+        "name": "澳门",
+        "center_lon": null,
+        "center_lat": null,
+        "level": "city_county"
+      }
+    ]
+  }
+]
