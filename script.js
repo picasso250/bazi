@@ -30,19 +30,19 @@ const baziMonthDefs = [
  * @returns {string} 该年份的干支字符串。
  */
 function getGanZhiForYear(year) {
-	// 1900 年是庚子年
-	// 庚 (Geng) 是天干的第 7 位 (索引 6)
-	// 子 (Zi) 是地支的第 1 位 (索引 0)
-	const startYear = 1900;
-	const startStemIndex = 6; // 庚
-	const startBranchIndex = 0; // 子
+    // 1900 年是庚子年
+    // 庚 (Geng) 是天干的第 7 位 (索引 6)
+    // 子 (Zi) 是地支的第 1 位 (索引 0)
+    const startYear = 1900;
+    const startStemIndex = 6; // 庚
+    const startBranchIndex = 0; // 子
 
-	const yearOffset = year - startYear;
+    const yearOffset = year - startYear;
 
-	const stemIndex = (startStemIndex + yearOffset) % 10;
-	const branchIndex = (startBranchIndex + yearOffset) % 12;
+    const stemIndex = (startStemIndex + yearOffset) % 10;
+    const branchIndex = (startBranchIndex + yearOffset) % 12;
 
-	return heavenlyStems[stemIndex] + earthlyBranches[branchIndex];
+    return heavenlyStems[stemIndex] + earthlyBranches[branchIndex];
 }
 
 /**
@@ -51,10 +51,10 @@ function getGanZhiForYear(year) {
  * @returns {number} 太阳黄经（0-360 度）。
  */
 function getSolarLongitudeForJD(jd) {
-	const T = (jd - 2451545.0) / 36525.0; // 自 J2000.0 以来的儒略世纪数
-	let solarLonRad = astronomia.solar.trueLongitude(T).lon; // 结果为弧度
-	let solarLonDeg = solarLonRad * 180 / Math.PI; // 转换为度数
-	return (solarLonDeg % 360 + 360) % 360; // 归一化到 0-360 度
+    const T = (jd - 2451545.0) / 36525.0; // 自 J2000.0 以来的儒略世纪数
+    let solarLonRad = astronomia.solar.trueLongitude(T).lon; // 结果为弧度
+    let solarLonDeg = solarLonRad * 180 / Math.PI; // 转换为度数
+    return (solarLonDeg % 360 + 360) % 360; // 归一化到 0-360 度
 }
 
 /**
@@ -67,35 +67,35 @@ function getSolarLongitudeForJD(jd) {
  * @returns {number} Julian Day，表示达到目标黄经的精确时刻。
  */
 function findJDForSolarLongitude(year, targetLonDeg, roughMonth, roughDay) {
-	// 定义一个围绕粗略日期的搜索窗口，例如立春通常在2月3-5日，我们设定1月20日到2月20日。
-	// 使用 UTC 时间，因为 astronomia 库的计算基于此
-	let searchStart = new Date(Date.UTC(year, roughMonth - 1, roughDay - 15, 0, 0, 0));
-	let searchEnd = new Date(Date.UTC(year, roughMonth - 1, roughDay + 15, 23, 59, 59));
+    // 定义一个围绕粗略日期的搜索窗口，例如立春通常在2月3-5日，我们设定1月20日到2月20日。
+    // 使用 UTC 时间，因为 astronomia 库的计算基于此
+    let searchStart = new Date(Date.UTC(year, roughMonth - 1, roughDay - 15, 0, 0, 0));
+    let searchEnd = new Date(Date.UTC(year, roughMonth - 1, roughDay + 15, 23, 59, 59));
 
-	let lowJD = astronomia.julian.DateToJD(searchStart);
-	let highJD = astronomia.julian.DateToJD(searchEnd);
+    let lowJD = astronomia.julian.DateToJD(searchStart);
+    let highJD = astronomia.julian.DateToJD(searchEnd);
 
-	// 设置一个足够小的容忍度，例如 1/86400 Julian Day (1秒)
-	const toleranceJD = 1 / (24 * 60 * 60);
+    // 设置一个足够小的容忍度，例如 1/86400 Julian Day (1秒)
+    const toleranceJD = 1 / (24 * 60 * 60);
 
-	let iterationCount = 0;
-	const maxIterations = 100; // 防止无限循环
+    let iterationCount = 0;
+    const maxIterations = 100; // 防止无限循环
 
-	while (highJD - lowJD > toleranceJD && iterationCount < maxIterations) {
-		let midJD = (lowJD + highJD) / 2;
-		let currentLon = getSolarLongitudeForJD(midJD);
+    while (highJD - lowJD > toleranceJD && iterationCount < maxIterations) {
+        let midJD = (lowJD + highJD) / 2;
+        let currentLon = getSolarLongitudeForJD(midJD);
 
-		// 对于目标黄经 315 度 (立春)，我们寻找黄经从小于 315 变为大于等于 315 的点
-		// 如果 currentLon 小于 targetLonDeg，说明立春时刻还在 midJD 之后
-		// 如果 currentLon 大于等于 targetLonDeg，说明立春时刻在 midJD 或之前
-		if (currentLon < targetLonDeg) {
-			lowJD = midJD;
-		} else {
-			highJD = midJD;
-		}
-		iterationCount++;
-	}
-	return highJD; // 返回高边界，它更接近实际时刻（或者说，是黄经首次达到或超过目标值的点）
+        // 对于目标黄经 315 度 (立春)，我们寻找黄经从小于 315 变为大于等于 315 的点
+        // 如果 currentLon 小于 targetLonDeg，说明立春时刻还在 midJD 之后
+        // 如果 currentLon 大于等于 targetLonDeg，说明立春时刻在 midJD 或之前
+        if (currentLon < targetLonDeg) {
+            lowJD = midJD;
+        } else {
+            highJD = midJD;
+        }
+        iterationCount++;
+    }
+    return highJD; // 返回高边界，它更接近实际时刻（或者说，是黄经首次达到或超过目标值的点）
 }
 
 /**
@@ -169,115 +169,121 @@ function getStemForMonth(yearStem, monthBranch) {
 
 // 更加精确的节气判断函数 (保持不变，但在此项目中可能不是核心，因为我们主要看月起始节气)
 function getSolarTermByLongitude(lon) {
-	lon = (lon % 360 + 360) % 360;
+    lon = (lon % 360 + 360) % 360;
 
-	const terms = [
-		{ name: "春分", longitude: 0 }, { name: "清明", longitude: 15 }, { name: "谷雨", longitude: 30 },
-		{ name: "立夏", longitude: 45 }, { name: "小满", longitude: 60 }, { name: "芒种", longitude: 75 },
-		{ name: "夏至", longitude: 90 }, { name: "小暑", longitude: 105 }, { name: "大暑", longitude: 120 },
-		{ name: "立秋", longitude: 135 }, { name: "处暑", longitude: 150 }, { name: "白露", longitude: 165 },
-		{ name: "秋分", longitude: 180 }, { name: "寒露", longitude: 195 }, { name: "霜降", longitude: 210 },
-		{ name: "立冬", longitude: 225 }, { name: "小雪", longitude: 240 }, { name: "大雪", longitude: 255 },
-		{ name: "冬至", longitude: 270 }, { name: "小寒", longitude: 285 }, { name: "大寒", longitude: 300 },
-		{ name: "立春", longitude: 315 }, { name: "雨水", longitude: 330 }, { name: "惊蛰", longitude: 345 }
-	];
+    const terms = [
+        { name: "春分", longitude: 0 }, { name: "清明", longitude: 15 }, { name: "谷雨", longitude: 30 },
+        { name: "立夏", longitude: 45 }, { name: "小满", longitude: 60 }, { name: "芒种", longitude: 75 },
+        { name: "夏至", longitude: 90 }, { name: "小暑", longitude: 105 }, { name: "大暑", longitude: 120 },
+        { name: "立秋", longitude: 135 }, { name: "处暑", longitude: 150 }, { name: "白露", longitude: 165 },
+        { name: "秋分", longitude: 180 }, { name: "寒露", longitude: 195 }, { name: "霜降", longitude: 210 },
+        { name: "立冬", longitude: 225 }, { name: "小雪", longitude: 240 }, { name: "大雪", longitude: 255 },
+        { name: "冬至", longitude: 270 }, { name: "小寒", longitude: 285 }, { name: "大寒", longitude: 300 },
+        { name: "立春", longitude: 315 }, { name: "雨水", longitude: 330 }, { name: "惊蛰", longitude: 345 }
+    ];
 
-	for (let i = 0; i < terms.length; i++) {
-		const currentTerm = terms[i];
-		const nextTerm = terms[(i + 1) % terms.length];
+    for (let i = 0; i < terms.length; i++) {
+        const currentTerm = terms[i];
+        const nextTerm = terms[(i + 1) % terms.length];
 
-		if (currentTerm.longitude <= nextTerm.longitude) {
-			if (lon >= currentTerm.longitude && lon < nextTerm.longitude) {
-				return currentTerm.name;
-			}
-		} else {
-			if (lon >= currentTerm.longitude || lon < nextTerm.longitude) {
-				return currentTerm.name;
-			}
-		}
-	}
-	return "未知";
+        if (currentTerm.longitude <= nextTerm.longitude) {
+            if (lon >= currentTerm.longitude && lon < nextTerm.longitude) {
+                return currentTerm.name;
+            }
+        } else {
+            if (lon >= currentTerm.longitude || lon < nextTerm.longitude) {
+                return currentTerm.name;
+            }
+        }
+    }
+    return "未知";
 }
 
 document.getElementById('combinedQueryForm').addEventListener('submit', function(event) {
-	event.preventDefault();
+    event.preventDefault();
 
-	// 清空之前的搜索结果和错误信息
-	document.getElementById('result').style.display = 'none';
-	document.getElementById('errorMessage').style.display = 'none';
-	document.getElementById('errorMessage').textContent = '';
-	document.getElementById('yearPillarDisplay').textContent = ''; // 清空年柱显示
+    // 清空之前的搜索结果和错误信息
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('errorMessage').style.display = 'none';
+    document.getElementById('errorMessage').textContent = '';
+    document.getElementById('yearPillarDisplay').textContent = ''; // 清空年柱显示
     document.getElementById('monthPillarDisplay').textContent = ''; // 清空月柱显示
+    document.getElementById('dayPillarDisplay').textContent = ''; // 清空日柱显示
 
-	// 获取 UTC 日期/时间输入
-	const year = parseInt(document.getElementById('year').value);
-	const month = parseInt(document.getElementById('month').value);
-	const day = parseInt(document.getElementById('day').value);
-	const hour = parseInt(document.getElementById('hour').value);
-	const minute = parseInt(document.getElementById('minute').value);
-	const second = parseInt(document.getElementById('second').value);
+    // 获取 UTC+8 日期/时间输入
+    const year = parseInt(document.getElementById('year').value);
+    const month = parseInt(document.getElementById('month').value);
+    const day = parseInt(document.getElementById('day').value);
+    const hour = parseInt(document.getElementById('hour').value);
+    const minute = parseInt(document.getElementById('minute').value);
+    const second = parseInt(document.getElementById('second').value);
 
-	const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
+    const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
 
-	if (!cityInput) {
-		document.getElementById('errorMessage').textContent = '请输入城市名称。';
-		document.getElementById('errorMessage').style.display = 'block';
-		return;
-	}
+    if (!cityInput) {
+        document.getElementById('errorMessage').textContent = '请输入城市名称。';
+        document.getElementById('errorMessage').style.display = 'block';
+        return;
+    }
 
-	// 组合成一个 Date 对象（UTC时间）
-	// 注意：Date对象的月份是从0开始的，所以需要 month - 1
-	const utcDate = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+    // 原始输入的UTC+8时间
+    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second)); // 这只是为了格式化显示原始输入
+
+    // 组合成一个 Date 对象（UTC时间）
+    // 注意：Date对象的月份是从0开始的，所以需要 month - 1
+    // 用户输入的是UTC+8时间，所以需要将小时减去8，得到对应的UTC时间。
+    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second)); // 关键修改点
     const birthJD = astronomia.julian.DateToJD(utcDate); // 出生时间的 Julian Day
 
-	// 搜索城市数据
-	const foundCities = cities.filter(city =>
-		city.name.toLowerCase().includes(cityInput)
-	);
+    // 搜索城市数据
+    const foundCities = cities.filter(city =>
+        city.name.toLowerCase().includes(cityInput)
+    );
 
-	if (foundCities.length === 0) {
-		document.getElementById('errorMessage').textContent = `未找到城市 "${cityInput}" 的结果。`;
-		document.getElementById('errorMessage').style.display = 'block';
-		return;
-	}
+    if (foundCities.length === 0) {
+        document.getElementById('errorMessage').textContent = `未找到城市 "${cityInput}" 的结果。`;
+        document.getElementById('errorMessage').style.display = 'block';
+        return;
+    }
 
-	const selectedCity = foundCities[0]; // 为简化示例，只取第一个匹配的城市
+    const selectedCity = foundCities[0]; // 为简化示例，只取第一个匹配的城市
 
-	// 显式将经纬度字符串转换为浮点数
-	const cityLat = parseFloat(selectedCity.lat);
-	const cityLng = parseFloat(selectedCity.lng);
+    // 显式将经纬度字符串转换为浮点数
+    const cityLat = parseFloat(selectedCity.lat);
+    const cityLng = parseFloat(selectedCity.lng);
 
-	// 根据经度计算时区偏移 (15度经度约等于1小时)
-	const timezoneOffsetHours = cityLng / 15;
-	
-	// 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“当地时间”，未考虑夏令时等复杂因素)
-	const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
+    // 根据经度计算时区偏移 (15度经度约等于1小时)
+    const timezoneOffsetHours = cityLng / 15;
+    
+    // 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“当地时间”，未考虑夏令时等复杂因素)
+    // localDate 内部存储的是一个 UTC 时间戳，其值是 utcDate + timezoneOffsetHours
+    const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
 
-	// 使用 astronomia 库计算太阳黄经
-	const T = (birthJD - 2451545.0) / 36525.0;
-	let solarLongitude = astronomia.solar.trueLongitude(T).lon * 180 / Math.PI;
-	solarLongitude = (solarLongitude % 360 + 360) % 360;
+    // 使用 astronomia 库计算太阳黄经
+    const T = (birthJD - 2451545.0) / 36525.0;
+    let solarLongitude = astronomia.solar.trueLongitude(T).lon * 180 / Math.PI;
+    solarLongitude = (solarLongitude % 360 + 360) % 360;
 
-	// 判断当前节气 (此处的节气是指24节气之一，不是八字月份的起始节气)
-	const currentSolarTerm = getSolarTermByLongitude(solarLongitude);
+    // 判断当前节气 (此处的节气是指24节气之一，不是八字月份的起始节气)
+    const currentSolarTerm = getSolarTermByLongitude(solarLongitude);
 
-	// --- 年柱计算逻辑 ---
-	// 查找当年立春的 Julian Day (立春黄经为 315 度)
-	let lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4); 
+    // --- 年柱计算逻辑 ---
+    // 查找当年立春的 Julian Day (立春黄经为 315 度)
+    let lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4); 
 
-	let baziYear;
-	// 比较出生时间 (UTC) 与立春时间 (UTC)
-	if (birthJD < lichunJDCurrentGregorianYear) {
-		// 如果出生时间在当年立春之前，则年柱为前一年的干支
-		baziYear = year - 1;
-	} else {
-		// 如果出生时间在当年立春或之后，则年柱为当年的干支
-		baziYear = year;
-	}
+    let baziYear;
+    // 比较出生时间 (UTC) 与立春时间 (UTC)
+    if (birthJD < lichunJDCurrentGregorianYear) {
+        // 如果出生时间在当年立春之前，则年柱为前一年的干支
+        baziYear = year - 1;
+    } else {
+        // 如果出生时间在当年立春或之后，则年柱为当年的干支
+        baziYear = year;
+    }
 
-	// 计算年柱干支
-	const yearGanZhi = getGanZhiForYear(baziYear);
-	// --- 年柱计算逻辑结束 ---
+    // 计算年柱干支
+    const yearGanZhi = getGanZhiForYear(baziYear);
+    // --- 年柱计算逻辑结束 ---
 
     // --- 月柱计算逻辑 ---
     const baziMonthJDs = getBaziMonthStartJDs(baziYear); // 获取八字年内的所有月起始节气JDs
@@ -305,27 +311,70 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const monthGanZhi = monthGan + monthBranch;
     // --- 月柱计算逻辑结束 ---
 
+    // --- 日柱计算逻辑 ---
+    // 参考点：1900年1月1日 00:00:00 UTC 是 甲戌日 (Sexagenary Index 10)
+    const referenceJD = astronomia.julian.DateToJD(new Date(Date.UTC(1900, 0, 1, 0, 0, 0)));
+    const referenceGanZhiIndex = 10; // 甲戌
 
-	// 显示结果
-	document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
-	document.getElementById('cityNameDisplay').textContent = selectedCity.name;
-	document.getElementById('countryCodeDisplay').textContent = selectedCity.country;
-	document.getElementById('latitudeDisplay').textContent = cityLat.toFixed(4);
-	document.getElementById('longitudeDisplay').textContent = cityLng.toFixed(4);
-	document.getElementById('timezoneOffsetDisplay').textContent = timezoneOffsetHours.toFixed(4);
-	document.getElementById('localTimeDisplay').textContent = localDate.toLocaleString('zh-CN', {
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit',
-		hour: '2-digit',
-		minute: '2-digit',
-		second: '2-digit',
-		hour12: false
-	});
-	document.getElementById('solarLongitude').textContent = solarLongitude.toFixed(4);
-	document.getElementById('solarTerm').textContent = currentSolarTerm;
-	document.getElementById('yearPillarDisplay').textContent = yearGanZhi; // 显示年柱
+    let effectiveDayForPillarDate = new Date(localDate); // 从当地出生时间开始判断
+    // 应用子时换日规则：如果当地时间 >= 23:00，则日柱属于下一个公历日
+    // 关键修正：使用 getUTCHours() 来获取 localDate 的小时部分，因为 localDate 内部存储的是 UTC 时间
+    if (effectiveDayForPillarDate.getUTCHours() >= 23) { 
+        effectiveDayForPillarDate.setUTCDate(effectiveDayForPillarDate.getUTCDate() + 1); // 将当地日期前进一天
+    }
+
+    // 获取用于计算日柱的有效公历日期的 00:00:00 UTC 对应的 Julian Day
+    const effectiveJDForDayPillarCalc = astronomia.julian.DateToJD(
+        new Date(Date.UTC(
+            effectiveDayForPillarDate.getUTCFullYear(), // 使用 UTC getter
+            effectiveDayForPillarDate.getUTCMonth(),
+            effectiveDayForPillarDate.getUTCDate(),
+            0, 0, 0
+        ))
+    );
+
+    // 计算从参考 Julian Day 到有效 Julian Day 的总天数差
+    const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD);
+    
+    // 根据天数差计算日柱的干支索引
+    let dayGanZhiIndex = (referenceGanZhiIndex + daysDifference) % 60;
+    if (dayGanZhiIndex < 0) {
+        dayGanZhiIndex += 60; // 确保索引为正数
+    }
+
+    const dayStemIndex = dayGanZhiIndex % 10;
+    const dayBranchIndex = dayGanZhiIndex % 12;
+    const dayGanZhi = heavenlyStems[dayStemIndex] + earthlyBranches[dayBranchIndex];
+    // --- 日柱计算逻辑结束 ---
+
+
+    // 显示结果
+    document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8'; // 填充原始输入UTC+8时间
+    document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC'; // 填充实际用于计算的UTC时间
+    document.getElementById('cityNameDisplay').textContent = selectedCity.name;
+    document.getElementById('countryCodeDisplay').textContent = selectedCity.country;
+    document.getElementById('latitudeDisplay').textContent = cityLat.toFixed(4);
+    document.getElementById('longitudeDisplay').textContent = cityLng.toFixed(4);
+    document.getElementById('timezoneOffsetDisplay').textContent = timezoneOffsetHours.toFixed(4);
+    
+    // 关键修正：使用 Intl.DateTimeFormat 配合 timeZone: 'UTC' 来显示 localDate 的实际计算值
+    const localTimeFormatter = new Intl.DateTimeFormat('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone: 'UTC' // 强制按照 UTC 来格式化 localDate 的内部时间戳
+    });
+    document.getElementById('localTimeDisplay').textContent = localTimeFormatter.format(localDate);
+
+    document.getElementById('solarLongitude').textContent = solarLongitude.toFixed(4);
+    document.getElementById('solarTerm').textContent = currentSolarTerm;
+    document.getElementById('yearPillarDisplay').textContent = yearGanZhi; // 显示年柱
     document.getElementById('monthPillarDisplay').textContent = monthGanZhi; // 显示月柱
-	
-	document.getElementById('result').style.display = 'block';
+    document.getElementById('dayPillarDisplay').textContent = dayGanZhi; // 显示日柱
+    
+    document.getElementById('result').style.display = 'block';
 });
