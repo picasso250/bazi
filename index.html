@@ -13,7 +13,7 @@
         <form id="combinedQueryForm">
             <fieldset>
                 <legend>输入时间 (UTC+8)</legend>
-                <div class="input-group time-inputs-group"> <!-- Added 'time-inputs-group' class -->
+                <div class="input-group time-inputs-group">
                     <div>
                         <label for="year">年份:</label>
                         <input type="number" id="year" value="1989" min="1900" max="2100" required>
@@ -34,18 +34,40 @@
                         <label for="minute">分钟:</label>
                         <input type="number" id="minute" value="5" min="0" max="59" required>
                     </div>
-                    <!-- REMOVED: The 'second' input field is removed as per request -->
                 </div>
             </fieldset>
 
             <fieldset>
-                <legend>基本信息</legend>
+                <legend>城市与基本信息</legend>
                 <div class="input-group full-width">
-                    <div>
-                        <label for="cityInput">城市名称 (例如: Shanghai):</label>
-                        <input type="text" id="cityInput" placeholder="请输入城市名称" value="Shanghai" required>
+                    <div class="radio-group-city-type">
+                        <input type="radio" id="cityType_domestic" name="cityType" value="domestic" checked>
+                        <label for="cityType_domestic">中国大陆城市</label>
+                        <input type="radio" id="cityType_overseas" name="cityType" value="overseas">
+                        <label for="cityType_overseas">海外及港澳台城市</label>
                     </div>
                 </div>
+
+                <!-- Domestic City Selection (Initially visible) -->
+                <div id="domesticCitySelection" class="input-group full-width city-select-group">
+                    <div>
+                        <label for="provinceSelect">省份/直辖市:</label>
+                        <select id="provinceSelect" required></select>
+                    </div>
+                    <div>
+                        <label for="cityCountySelect">城市/区县:</label>
+                        <select id="cityCountySelect" required></select>
+                    </div>
+                </div>
+
+                <!-- Overseas City Selection (Initially hidden) -->
+                <div id="overseasCitySelection" class="input-group full-width" style="display: none;">
+                    <div>
+                        <label for="cityInput">城市名称 (例如: Shanghai):</label>
+                        <input type="text" id="cityInput" placeholder="请输入城市名称" value="">
+                    </div>
+                </div>
+
                 <div class="input-group gender-select full-width">
                     <label>性别:</label>
                     <div class="radio-group-gender">
@@ -97,7 +119,6 @@
                 </div>
             </div>
 
-            <!-- 新增：大运和流年区域 -->
             <h3 style="margin-top: 30px;">大运与流年</h3>
             <p>大运方向: <strong id="grandCycleDirectionDisplay"></strong></p>
             <p>起运岁数: <strong id="grandCycleStartAgeDisplay"></strong></p>

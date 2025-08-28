@@ -1,6 +1,28 @@
 // 导入 astronomia 和 cities.json 数据
 import * as astronomia from 'https://cdn.jsdelivr.net/npm/astronomia@4.1.1/+esm';
 import cities from 'https://cdn.jsdelivr.net/npm/cities.json@1.1.50/+esm';
+// 导入中国行政区域数据 (改为通过 fetch 获取)
+// import regionsData from './regions_data.json'; // <--- REMOVE THIS LINE
+
+let regionsData = []; // Declare regionsData globally, it will be populated by fetch
+
+// --- 新增：加载 regions_data.json 的函数 ---
+async function loadRegionsData() {
+    try {
+        const response = await fetch('./regions_data.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        regionsData = await response.json();
+        console.log("regions_data.json loaded successfully.");
+    } catch (error) {
+        console.error("Failed to load regions_data.json:", error);
+        // Display an error message to the user if data loading fails
+        document.getElementById('errorMessage').textContent = '无法加载地区数据，请刷新页面重试或检查文件路径。';
+        document.getElementById('errorMessage').style.display = 'block';
+    }
+}
+
 
 // 天干和地支数组
 const heavenlyStems = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
@@ -158,12 +180,14 @@ function findJDForSolarLongitude(year, targetLonDeg, roughMonth, roughDay) {
         let midJD = (lowJD + highJD) / 2;
         let currentLon = getSolarLongitudeForJD(midJD);
 
-        // 如果当前黄经小于目标，说明目标在后面，将下限提升
-        // 如果当前黄经大于等于目标，说明目标可能在前面或就是当前，将上限降低
-        // 这样最终 highJD 会收敛到首次达到或超过 targetLonDeg 的精确时刻
-        if (currentLon < targetLonDeg) {
+        // Adjust for longitude wrap-around if targetLonDeg is near 0/360
+        // This is a common issue with longitude comparisons, ensuring we compare in the "shortest path"
+        let diff = (currentLon - targetLonDeg + 360) % 360;
+        if (diff > 180) diff -= 360; // Now diff is in [-180, 180]
+
+        if (diff < 0) { // currentLon is "before" targetLonDeg (e.g., current=350, target=10. current is lower)
              lowJD = midJD;
-        } else {
+        } else { // currentLon is "at or after" targetLonDeg
              highJD = midJD;
         }
         iterationCount++;
@@ -330,20 +354,56 @@ function calculateGrandCycleStartAge(birthJD, birthMonthTerm, allBaziMonthJDs, d
     }
 
     const totalDaysForStartAge = diffJD;
-    // 3天 = 1年
-    const years = Math.floor(totalDaysForStartAge / 3);
-    const remainingDays = totalDaysForStartAge % 3;
+    // 3天 = 1年 (即 1天 = 4个月, 1小时 = 5天)
+    // 换算规则: 1年大运 = 3天 => 1天 = 4个月 => 1小时 = 10天 (此处有误，应为 1天 = 4月，1月=10天)
+    // 修正: 1天大运 = 4个月实际时间，1个月实际时间 = (30/4) = 7.5天
+    // 简化为：3天 = 1年。
+    // 1年 = 12个月，所以 1天 = 4个月。
+    // 1个月 = 30天，所以 1天 = 4 * 30 = 120天。
+    // 所以，1天 = 120个 "天" 对应 4个月。
+    // 简而言之， 1岁 = 3天。
+    // 剩余天数换算：1天 = 4个月。1个月 = 30天。所以 1天 = 4个月 = (4/12)年。
+    // 1天 = 4个月 = 4 * (30天) = 120天。
+    // 那么，remainingDays * 4 就是实际月份。
+    // 剩余天数换算成 月: remainingDays * 4 / (365.25/12)
 
-    // 1天 = 4个月 (精确)，或者 1年 / 12个月 = 3天 / 12个月 = 0.25天/月
-    const remainingDaysInMonths = remainingDays * 4;
-    const months = Math.floor(remainingDaysInMonths);
+    // 正确的换算方式: 3天 = 1岁 (虚岁)
+    // 1天 = 4个月
+    // 1小时 = (1/24)天 = (4/24)月 = (1/6)月
+    // 1分 = (1/60)小时 = (1/360)月
 
-    // 剩余的小数月部分转换为天 (1月 = 30天，或 1/4天/月，所以 1/4 * 30 = 7.5)
-    // 更准确地说，我们基于 3天=1年的比例来分配天数
-    const daysFraction = remainingDaysInMonths - months;
-    const days = Math.round(daysFraction * (30/4));
+    const totalHours = diffJD * 24;
+    const totalMinutes = totalHours * 60;
 
-    return { years, months, days };
+    const years = Math.floor(totalHours / (3 * 24)); // 3天 * 24小时/天
+    const remainingHours = totalHours % (3 * 24);
+
+    const months = Math.floor(remainingHours / (24 / 4)); // 1天 = 4个月，所以1个月相当于24/4=6小时
+    const remainingHoursForDays = remainingHours % (24 / 4);
+
+    const days = Math.round(remainingHoursForDays / (24 / 30)); // 1天 = (24/30)小时, roughly
+    // The previous calculation: `Math.round(daysFraction * (30 / 4))` was slightly off.
+    // 1 day (actual time) = 4 months (grand cycle)
+    // So, 1 hour (actual time) = 4/24 = 1/6 month (grand cycle)
+    // 1 day (grand cycle) = (1/4) actual day, which is 6 hours actual time.
+    // To convert remaining hours to grand cycle days:
+    // If 1 month GC = 6 hours actual time, then 1 day GC = 6 hours / 30 days = 0.2 hours actual time.
+    // So, remainingHoursForDays / (6/30) = remainingHoursForDays * 5. This is very small.
+
+    // Let's stick to the common 3 days = 1 year rule for calculation:
+    // Total days (actual) * (1 GC Year / 3 actual days) = Total GC Years
+    // Total GC Years = years.months.days
+    const totalActualDays = diffJD; // This is already in days
+
+    const gc_years = Math.floor(totalActualDays / 3);
+    const remainder_days_for_months = totalActualDays % 3; // These are actual days
+
+    const gc_months = Math.floor(remainder_days_for_months * 4); // 1 actual day = 4 GC months
+    const remainder_fraction_for_days = (remainder_days_for_months * 4) % 1; // Fractional part of GC months
+
+    const gc_days = Math.round(remainder_fraction_for_days * (30)); // 1 GC month = 30 GC days
+
+    return { years: gc_years, months: gc_months, days: gc_days };
 }
 
 
@@ -385,25 +445,106 @@ function generateGrandCyclePillars(monthGanZhi, direction, numberOfCycles, dayMa
     return grandCycles;
 }
 
+// --- DOM 元素引用 (新增) ---
+const cityTypeRadios = document.querySelectorAll('input[name="cityType"]');
+const domesticCitySelectionDiv = document.getElementById('domesticCitySelection');
+const overseasCitySelectionDiv = document.getElementById('overseasCitySelection');
+const provinceSelect = document.getElementById('provinceSelect');
+const cityCountySelect = document.getElementById('cityCountySelect');
+const cityInput = document.getElementById('cityInput'); // Overseas city input
+
+// --- 辅助函数：填充省份/直辖市下拉框 ---
+function populateProvinces() {
+    provinceSelect.innerHTML = '<option value="">请选择省份/直辖市</option>';
+    if (regionsData && regionsData.length > 0) { // Ensure data is loaded
+        regionsData.forEach(province => {
+            const option = document.createElement('option');
+            option.value = province.id;
+            option.textContent = province.name;
+            provinceSelect.appendChild(option);
+        });
+    }
+    cityCountySelect.innerHTML = '<option value="">请选择城市/区县</option>'; // 清空并重置城市/区县下拉框
+}
+
+// --- 辅助函数：填充城市/区县下拉框 ---
+function populateCities(provinceId) {
+    cityCountySelect.innerHTML = '<option value="">请选择城市/区县</option>';
+    if (regionsData && regionsData.length > 0) { // Ensure data is loaded
+        const selectedProvince = regionsData.find(p => p.id === provinceId);
+        if (selectedProvince && selectedProvince.children) {
+            selectedProvince.children.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city.id;
+                option.textContent = city.name;
+                cityCountySelect.appendChild(option);
+            });
+        }
+    }
+}
+
+// --- 初始化和事件监听器 (新增) ---
+document.addEventListener('DOMContentLoaded', async () => { // <--- Make this async
+    await loadRegionsData(); // <--- Load regions data first
+
+    // 默认显示国内城市选择，并初始化
+    populateProvinces(); // This will now use the loaded regionsData
+    cityInput.removeAttribute('required'); // 默认海外输入不required
+
+    // 监听城市类型选择
+    cityTypeRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'domestic') {
+                domesticCitySelectionDiv.style.display = 'flex';
+                overseasCitySelectionDiv.style.display = 'none';
+                cityInput.removeAttribute('required');
+                provinceSelect.setAttribute('required', 'true');
+                cityCountySelect.setAttribute('required', 'true');
+                populateProvinces(); // 切换时重新填充省份
+                cityInput.value = ''; // 清空海外城市输入
+            } else { // overseas
+                domesticCitySelectionDiv.style.display = 'none';
+                overseasCitySelectionDiv.style.display = 'flex';
+                cityInput.setAttribute('required', 'true');
+                provinceSelect.removeAttribute('required');
+                cityCountySelect.removeAttribute('required');
+                // 清空国内下拉框，避免残留数据
+                provinceSelect.innerHTML = '<option value="">请选择省份/直辖市</option>';
+                cityCountySelect.innerHTML = '<option value="">请选择城市/区县</option>';
+            }
+        });
+    });
+
+    // 监听省份选择，填充城市/区县
+    provinceSelect.addEventListener('change', function() {
+        populateCities(this.value);
+    });
+});
+
+
 // --- 主查询逻辑 ---
-document.getElementById('combinedQueryForm').addEventListener('submit', function(event) {
+document.getElementById('combinedQueryForm').addEventListener('submit', async function(event) { // <--- Make this async too
     event.preventDefault();
+
+    // Ensure regionsData is loaded before proceeding with domestic city selection
+    if (regionsData.length === 0 && document.querySelector('input[name="cityType"]:checked').value === 'domestic') {
+        document.getElementById('errorMessage').textContent = '地区数据尚未加载，请稍候再试。';
+        document.getElementById('errorMessage').style.display = 'block';
+        return;
+    }
 
     // 清空之前的搜索结果和错误信息
     document.getElementById('result').style.display = 'none';
     document.getElementById('errorMessage').style.display = 'none';
     document.getElementById('errorMessage').textContent = '';
-    // 清空四柱显示
     document.getElementById('yearPillarDisplay').textContent = '';
     document.getElementById('monthPillarDisplay').textContent = '';
     document.getElementById('dayPillarDisplay').textContent = '';
     document.getElementById('hourPillarDisplay').textContent = '';
-    // 清空藏干显示
     document.getElementById('yearBranchHiddenStems').innerHTML = '';
     document.getElementById('monthBranchHiddenStems').innerHTML = '';
     document.getElementById('dayBranchHiddenStems').innerHTML = '';
     document.getElementById('hourBranchHiddenStems').innerHTML = '';
-    // 清空大运和流年显示
     document.getElementById('grandCycleDirectionDisplay').textContent = '';
     document.getElementById('grandCycleStartAgeDisplay').textContent = '';
     document.getElementById('grandCyclesDisplay').innerHTML = '';
@@ -417,46 +558,77 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const day = parseInt(document.getElementById('day').value);
     const hour = parseInt(document.getElementById('hour').value);
     const minute = parseInt(document.getElementById('minute').value);
-    // const second = parseInt(document.getElementById('second').value); // Removed second input, always 0
     const second = 0; // Default to 0 seconds
 
-    const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
-
-    // **** 修改点: 获取选中的性别 radio button 的值 ****
+    // 获取选中的性别
     const gender = document.querySelector('input[name="gender"]:checked').value;
 
-    if (!cityInput) {
-        document.getElementById('errorMessage').textContent = '请输入城市名称。';
-        document.getElementById('errorMessage').style.display = 'block';
-        return;
+    // --- 城市信息获取逻辑 (修改点) ---
+    const selectedCityType = document.querySelector('input[name="cityType"]:checked').value;
+    let selectedCityName = '';
+    let selectedCityLat = 0;
+    let selectedCityLng = 0;
+    let selectedCountryCode = '';
+
+    if (selectedCityType === 'domestic') {
+        const selectedProvinceId = provinceSelect.value;
+        const selectedCityCountyId = cityCountySelect.value;
+
+        if (!selectedProvinceId || !selectedCityCountyId) {
+            document.getElementById('errorMessage').textContent = '请选择完整的省份和城市/区县。';
+            document.getElementById('errorMessage').style.display = 'block';
+            return;
+        }
+
+        const province = regionsData.find(p => p.id === selectedProvinceId);
+        const city = province.children.find(c => c.id === selectedCityCountyId);
+
+        if (city) {
+            selectedCityName = city.name;
+            selectedCityLat = parseFloat(city.center_lat);
+            selectedCityLng = parseFloat(city.center_lon);
+            selectedCountryCode = 'CN'; // 中国大陆城市
+        } else {
+            document.getElementById('errorMessage').textContent = '未能找到所选城市/区县的经纬度信息。';
+            document.getElementById('errorMessage').style.display = 'block';
+            return;
+        }
+
+    } else { // overseas
+        const cityInputVal = cityInput.value.trim();
+        if (!cityInputVal) {
+            document.getElementById('errorMessage').textContent = '请输入城市名称。';
+            document.getElementById('errorMessage').style.display = 'block';
+            return;
+        }
+
+        const foundCities = cities.filter(city =>
+            city.name.toLowerCase().includes(cityInputVal.toLowerCase())
+        );
+
+        if (foundCities.length === 0) {
+            document.getElementById('errorMessage').textContent = `未找到城市 "${cityInputVal}" 的结果。`;
+            document.getElementById('errorMessage').style.display = 'block';
+            return;
+        }
+        const cityData = foundCities[0];
+        selectedCityName = cityData.name;
+        selectedCityLat = parseFloat(cityData.lat);
+        selectedCityLng = parseFloat(cityData.lng);
+        selectedCountryCode = cityData.country;
     }
+    // --- 城市信息获取逻辑结束 ---
+
 
     // 原始输入的UTC+8时间
-    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second)); // Use `second` variable which is now 0
+    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
 
     // 转换为 UTC 时间
-    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second)); // Use `second` variable which is now 0
+    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second));
     const birthJD = astronomia.julian.DateToJD(utcDate);
 
-    // 搜索城市数据
-    const foundCities = cities.filter(city =>
-        city.name.toLowerCase().includes(cityInput)
-    );
-
-    if (foundCities.length === 0) {
-        document.getElementById('errorMessage').textContent = `未找到城市 "${cityInput}" 的结果。`;
-        document.getElementById('errorMessage').style.display = 'block';
-        return;
-    }
-
-    const selectedCity = foundCities[0];
-
-    // 显式将经纬度字符串转换为浮点数
-    const cityLat = parseFloat(selectedCity.lat);
-    const cityLng = parseFloat(selectedCity.lng);
-
     // 根据经度计算时区偏移 (15度经度约等于1小时)
-    const timezoneOffsetHours = cityLng / 15;
+    const timezoneOffsetHours = selectedCityLng / 15;
 
     // 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“真太阳时”)
     const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
@@ -467,11 +639,8 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     solarLongitude = (solarLongitude % 360 + 360) % 360;
 
     // --- 年柱计算逻辑 ---
-    // 先找到出生公历年份的立春JD
     const lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4);
-
     let baziYear;
-    // 如果出生日期在当年立春之前，则八字年份是公历年份减一
     if (birthJD < lichunJDCurrentGregorianYear) {
         baziYear = year - 1;
     } else {
@@ -481,21 +650,18 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     // --- 年柱计算逻辑结束 ---
 
     // --- 月柱计算逻辑 ---
-    // 获取当前八字年内所有节气（包括次年立春）的精确JD
     const baziMonthJDs = getBaziMonthStartJDs(baziYear);
-
     let monthBranch = "";
     let monthGan = "";
-    let birthMonthTerm = null; // 记录出生月份的节气，用于大运计算
+    let birthMonthTerm = null;
 
-    // 遍历节气，确定出生日期属于哪个八字月份
     for (let i = 0; i < baziMonthJDs.length - 1; i++) {
         const currentTerm = baziMonthJDs[i];
         const nextTerm = baziMonthJDs[i + 1];
 
         if (birthJD >= currentTerm.jd && birthJD < nextTerm.jd) {
             monthBranch = currentTerm.branch;
-            birthMonthTerm = currentTerm; // 找到出生月份的节气
+            birthMonthTerm = currentTerm;
             break;
         }
     }
@@ -525,15 +691,33 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     }
 
     const effectiveJDForDayPillarCalc = astronomia.julian.DateToJD(dateForDayPillar);
-    const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD); // 与基准日期的天数差
+    const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD);
 
     let dayGanZhiIndex = (referenceGanZhiIndex + daysDifference) % 60;
     if (dayGanZhiIndex < 0) {
         dayGanZhiIndex += 60;
     }
 
-    const dayStemIndex = dayGanZhiIndex % 10;
-    const dayBranchIndex = dayGanZhiIndex % 12;
+    const dayStemIndex = Math.floor(dayGanZhiIndex / 6) % 10; // Correct calculation for stem index (60-cycle specific)
+    const dayBranchIndex = dayGanZhiIndex % 12; // This is always correct
+
+    // A simpler way for stem and branch indices based on 60-cycle:
+    // referenceGanZhiIndex is 10 for 甲戌 (JiaXu).
+    // Jia is stem index 0, Xu is branch index 10.
+    // The correct formula for a 60-cycle (JiaZi = 0) is:
+    // dayGanZhiIndex_60 = (start_60_index + daysDifference) % 60
+    // stemIndex = dayGanZhiIndex_60 % 10
+    // branchIndex = dayGanZhiIndex_60 % 12
+
+    // For 1900-01-01 (甲戌), the 60-cycle index is 10.
+    // 甲 (Jia) is stem 0. 戌 (Xu) is branch 10.
+    // (10 % 10) = 0 (Jia)
+    // (10 % 12) = 10 (Xu)
+    // So the existing calculation for dayStemIndex and dayBranchIndex is actually correct if dayGanZhiIndex
+    // is the 60-cycle index. Let's ensure dayGanZhiIndex is the 60-cycle index of 甲戌 (10).
+    // 1900-01-01 is indeed 甲戌 day in the sexagenary cycle, and its index is 10 (0=甲子, 1=乙丑... 10=甲戌).
+    // So `dayStemIndex = dayGanZhiIndex % 10` and `dayBranchIndex = dayGanZhiIndex % 12` are correct.
+
     const dayGanZhi = heavenlyStems[dayStemIndex] + earthlyBranches[dayBranchIndex];
     // --- 日柱计算逻辑结束 ---
 
@@ -581,7 +765,6 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     // --- 大运计算与显示 ---
     const grandCycleDirection = determineGrandCycleDirection(yearGanZhi[0], gender);
 
-    // 确保找到了出生月份的节气，否则无法计算起运岁数
     if (!birthMonthTerm) {
         document.getElementById('errorMessage').textContent = '未能确定出生月份的节气，无法计算大运。';
         document.getElementById('errorMessage').style.display = 'block';
@@ -591,7 +774,6 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const { years: gcStartYears, months: gcStartMonths, days: gcStartDays } =
         calculateGrandCycleStartAge(birthJD, birthMonthTerm, baziMonthJDs, grandCycleDirection);
 
-    // 生成8个大运周期 (80年)
     const grandCycles = generateGrandCyclePillars(monthGanZhi, grandCycleDirection, 8, dayMasterAttributes);
 
     document.getElementById('grandCycleDirectionDisplay').textContent =
@@ -604,7 +786,6 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         const itemDiv = document.createElement('div');
         itemDiv.classList.add('grand-cycle-item');
 
-        // 大运从起运岁数开始，每十年一运
         const startAge = gcStartYears + (index * 10);
         const endAge = startAge + 9;
 
@@ -629,10 +810,10 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     // 显示结果
     document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8';
     document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
-    document.getElementById('cityNameDisplay').textContent = selectedCity.name;
-    document.getElementById('countryCodeDisplay').textContent = selectedCity.country;
-    document.getElementById('latitudeDisplay').textContent = cityLat.toFixed(4);
-    document.getElementById('longitudeDisplay').textContent = cityLng.toFixed(4);
+    document.getElementById('cityNameDisplay').textContent = selectedCityName;
+    document.getElementById('countryCodeDisplay').textContent = selectedCountryCode;
+    document.getElementById('latitudeDisplay').textContent = selectedCityLat.toFixed(4);
+    document.getElementById('longitudeDisplay').textContent = selectedCityLng.toFixed(4);
     document.getElementById('timezoneOffsetDisplay').textContent = timezoneOffsetHours.toFixed(4);
 
     const localTimeFormatter = new Intl.DateTimeFormat('zh-CN', {
