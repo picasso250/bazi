@@ -22,7 +22,7 @@ const baziMonthDefs = [
     { name: "小寒", longitude: 285, branch: "丑", roughMonth: 1, roughDay: 6 }  // Start of 丑月 (Gregorian next year's Jan)
 ];
 
-// --- 新增：天干五行和阴阳属性映射 ---
+// --- 天干五行和阴阳属性映射 ---
 const stemAttributes = {
     "甲": { element: "木", yinYang: "阳" },
     "乙": { element: "木", yinYang: "阴" },
@@ -36,8 +36,7 @@ const stemAttributes = {
     "癸": { element: "水", yinYang: "阴" },
 };
 
-// --- 新增：地支藏干映射表 ---
-// 每个地支对应一个藏干天干数组
+// --- 地支藏干映射表 ---
 const earthlyBranchHiddenStems = {
     "子": ["癸"],
     "丑": ["己", "癸", "辛"],
@@ -53,24 +52,9 @@ const earthlyBranchHiddenStems = {
     "亥": ["壬", "甲"],
 };
 
-// --- 新增：五行相生相克规则 ---
-// key 生 value
-const produces = {
-    "木": "火",
-    "火": "土",
-    "土": "金",
-    "金": "水",
-    "水": "木",
-};
-
-// key 克 value
-const controls = {
-    "木": "土",
-    "火": "金",
-    "土": "水",
-    "金": "木",
-    "水": "火",
-};
+// --- 五行相生相克规则 ---
+const produces = { "木": "火", "火": "土", "土": "金", "金": "水", "水": "木" };
+const controls = { "木": "土", "火": "金", "土": "水", "金": "木", "水": "火" };
 
 /**
  * 根据日元属性和目标天干属性，计算目标天干的十神。
@@ -79,40 +63,35 @@ const controls = {
  * @returns {string} 对应的十神名称。
  */
 function getTenGod(dayMasterAttr, targetStemAttr) {
-    if (!dayMasterAttr || !targetStemAttr) return ""; // 防御性编程
+    if (!dayMasterAttr || !targetStemAttr) return "";
 
     const myElement = dayMasterAttr.element;
     const myYinYang = dayMasterAttr.yinYang;
     const targetElement = targetStemAttr.element;
     const targetYinYang = targetStemAttr.yinYang;
 
-    // 与我同类 (比肩/劫财)
+    // 比劫 (同我)
     if (myElement === targetElement) {
         return myYinYang === targetYinYang ? "比肩" : "劫财";
     }
-
-    // 我生出 (食神/伤官)
+    // 食伤 (我生)
     if (produces[myElement] === targetElement) {
         return myYinYang === targetYinYang ? "食神" : "伤官";
     }
-
-    // 我克制 (正财/偏财)
+    // 财星 (我克)
     if (controls[myElement] === targetElement) {
-        return myYinYang === targetYinYang ? "偏财" : "正财"; // 我克者为财，同性偏财，异性正财
+        return myYinYang === targetYinYang ? "偏财" : "正财";
     }
-
-    // 克制我 (正官/偏官)
-    // 关键修改在这里：将“偏官”显示为“偏官 (七杀)”
+    // 官杀 (克我)
     if (controls[targetElement] === myElement) {
-        return myYinYang === targetYinYang ? "偏官 (七杀)" : "正官"; // 克我者为官杀，同性偏官(七杀)，异性正官
+        return myYinYang === targetYinYang ? "偏官(七杀)" : "正官";
     }
-
-    // 生扶我 (正印/偏印)
+    // 印枭 (生我)
     if (produces[targetElement] === myElement) {
-        return myYinYang === targetYinYang ? "偏印" : "正印"; // 生我者为印枭，同性偏印，异性正印
+        return myYinYang === targetYinYang ? "偏印" : "正印";
     }
 
-    return "未知"; // 理论上不会发生，除非数据有误
+    return "未知";
 }
 
 /**
@@ -124,7 +103,6 @@ function getHiddenStems(earthlyBranch) {
     return earthlyBranchHiddenStems[earthlyBranch] || [];
 }
 
-
 /**
  * 根据公历年份计算其对应的天干地支。
  * 参照 1900 年为庚子年。
@@ -132,9 +110,6 @@ function getHiddenStems(earthlyBranch) {
  * @returns {string} 该年份的干支字符串。
  */
 function getGanZhiForYear(year) {
-    // 1900 年是庚子年
-    // 庚 (Geng) 是天干的第 7 位 (索引 6)
-    // 子 (Zi) 是地支的第 1 位 (索引 0)
     const startYear = 1900;
     const startStemIndex = 6; // 庚
     const startBranchIndex = 0; // 子
@@ -161,7 +136,6 @@ function getSolarLongitudeForJD(jd) {
 
 /**
  * 使用二分查找法，精确计算给定年份内太阳黄经达到目标度数时的 Julian Day。
- * 用于查找节气交接时间，例如立春（黄经 315 度）。
  * @param {number} year - 公历年份。
  * @param {number} targetLonDeg - 目标太阳黄经（0-360 度）。
  * @param {number} roughMonth - 目标节气大致所在的月份（1-12）。
@@ -169,34 +143,32 @@ function getSolarLongitudeForJD(jd) {
  * @returns {number} Julian Day，表示达到目标黄经的精确时刻。
  */
 function findJDForSolarLongitude(year, targetLonDeg, roughMonth, roughDay) {
-    // 定义一个围绕粗略日期的搜索窗口，例如立春通常在2月3-5日，我们设定1月20日到2月20日。
-    // 使用 UTC 时间，因为 astronomia 库的计算基于此
     let searchStart = new Date(Date.UTC(year, roughMonth - 1, roughDay - 15, 0, 0, 0));
     let searchEnd = new Date(Date.UTC(year, roughMonth - 1, roughDay + 15, 23, 59, 59));
 
     let lowJD = astronomia.julian.DateToJD(searchStart);
     let highJD = astronomia.julian.DateToJD(searchEnd);
 
-    // 设置一个足够小的容忍度，例如 1/86400 Julian Day (1秒)
-    const toleranceJD = 1 / (24 * 60 * 60);
+    const toleranceJD = 1 / (24 * 60 * 60); // 1秒的 Julian Day 精度
 
     let iterationCount = 0;
-    const maxIterations = 100; // 防止无限循环
+    const maxIterations = 100;
 
     while (highJD - lowJD > toleranceJD && iterationCount < maxIterations) {
         let midJD = (lowJD + highJD) / 2;
         let currentLon = getSolarLongitudeForJD(midJD);
 
-        // 如果 solarLon 随时间单调递增，且我们寻找首次达到或超过 targetLonDeg 的点
+        // 如果当前黄经小于目标，说明目标在后面，将下限提升
+        // 如果当前黄经大于等于目标，说明目标可能在前面或就是当前，将上限降低
+        // 这样最终 highJD 会收敛到首次达到或超过 targetLonDeg 的精确时刻
         if (currentLon < targetLonDeg) {
              lowJD = midJD;
         } else {
              highJD = midJD;
         }
-
         iterationCount++;
     }
-    return highJD; // 返回高边界，它更接近实际时刻（或者说，是黄经首次达到或超过目标值的点）
+    return highJD;
 }
 
 /**
@@ -217,14 +189,14 @@ function getBaziMonthStartJDs(baziYear) {
         const term = baziMonthDefs[i];
         let searchGregorianYear = baziYear;
         // 小寒 (丑月) 通常发生在公历的下一年1月份
-        if (term.name === "小寒") { 
+        if (term.name === "小寒") {
             searchGregorianYear = baziYear + 1;
         }
         let jd = findJDForSolarLongitude(searchGregorianYear, term.longitude, term.roughMonth, term.roughDay);
         jdsForBaziYearMonths.push({ ...term, jd });
     }
 
-    // 3. 添加次年立春的JD，作为最后一个八字月 (丑月) 的结束边界
+    // 3. 添加次年立春的JD，作为最后一个八字月 (丑月) 的结束边界，也用于大运计算
     const actualLichunJD_next = findJDForSolarLongitude(baziYear + 1, baziMonthDefs[0].longitude, baziMonthDefs[0].roughMonth, baziMonthDefs[0].roughDay);
     jdsForBaziYearMonths.push({ name: "次年立春", longitude: baziMonthDefs[0].longitude, branch: baziMonthDefs[0].branch, jd: actualLichunJD_next });
 
@@ -233,7 +205,6 @@ function getBaziMonthStartJDs(baziYear) {
 
 /**
  * 根据年干和月地支，计算月干。
- * 使用五虎遁月歌诀。
  * @param {string} yearStem - 年干 (e.g., "甲", "乙")。
  * @param {string} monthBranch - 月地支 (e.g., "寅", "卯")。
  * @returns {string} 月干。
@@ -241,28 +212,23 @@ function getBaziMonthStartJDs(baziYear) {
 function getStemForMonth(yearStem, monthBranch) {
     const yearStemIndex = heavenlyStems.indexOf(yearStem);
 
-    // 根据年干确定寅月的天干 (五虎遁月歌诀)
-    let yinMonthStemIndex;
-    if (yearStemIndex === heavenlyStems.indexOf("甲") || yearStemIndex === heavenlyStems.indexOf("己")) {
-        yinMonthStemIndex = heavenlyStems.indexOf("丙"); // 甲己之年丙作首
-    } else if (yearStemIndex === heavenlyStems.indexOf("乙") || yearStemIndex === heavenlyStems.indexOf("庚")) {
-        yinMonthStemIndex = heavenlyStems.indexOf("戊"); // 乙庚之岁戊为头
-    } else if (yearStemIndex === heavenlyStems.indexOf("丙") || yearStemIndex === heavenlyStems.indexOf("辛")) {
-        yinMonthStemIndex = heavenlyStems.indexOf("庚"); // 丙辛之岁寻庚上
-    } else if (yearStemIndex === heavenlyStems.indexOf("丁") || yearStemIndex === heavenlyStems.indexOf("壬")) {
-        yinMonthStemIndex = heavenlyStems.indexOf("壬"); // 丁壬壬位顺水流
-    } else { // 戊 or 癸
-        yinMonthStemIndex = heavenlyStems.indexOf("甲"); // 戊癸之年甲寅居
+    let yinMonthStemIndex; // 寅月的天干索引
+    if (yearStemIndex === 0 || yearStemIndex === 5) { // 甲或己
+        yinMonthStemIndex = 2; // 丙
+    } else if (yearStemIndex === 1 || yearStemIndex === 6) { // 乙或庚
+        yinMonthStemIndex = 4; // 戊
+    } else if (yearStemIndex === 2 || yearStemIndex === 7) { // 丙或辛
+        yinMonthStemIndex = 6; // 庚
+    } else if (yearStemIndex === 3 || yearStemIndex === 8) { // 丁或壬
+        yinMonthStemIndex = 8; // 壬
+    } else { // 戊或癸
+        yinMonthStemIndex = 0; // 甲
     }
 
-    // 获取月地支和寅地支在 earthlyBranches 数组中的实际索引
     const monthBranchActualIndex = earthlyBranches.indexOf(monthBranch);
     const yinBranchActualIndex = earthlyBranches.indexOf("寅");
 
-    // 计算月地支相对于寅月地支的偏移量 (0-11)
     const offset = (monthBranchActualIndex - yinBranchActualIndex + 12) % 12;
-
-    // 计算最终的月干索引
     const monthStemIndex = (yinMonthStemIndex + offset) % 10;
 
     return heavenlyStems[monthStemIndex];
@@ -286,12 +252,11 @@ function getBranchForHour(localHour) {
     if (localHour >= 17 && localHour < 19) return "酉";
     if (localHour >= 19 && localHour < 21) return "戌";
     if (localHour >= 21 && localHour < 23) return "亥";
-    return ""; // Should not happen with valid hour input
+    return "";
 }
 
 /**
  * 根据日干和时支，计算时干。
- * 使用五鼠遁时歌诀。
  * @param {string} dayStem - 日干 (e.g., "甲", "乙")。
  * @param {string} hourBranch - 时地支 (e.g., "子", "丑")。
  * @returns {string} 时干。
@@ -299,34 +264,127 @@ function getBranchForHour(localHour) {
 function getStemForHour(dayStem, hourBranch) {
     const dayStemIndex = heavenlyStems.indexOf(dayStem);
 
-    // 根据日干确定子时 (Zi hour) 的天干 (五鼠遁时歌诀)
-    let ziHourStemIndex;
-    if (dayStemIndex === heavenlyStems.indexOf("甲") || dayStemIndex === heavenlyStems.indexOf("己")) {
-        ziHourStemIndex = heavenlyStems.indexOf("甲"); // 甲己还加甲
-    } else if (dayStemIndex === heavenlyStems.indexOf("乙") || dayStemIndex === heavenlyStems.indexOf("庚")) {
-        ziHourStemIndex = heavenlyStems.indexOf("丙"); // 乙庚丙作初
-    } else if (dayStemIndex === heavenlyStems.indexOf("丙") || dayStemIndex === heavenlyStems.indexOf("辛")) {
-        ziHourStemIndex = heavenlyStems.indexOf("戊"); // 丙辛从戊起
-    } else if (dayStemIndex === heavenlyStems.indexOf("丁") || dayStemIndex === heavenlyStems.indexOf("壬")) {
-        ziHourStemIndex = heavenlyStems.indexOf("庚"); // 丁壬庚子居
-    } else { // 戊 or 癸
-        ziHourStemIndex = heavenlyStems.indexOf("壬"); // 戊癸何方发 (壬子居)
+    let ziHourStemIndex; // 子时的天干索引
+    if (dayStemIndex === 0 || dayStemIndex === 5) { // 甲或己
+        ziHourStemIndex = 0; // 甲
+    } else if (dayStemIndex === 1 || dayStemIndex === 6) { // 乙或庚
+        ziHourStemIndex = 2; // 丙
+    } else if (dayStemIndex === 2 || dayStemIndex === 7) { // 丙或辛
+        ziHourStemIndex = 4; // 戊
+    } else if (dayStemIndex === 3 || dayStemIndex === 8) { // 丁或壬
+        ziHourStemIndex = 6; // 庚
+    } else { // 戊或癸
+        ziHourStemIndex = 8; // 壬
     }
 
-    // 获取时地支和子地支在 earthlyBranches 数组中的实际索引
     const hourBranchActualIndex = earthlyBranches.indexOf(hourBranch);
     const ziBranchActualIndex = earthlyBranches.indexOf("子");
 
-    // 计算时地支相对于子时地支的偏移量 (0-11)
     const offset = (hourBranchActualIndex - ziBranchActualIndex + 12) % 12;
-
-    // 计算最终的时干索引
     const hourStemIndex = (ziHourStemIndex + offset) % 10;
 
     return heavenlyStems[hourStemIndex];
 }
 
+// --- 新增：大运计算相关函数 ---
 
+/**
+ * 根据年干和性别，确定大运的顺逆行方向。
+ * @param {string} yearStem - 年柱天干。
+ * @param {string} gender - 性别 ('male' 或 'female')。
+ * @returns {'forward' | 'backward'} 大运方向。
+ */
+function determineGrandCycleDirection(yearStem, gender) {
+    const yearStemAttr = stemAttributes[yearStem];
+    const isYearStemYang = yearStemAttr.yinYang === "阳";
+
+    if (gender === "male") {
+        return isYearStemYang ? "forward" : "backward";
+    } else { // female
+        return isYearStemYang ? "backward" : "forward";
+    }
+}
+
+/**
+ * 计算大运起运岁数。
+ * @param {number} birthJD - 出生时刻的 Julian Day。
+ * @param {object} birthMonthTerm - 出生月柱起始节气的对象 (包含 jd)。
+ * @param {Array<object>} allBaziMonthJDs - 包含出生八字年所有节气（以及次年立春）的数组。
+ * @param {'forward' | 'backward'} direction - 大运方向。
+ * @returns {{ years: number, months: number, days: number }} 起运岁数。
+ */
+function calculateGrandCycleStartAge(birthJD, birthMonthTerm, allBaziMonthJDs, direction) {
+    let diffJD; // Julian Day 差
+
+    if (direction === "forward") {
+        // 顺行：从出生日期到下一个节气的时间
+        let nextTerm = allBaziMonthJDs.find(term => term.jd > birthJD);
+        if (!nextTerm) {
+            console.error("未能找到下一个节气用于大运顺行计算。");
+            return { years: 0, months: 0, days: 0 }; // 防御性返回
+        }
+        diffJD = nextTerm.jd - birthJD;
+    } else { // backward
+        // 逆行：从出生日期到上一个节气（即出生月柱的起始节气）的时间
+        diffJD = birthJD - birthMonthTerm.jd;
+    }
+
+    const totalDaysForStartAge = diffJD;
+    const years = Math.floor(totalDaysForStartAge / 3);
+    const remainingDays = totalDaysForStartAge % 3;
+    const months = Math.floor(remainingDays * 4); // 3天=1年=12个月，所以1天=4个月
+    // 计算剩余天数转换为月后，再将月的零头转为天，这里使用30天为1个月的近似值
+    const days = Math.round((remainingDays * 4 - months) * (30/4)); // 剩余部分乘30/4得到天数
+    // 例如：0.5天 * 4 = 2个月。 2个月 - Math.floor(2个月) = 0。 0 * (30/4) = 0天。
+    // 例如：0.25天 * 4 = 1个月。 1个月 - Math.floor(1个月) = 0。 0 * (30/4) = 0天。
+    // 例如：0.75天 * 4 = 3个月。 3个月 - Math.floor(3个月) = 0。 0 * (30/4) = 0天。
+    // 似乎这部分计算days有误。正确的逻辑应该是：
+    // remainingDays 是 0, 1, 2。
+    // 如果 remainingDays 是 1，就是 4个月。
+    // 如果 remainingDays 是 2，就是 8个月。
+    // 如果要更精确到天，那么 1天 = 4个月 = 120天。
+    // 3天 = 1年。那么 1天 = 1/3 年。
+    // 所以 days = Math.round((totalDaysForStartAge - years * 3 - months / 4) * 30); 这种方式更精确
+
+    // 简化为只显示年和月，天数部分可以忽略或四舍五入到月
+    // 1天 = 4个月，所以0.5天=2个月。如果 days > 0.5，可以算1个月。
+    let finalMonths = months;
+    let finalDays = Math.round((remainingDays * 4 - finalMonths) * 30); // 剩余的月小数部分转天
+
+    return { years, months: finalMonths, days: finalDays };
+}
+
+
+/**
+ * 生成一系列大运干支。
+ * @param {string} monthGanZhi - 月柱的干支。
+ * @param {'forward' | 'backward'} direction - 大运方向。
+ * @param {number} numberOfCycles - 要生成的周期数量（通常是8-10个）。
+ * @param {object} dayMasterAttributes - 日元的五行和阴阳属性，用于计算十神。
+ * @returns {Array<{ ganZhi: string, tenGod: string }>} 大运列表。
+ */
+function generateGrandCyclePillars(monthGanZhi, direction, numberOfCycles, dayMasterAttributes) {
+    const grandCycles = [];
+    let currentStemIndex = heavenlyStems.indexOf(monthGanZhi[0]);
+    let currentBranchIndex = earthlyBranches.indexOf(monthGanZhi[1]);
+
+    for (let i = 0; i < numberOfCycles; i++) {
+        const ganZhi = heavenlyStems[currentStemIndex] + earthlyBranches[currentBranchIndex];
+        const tenGod = getTenGod(dayMasterAttributes, stemAttributes[heavenlyStems[currentStemIndex]]);
+        grandCycles.push({ ganZhi, tenGod });
+
+        if (direction === "forward") {
+            currentStemIndex = (currentStemIndex + 1) % 10;
+            currentBranchIndex = (currentBranchIndex + 1) % 12;
+        } else { // backward
+            currentStemIndex = (currentStemIndex - 1 + 10) % 10;
+            currentBranchIndex = (currentBranchIndex - 1 + 12) % 12;
+        }
+    }
+    return grandCycles;
+}
+
+// --- 主查询逻辑 ---
 document.getElementById('combinedQueryForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -344,6 +402,12 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     document.getElementById('monthBranchHiddenStems').innerHTML = '';
     document.getElementById('dayBranchHiddenStems').innerHTML = '';
     document.getElementById('hourBranchHiddenStems').innerHTML = '';
+    // 清空大运和流年显示
+    document.getElementById('grandCycleDirectionDisplay').textContent = '';
+    document.getElementById('grandCycleStartAgeDisplay').textContent = '';
+    document.getElementById('grandCyclesDisplay').innerHTML = '';
+    document.getElementById('currentGregorianYearDisplay').textContent = '';
+    document.getElementById('currentYearPillarDisplay').textContent = '';
 
 
     // 获取 UTC+8 日期/时间输入
@@ -355,7 +419,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     const second = parseInt(document.getElementById('second').value);
 
     const cityInput = document.getElementById('cityInput').value.trim().toLowerCase();
-    const gender = document.getElementById('gender').value; // <-- 新增：获取性别输入
+    const gender = document.getElementById('gender').value;
 
     if (!cityInput) {
         document.getElementById('errorMessage').textContent = '请输入城市名称。';
@@ -364,11 +428,11 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     }
 
     // 原始输入的UTC+8时间
-    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second)); 
+    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
 
-    // 组合成一个 Date 对象（UTC时间）
-    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second)); 
-    const birthJD = astronomia.julian.DateToJD(utcDate); 
+    // 转换为 UTC 时间
+    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second));
+    const birthJD = astronomia.julian.DateToJD(utcDate);
 
     // 搜索城市数据
     const foundCities = cities.filter(city =>
@@ -381,7 +445,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         return;
     }
 
-    const selectedCity = foundCities[0]; 
+    const selectedCity = foundCities[0];
 
     // 显式将经纬度字符串转换为浮点数
     const cityLat = parseFloat(selectedCity.lat);
@@ -389,7 +453,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
 
     // 根据经度计算时区偏移 (15度经度约等于1小时)
     const timezoneOffsetHours = cityLng / 15;
-    
+
     // 将 UTC 时间转换为当地时间 (这里是根据经度粗略计算的“真太阳时”)
     const localDate = new Date(utcDate.getTime() + timezoneOffsetHours * 3600 * 1000);
 
@@ -399,9 +463,11 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     solarLongitude = (solarLongitude % 360 + 360) % 360;
 
     // --- 年柱计算逻辑 ---
-    let lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4); 
+    // 先找到出生公历年份的立春JD
+    const lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4);
 
     let baziYear;
+    // 如果出生日期在当年立春之前，则八字年份是公历年份减一
     if (birthJD < lichunJDCurrentGregorianYear) {
         baziYear = year - 1;
     } else {
@@ -411,50 +477,55 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     // --- 年柱计算逻辑结束 ---
 
     // --- 月柱计算逻辑 ---
-    const baziMonthJDs = getBaziMonthStartJDs(baziYear); 
+    // 获取当前八字年内所有节气（包括次年立春）的精确JD
+    const baziMonthJDs = getBaziMonthStartJDs(baziYear);
 
     let monthBranch = "";
     let monthGan = "";
+    let birthMonthTerm = null; // 记录出生月份的节气，用于大运计算
 
+    // 遍历节气，确定出生日期属于哪个八字月份
     for (let i = 0; i < baziMonthJDs.length - 1; i++) {
         const currentTerm = baziMonthJDs[i];
-        const nextTerm = baziMonthJDs[i + 1]; 
+        const nextTerm = baziMonthJDs[i + 1];
 
         if (birthJD >= currentTerm.jd && birthJD < nextTerm.jd) {
             monthBranch = currentTerm.branch;
+            birthMonthTerm = currentTerm; // 找到出生月份的节气
             break;
         }
     }
 
     if (monthBranch) {
-        monthGan = getStemForMonth(yearGanZhi[0], monthBranch); 
+        monthGan = getStemForMonth(yearGanZhi[0], monthBranch);
     }
     const monthGanZhi = monthGan + monthBranch;
     // --- 月柱计算逻辑结束 ---
 
     // --- 日柱计算逻辑 ---
-    const referenceJD = astronomia.julian.DateToJD(new Date(Date.UTC(1900, 0, 1, 0, 0, 0)));
-    const referenceGanZhiIndex = 10; // 甲戌
+    const referenceJD = astronomia.julian.DateToJD(new Date(Date.UTC(1900, 0, 1, 0, 0, 0))); // 1900年1月1日0点UTC
+    const referenceGanZhiIndex = 10; // 1900年1月1日是甲戌日 (甲戌是60干支中的第11个, 索引10)
 
-    const localHourEffective = localDate.getUTCHours(); 
-    
+    const localHourEffective = localDate.getUTCHours();
+
     let dateForDayPillar = new Date(Date.UTC(
         localDate.getUTCFullYear(),
         localDate.getUTCMonth(),
         localDate.getUTCDate(),
-        0, 0, 0 
+        0, 0, 0
     ));
 
+    // 如果真太阳时在晚上23点以后，日柱按次日计算 (子时换日)
     if (localHourEffective >= 23) {
-        dateForDayPillar.setUTCDate(dateForDayPillar.getUTCDate() + 1); 
+        dateForDayPillar.setUTCDate(dateForDayPillar.getUTCDate() + 1);
     }
 
     const effectiveJDForDayPillarCalc = astronomia.julian.DateToJD(dateForDayPillar);
-    const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD);
-    
+    const daysDifference = Math.round(effectiveJDForDayPillarCalc - referenceJD); // 与基准日期的天数差
+
     let dayGanZhiIndex = (referenceGanZhiIndex + daysDifference) % 60;
     if (dayGanZhiIndex < 0) {
-        dayGanZhiIndex += 60; 
+        dayGanZhiIndex += 60;
     }
 
     const dayStemIndex = dayGanZhiIndex % 10;
@@ -464,27 +535,22 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
 
     // --- 时柱计算逻辑 ---
     const hourBranch = getBranchForHour(localHourEffective);
-    const hourStem = getStemForHour(dayGanZhi[0], hourBranch); 
+    const hourStem = getStemForHour(dayGanZhi[0], hourBranch);
     const hourGanZhi = hourStem + hourBranch;
     // --- 时柱计算逻辑结束 ---
 
     // --- 十神和藏干计算逻辑 ---
-
-    // 1. 获取日元（日柱天干）的属性
-    const dayMasterStem = dayGanZhi[0]; 
+    const dayMasterStem = dayGanZhi[0];
     const dayMasterAttributes = stemAttributes[dayMasterStem];
 
-    // 2. 计算天干的十神并更新显示
     document.getElementById('yearPillarDisplay').textContent = `${yearGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[yearGanZhi[0]])})`;
     document.getElementById('monthPillarDisplay').textContent = `${monthGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[monthGanZhi[0]])})`;
-    
-    // 日柱显示增加性别标识
+
     let dayPillarGenderText = gender === 'male' ? '(日元 - 元男)' : '(日元 - 元女)';
-    document.getElementById('dayPillarDisplay').textContent = `${dayGanZhi} ${dayPillarGenderText}`; 
+    document.getElementById('dayPillarDisplay').textContent = `${dayGanZhi} ${dayPillarGenderText}`;
 
     document.getElementById('hourPillarDisplay').textContent = `${hourGanZhi} (${getTenGod(dayMasterAttributes, stemAttributes[hourGanZhi[0]])})`;
 
-    // 3. 计算地支藏干及其十神
     const pillars = [
         { branch: yearGanZhi[1], displayId: 'yearBranchHiddenStems' },
         { branch: monthGanZhi[1], displayId: 'monthBranchHiddenStems' },
@@ -495,31 +561,75 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
     pillars.forEach(pillar => {
         const hiddenStems = getHiddenStems(pillar.branch);
         const container = document.getElementById(pillar.displayId);
-        
+
         hiddenStems.forEach(stem => {
-            const stemAttributesForHidden = stemAttributes[stem]; 
-            const element = stemAttributesForHidden.element; // 获取五行属性，例如 "木"
+            const stemAttributesForHidden = stemAttributes[stem];
+            const element = stemAttributesForHidden.element;
             const tenGod = getTenGod(dayMasterAttributes, stemAttributesForHidden);
             const p = document.createElement('p');
-            
-            // 修改这里：给 <rt> 标签添加一个基于五行的类名，例如 "element-木"
+
             p.innerHTML = `<ruby>${stem}<rp>(</rp><rt class="element-${element}">${element}</rt><rp>)</rp></ruby> (${tenGod})`;
             container.appendChild(p);
         });
     });
-
     // --- 十神和藏干计算逻辑结束 ---
+
+    // --- 大运计算与显示 ---
+    const grandCycleDirection = determineGrandCycleDirection(yearGanZhi[0], gender);
+
+    // 确保找到了出生月份的节气，否则无法计算起运岁数
+    if (!birthMonthTerm) {
+        document.getElementById('errorMessage').textContent = '未能确定出生月份的节气，无法计算大运。';
+        document.getElementById('errorMessage').style.display = 'block';
+        return;
+    }
+
+    const { years: gcStartYears, months: gcStartMonths, days: gcStartDays } =
+        calculateGrandCycleStartAge(birthJD, birthMonthTerm, baziMonthJDs, grandCycleDirection);
+
+    // 生成8个大运周期 (80年)
+    const grandCycles = generateGrandCyclePillars(monthGanZhi, grandCycleDirection, 8, dayMasterAttributes);
+
+    document.getElementById('grandCycleDirectionDisplay').textContent =
+        grandCycleDirection === 'forward' ? '顺行' : '逆行';
+    document.getElementById('grandCycleStartAgeDisplay').textContent =
+        `${gcStartYears}岁 ${gcStartMonths}月 ${gcStartDays}日`;
+
+    const grandCyclesContainer = document.getElementById('grandCyclesDisplay');
+    grandCycles.forEach((gc, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('grand-cycle-item');
+
+        const startAge = gcStartYears + (index * 10);
+        const endAge = startAge + 9;
+
+        itemDiv.innerHTML = `
+            <p class="age-range">${startAge}~${endAge}岁</p>
+            <p><strong>${gc.ganZhi}</strong> (${gc.tenGod})</p>
+        `;
+        grandCyclesContainer.appendChild(itemDiv);
+    });
+    // --- 大运计算与显示结束 ---
+
+    // --- 流年计算与显示 ---
+    const currentGregorianYear = new Date().getUTCFullYear();
+    const currentYearGanZhi = getGanZhiForYear(currentGregorianYear);
+    const currentYearTenGod = getTenGod(dayMasterAttributes, stemAttributes[currentYearGanZhi[0]]);
+
+    document.getElementById('currentGregorianYearDisplay').textContent = currentGregorianYear;
+    document.getElementById('currentYearPillarDisplay').textContent = `${currentYearGanZhi} (${currentYearTenGod})`;
+    // --- 流年计算与显示结束 ---
 
 
     // 显示结果
-    document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8'; 
-    document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC'; 
+    document.getElementById('inputTimeUTC8').textContent = inputUtc8Date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8';
+    document.getElementById('inputTimeUTC').textContent = utcDate.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
     document.getElementById('cityNameDisplay').textContent = selectedCity.name;
     document.getElementById('countryCodeDisplay').textContent = selectedCity.country;
     document.getElementById('latitudeDisplay').textContent = cityLat.toFixed(4);
     document.getElementById('longitudeDisplay').textContent = cityLng.toFixed(4);
     document.getElementById('timezoneOffsetDisplay').textContent = timezoneOffsetHours.toFixed(4);
-    
+
     const localTimeFormatter = new Intl.DateTimeFormat('zh-CN', {
         year: 'numeric',
         month: '2-digit',
@@ -528,7 +638,7 @@ document.getElementById('combinedQueryForm').addEventListener('submit', function
         minute: '2-digit',
         second: '2-digit',
         hour12: false,
-        timeZone: 'UTC' 
+        timeZone: 'UTC'
     });
     document.getElementById('localTimeDisplay').textContent = localTimeFormatter.format(localDate);
 

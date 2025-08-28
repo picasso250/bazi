@@ -49,8 +49,8 @@
                         <input type="text" id="cityInput" placeholder="请输入城市名称" value="Shanghai" required>
                     </div>
                 </div>
-                <div class="input-group gender-select"> <!-- New group for gender -->
-                    <div class="quarter-width"> <!-- Adjust width as needed -->
+                <div class="input-group gender-select">
+                    <div class="quarter-width">
                         <label for="gender">性别:</label>
                         <select id="gender" required>
                             <option value="male">男</option>
@@ -98,6 +98,15 @@
                     <div id="hourBranchHiddenStems"></div>
                 </div>
             </div>
+
+            <!-- 新增：大运和流年区域 -->
+            <h3 style="margin-top: 30px;">大运与流年</h3>
+            <p>大运方向: <strong id="grandCycleDirectionDisplay"></strong></p>
+            <p>起运岁数: <strong id="grandCycleStartAgeDisplay"></strong></p>
+            <div id="grandCyclesDisplay" class="grand-cycles-container">
+                <!-- 大运会在这里动态生成 -->
+            </div>
+            <p style="margin-top: 20px;">当前流年 (<span id="currentGregorianYearDisplay"></span>): <strong id="currentYearPillarDisplay"></strong></p>
         </div>
     </div>
 
