@@ -3,149 +3,313 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>八字查询</title>
+    <title>八字真时查询</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>八字查询</h1>
-
-        <form id="combinedQueryForm">
-            <fieldset>
-                <legend>输入时间 (UTC+8)</legend>
-                <div class="input-group time-inputs-group">
-                    <div>
-                        <label for="year">年份:</label>
-                        <input type="number" id="year" value="1989" min="1900" max="2100" required>
-                    </div>
-                    <div>
-                        <label for="month">月份:</label>
-                        <input type="number" id="month" value="2" min="1" max="12" required>
-                    </div>
-                    <div>
-                        <label for="day">日期:</label>
-                        <input type="number" id="day" value="22" min="1" max="31" required>
-                    </div>
-                    <div>
-                        <label for="hour">小时:</label>
-                        <input type="number" id="hour" value="0" min="0" max="23" required>
-                    </div>
-                    <div>
-                        <label for="minute">分钟:</label>
-                        <input type="number" id="minute" value="5" min="0" max="59" required>
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>城市与基本信息</legend>
-                <div class="input-group full-width">
-                    <div class="radio-group-city-type">
-                        <input type="radio" id="cityType_domestic" name="cityType" value="domestic" checked>
-                        <label for="cityType_domestic">中国大陆城市</label>
-                        <input type="radio" id="cityType_overseas" name="cityType" value="overseas">
-                        <label for="cityType_overseas">海外及港澳台城市</label>
-                    </div>
-                </div>
-
-                <!-- Domestic City Selection (Initially visible) -->
-                <div id="domesticCitySelection" class="input-group full-width city-select-group">
-                    <div>
-                        <label for="provinceSelect">省份/直辖市:</label>
-                        <select id="provinceSelect" required></select>
-                    </div>
-                    <div>
-                        <label for="cityCountySelect">城市/区县:</label>
-                        <select id="cityCountySelect" required></select>
-                    </div>
-                </div>
-
-                <!-- Overseas City Selection (Initially hidden) -->
-                <div id="overseasCitySelection" class="input-group full-width" style="display: none;">
-                    <div>
-                        <label for="cityInput">城市名称 (例如: Shanghai):</label>
-                        <input type="text" id="cityInput" placeholder="请输入城市名称" value="">
-                    </div>
-                </div>
-
-                <div class="input-group gender-select full-width">
-                    <label>性别:</label>
-                    <div class="radio-group-gender">
-                        <input type="radio" id="gender_male" name="gender" value="male" checked required>
-                        <label for="gender_male">男 (Male)</label>
-
-                        <input type="radio" id="gender_female" name="gender" value="female" required>
-                        <label for="gender_female">女 (Female)</label>
-                    </div>
-                </div>
-            </fieldset>
-
-            <button type="submit">查询</button>
-        </form>
-
-        <div id="errorMessage" class="error-message"></div>
-
-        <div id="result" class="result" style="display: none;">
-            <p>输入时间 (UTC+8): <strong id="inputTimeUTC8"></strong></p>
-            <p>查询城市: <strong id="cityNameDisplay"></strong> (<strong id="countryCodeDisplay"></strong>)</p>
-            <p>纬度: <strong id="latitudeDisplay"></strong>, 经度: <strong id="longitudeDisplay"></strong></p>
-            <p>当地时间: <strong id="localTimeDisplay"></strong></p>
-            <p>太阳黄经: <strong id="solarLongitude"></strong> 度</p>
-
-            <!-- 四柱显示改为横向布局 (只保留这一套新的结构) -->
-            <div class="bazi-pillars-container">
-                <div class="bazi-pillar-item">
-                    <p class="pillar-label">年柱</p>
-                    <p class="pillar-ganzhi" id="yearPillarGanZhiDisplay"></p>
-                    <p class="pillar-tengod" id="yearPillarTenGodDisplay"></p>
-                </div>
-                <div class="bazi-pillar-item">
-                    <p class="pillar-label">月柱</p>
-                    <p class="pillar-ganzhi" id="monthPillarGanZhiDisplay"></p>
-                    <p class="pillar-tengod" id="monthPillarTenGodDisplay"></p>
-                </div>
-                <div class="bazi-pillar-item">
-                    <p class="pillar-label">日柱</p>
-                    <p class="pillar-ganzhi" id="dayPillarGanZhiDisplay"></p>
-                    <p class="pillar-tengod" id="dayPillarTenGodDisplay"></p>
-                </div>
-                <div class="bazi-pillar-item">
-                    <p class="pillar-label">时柱</p>
-                    <p class="pillar-ganzhi" id="hourPillarGanZhiDisplay"></p>
-                    <p class="pillar-tengod" id="hourPillarTenGodDisplay"></p>
-                </div>
-            </div>
-
-            <h3>四柱藏干</h3>
-            <div style="display: flex; justify-content: space-around; text-align: center; margin-top: 20px;">
-                <div style="flex: 1;">
-                    <p>年支藏干</p>
-                    <div id="yearBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
-                </div>
-                <div style="flex: 1;">
-                    <p>月支藏干</p>
-                    <div id="monthBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
-                </div>
-                <div style="flex: 1;">
-                    <p>日支藏干</p>
-                    <div id="dayBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
-                </div>
-                <div style="flex: 1;">
-                    <p>时支藏干</p>
-                    <div id="hourBranchHiddenStems"></div> <!-- 缺失的ID已添加 -->
-                </div>
-            </div>
-
-            <h3 style="margin-top: 30px;">大运与流年</h3>
-            <p>大运方向: <strong id="grandCycleDirectionDisplay"></strong></p>
-            <p>起运岁数: <strong id="grandCycleStartAgeDisplay"></strong></p>
-            <div id="grandCyclesDisplay" class="grand-cycles-container">
-                <!-- 大运会在这里动态生成 -->
-            </div>
-            <p style="margin-top: 20px;">当前流年 (<span id="currentGregorianYearDisplay"></span>): <strong id="currentYearPillarDisplay"></strong></p>
-            <p>下一年流年 (<span id="nextGregorianYearDisplay"></span>): <strong id="nextYearPillarDisplay"></strong></p>
-        </div>
+<body class="bg-background text-on-surface antialiased">
+    <div class="pointer-events-none fixed inset-0 overflow-hidden">
+        <div class="absolute left-[-6rem] top-8 text-[12rem] font-black leading-none text-primary/5 font-headline">時</div>
+        <div class="absolute right-[-4rem] top-40 h-72 w-72 rounded-full bg-primary/5 blur-3xl"></div>
+        <div class="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-tertiary/5 blur-3xl"></div>
     </div>
+
+    <header class="sticky top-0 z-30 border-b border-outline-variant/40 bg-background/85 backdrop-blur-xl">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
+            <div>
+                <p class="text-[0.65rem] uppercase tracking-[0.35em] text-outline">The Celestial Scholar</p>
+                <h1 class="mt-1 font-headline text-xl font-bold tracking-[0.08em] text-on-surface">八字真时查询</h1>
+            </div>
+            <div class="hidden items-center gap-3 text-sm text-on-surface-variant md:flex">
+                <span class="material-symbols-outlined text-primary">routine</span>
+                <span>基于出生时间与经纬度推算四柱干支</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 mx-auto flex max-w-7xl flex-col gap-14 px-6 pb-20 pt-12 lg:px-10">
+        <section class="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
+            <div class="space-y-6">
+                <div class="space-y-4">
+                    <p class="text-xs uppercase tracking-[0.35em] text-outline">Astronomical Four Pillars</p>
+                    <div class="space-y-3">
+                        <h2 class="font-headline text-4xl font-black tracking-tight text-on-surface sm:text-5xl">录入生辰信息</h2>
+                        <p class="max-w-2xl text-base leading-8 text-on-surface-variant">
+                            以出生时刻、出生地经纬度与节气边界为基础，换算真太阳时并推演四柱、大运与流年。
+                        </p>
+                    </div>
+                </div>
+
+                <form id="combinedQueryForm" class="space-y-6">
+                    <section class="panel p-6 sm:p-8">
+                        <div class="section-title">
+                            <span class="material-symbols-outlined text-primary">calendar_month</span>
+                            <div>
+                                <h3 class="font-headline text-xl font-semibold">出生时间</h3>
+                                <p class="mt-1 text-sm text-on-surface-variant">请输入北京时间（UTC+8）的出生时刻。</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-5">
+                            <label class="field">
+                                <span class="field-label">Year</span>
+                                <input class="field-input" type="number" id="year" value="1989" min="1900" max="2100" required>
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Month</span>
+                                <input class="field-input" type="number" id="month" value="2" min="1" max="12" required>
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Day</span>
+                                <input class="field-input" type="number" id="day" value="22" min="1" max="31" required>
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Hour</span>
+                                <input class="field-input" type="number" id="hour" value="0" min="0" max="23" required>
+                            </label>
+                            <label class="field">
+                                <span class="field-label">Minute</span>
+                                <input class="field-input" type="number" id="minute" value="5" min="0" max="59" required>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="panel p-6 sm:p-8">
+                        <div class="section-title">
+                            <span class="material-symbols-outlined text-primary">location_on</span>
+                            <div>
+                                <h3 class="font-headline text-xl font-semibold">出生地点与基本信息</h3>
+                                <p class="mt-1 text-sm text-on-surface-variant">地点用于换算当地真太阳时，以提高推演精度。</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 space-y-6">
+                            <div class="segmented-wrap">
+                                <div class="segmented-grid radio-group-city-type">
+                                    <input type="radio" id="cityType_domestic" name="cityType" value="domestic" checked>
+                                    <label class="segmented-label" for="cityType_domestic">中国大陆城市</label>
+                                    <input type="radio" id="cityType_overseas" name="cityType" value="overseas">
+                                    <label class="segmented-label" for="cityType_overseas">海外及港澳台</label>
+                                </div>
+                            </div>
+
+                            <div id="domesticCitySelection" class="grid gap-4 md:grid-cols-2">
+                                <label class="field">
+                                    <span class="field-label">Province</span>
+                                    <select class="field-input" id="provinceSelect" required></select>
+                                </label>
+                                <label class="field">
+                                    <span class="field-label">City / County</span>
+                                    <select class="field-input" id="cityCountySelect" required></select>
+                                </label>
+                            </div>
+
+                            <div id="overseasCitySelection" class="hidden">
+                                <label class="field">
+                                    <span class="field-label">Overseas City</span>
+                                    <input class="field-input" type="text" id="cityInput" placeholder="例如：Shanghai / London">
+                                </label>
+                            </div>
+
+                            <div class="rounded-2xl border border-tertiary/20 bg-tertiary/5 px-4 py-3 text-sm leading-7 text-on-surface-variant">
+                                城市信息将用于换算当地经度与真太阳时。若为海外城市，请输入可识别的标准城市名称。
+                            </div>
+
+                            <div class="grid gap-3 md:grid-cols-[auto_1fr] md:items-center">
+                                <div>
+                                    <p class="text-xs uppercase tracking-[0.35em] text-outline">Gender</p>
+                                    <p class="mt-1 text-sm text-on-surface-variant">用于确定大运顺逆行。</p>
+                                </div>
+                                <div class="segmented-wrap">
+                                    <div class="segmented-grid radio-group-gender">
+                                        <input type="radio" id="gender_male" name="gender" value="male" checked required>
+                                        <label class="segmented-label" for="gender_male">男</label>
+                                        <input type="radio" id="gender_female" name="gender" value="female" required>
+                                        <label class="segmented-label" for="gender_female">女</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <button type="submit" class="action-button">
+                        <span class="material-symbols-outlined text-xl">auto_awesome</span>
+                        <span class="font-headline text-lg font-bold tracking-[0.25em]">开启推演</span>
+                    </button>
+                </form>
+
+                <div id="errorMessage" class="error-message hidden"></div>
+            </div>
+
+            <aside class="panel relative overflow-hidden p-6 sm:p-8">
+                <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+                <div class="relative space-y-8">
+                    <div class="space-y-3">
+                        <p class="text-xs uppercase tracking-[0.35em] text-outline">Methodology</p>
+                        <h3 class="font-headline text-2xl font-semibold">何谓真太阳时？</h3>
+                        <p class="text-sm leading-8 text-on-surface-variant">
+                            行政区划使用统一时区，但传统四柱更依赖出生地相对于太阳的真实位置。本工具会先根据出生地经纬度换算当地时刻，再以节气边界推导年柱、月柱与后续大运。
+                        </p>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                        <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5">
+                            <p class="text-xs uppercase tracking-[0.25em] text-outline">Calculation Scope</p>
+                            <p class="mt-3 font-headline text-2xl font-bold text-primary">四柱 · 藏干</p>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">年、月、日、时四柱并列呈现，便于快速浏览命局结构。</p>
+                        </div>
+                        <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5">
+                            <p class="text-xs uppercase tracking-[0.25em] text-outline">Transit View</p>
+                            <p class="mt-3 font-headline text-2xl font-bold text-primary">大运 · 流年</p>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">按起运岁数展开十年大运，并补充当前与下一年流年。</p>
+                        </div>
+                    </div>
+
+                    <div class="rounded-[2rem] border border-outline-variant/30 bg-[radial-gradient(circle_at_top,_rgba(33,68,87,0.14),_transparent_55%),linear-gradient(135deg,rgba(184,159,119,0.1),rgba(33,68,87,0.02))] p-6">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary">public</span>
+                            <p class="font-headline text-lg font-semibold">输入建议</p>
+                        </div>
+                        <ul class="mt-4 space-y-3 text-sm leading-7 text-on-surface-variant">
+                            <li>请优先确认准确出生地，避免同名海外城市造成换算偏差。</li>
+                            <li>如果出生时间临近子时、节气切换点，更建议使用精确分钟。</li>
+                            <li>页面显示的当地时间已结合经度换算，不等同于行政时区时间。</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section id="result" class="hidden space-y-8">
+            <div class="panel overflow-hidden p-6 sm:p-8">
+                <div class="grid gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+                    <div class="space-y-4">
+                        <p class="text-xs uppercase tracking-[0.35em] text-outline">Birth Ephemeris</p>
+                        <div>
+                            <p class="text-sm text-on-surface-variant">录入时间</p>
+                            <p id="inputTimeUTC8" class="mt-2 font-headline text-2xl font-bold leading-snug text-primary"></p>
+                        </div>
+                        <div class="flex flex-wrap gap-3 text-sm text-on-surface-variant">
+                            <span class="summary-chip">城市：<strong id="cityNameDisplay" class="font-semibold text-on-surface"></strong></span>
+                            <span class="summary-chip">地区代码：<strong id="countryCodeDisplay" class="font-semibold text-on-surface"></strong></span>
+                            <span class="summary-chip">纬度：<strong id="latitudeDisplay" class="font-semibold text-on-surface"></strong></span>
+                            <span class="summary-chip">经度：<strong id="longitudeDisplay" class="font-semibold text-on-surface"></strong></span>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-1">
+                        <div class="summary-card">
+                            <p class="summary-label">当地时间</p>
+                            <p id="localTimeDisplay" class="summary-value"></p>
+                        </div>
+                        <div class="summary-card">
+                            <p class="summary-label">太阳黄经</p>
+                            <p class="summary-value"><span id="solarLongitude"></span><span class="ml-1 text-base font-medium text-on-surface-variant">度</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-5">
+                <div class="flex items-end justify-between gap-4">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.35em] text-outline">The Four Pillars</p>
+                        <h3 class="mt-2 font-headline text-2xl font-bold text-on-surface">四柱核心</h3>
+                    </div>
+                    <p class="hidden text-sm text-on-surface-variant md:block">干支为主，十神为辅助信息</p>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    <article class="pillar-card">
+                        <p class="pillar-label">年柱</p>
+                        <p id="yearPillarGanZhiDisplay" class="pillar-ganzhi"></p>
+                        <p id="yearPillarTenGodDisplay" class="pillar-tengod"></p>
+                    </article>
+                    <article class="pillar-card">
+                        <p class="pillar-label">月柱</p>
+                        <p id="monthPillarGanZhiDisplay" class="pillar-ganzhi"></p>
+                        <p id="monthPillarTenGodDisplay" class="pillar-tengod"></p>
+                    </article>
+                    <article class="pillar-card pillar-card-master">
+                        <p class="pillar-label">日柱</p>
+                        <p id="dayPillarGanZhiDisplay" class="pillar-ganzhi"></p>
+                        <p id="dayPillarTenGodDisplay" class="pillar-tengod"></p>
+                    </article>
+                    <article class="pillar-card">
+                        <p class="pillar-label">时柱</p>
+                        <p id="hourPillarGanZhiDisplay" class="pillar-ganzhi"></p>
+                        <p id="hourPillarTenGodDisplay" class="pillar-tengod"></p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="panel overflow-hidden p-0">
+                <div class="border-b border-outline-variant/30 px-6 py-4">
+                    <p class="text-xs uppercase tracking-[0.35em] text-outline">Hidden Stems</p>
+                    <h3 class="mt-2 font-headline text-xl font-semibold">四柱藏干</h3>
+                </div>
+                <div class="grid gap-px bg-outline-variant/20 md:grid-cols-2 xl:grid-cols-4">
+                    <div class="hidden-stems-card">
+                        <p class="hidden-stems-label">年支藏干</p>
+                        <div id="yearBranchHiddenStems" class="hidden-stems-content"></div>
+                    </div>
+                    <div class="hidden-stems-card">
+                        <p class="hidden-stems-label">月支藏干</p>
+                        <div id="monthBranchHiddenStems" class="hidden-stems-content"></div>
+                    </div>
+                    <div class="hidden-stems-card">
+                        <p class="hidden-stems-label">日支藏干</p>
+                        <div id="dayBranchHiddenStems" class="hidden-stems-content"></div>
+                    </div>
+                    <div class="hidden-stems-card">
+                        <p class="hidden-stems-label">时支藏干</p>
+                        <div id="hourBranchHiddenStems" class="hidden-stems-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-5">
+                <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.35em] text-outline">Major Cycles</p>
+                        <h3 class="mt-2 font-headline text-2xl font-bold text-on-surface">大运与流年</h3>
+                    </div>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <div class="stat-chip">
+                            <span class="stat-chip-label">大运方向</span>
+                            <strong id="grandCycleDirectionDisplay" class="stat-chip-value"></strong>
+                        </div>
+                        <div class="stat-chip">
+                            <span class="stat-chip-label">起运岁数</span>
+                            <strong id="grandCycleStartAgeDisplay" class="stat-chip-value"></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="grandCyclesDisplay" class="grand-cycles-container"></div>
+
+                <div class="grid gap-4 lg:grid-cols-2">
+                    <article class="flow-card">
+                        <p class="flow-label">当前流年</p>
+                        <p class="mt-3 font-headline text-3xl font-bold text-on-surface">
+                            <span id="currentGregorianYearDisplay"></span>
+                        </p>
+                        <p id="currentYearPillarDisplay" class="mt-4 text-lg font-semibold text-primary"></p>
+                    </article>
+                    <article class="flow-card flow-card-next">
+                        <p class="flow-label">下一年流年</p>
+                        <p class="mt-3 font-headline text-3xl font-bold text-on-primary-container">
+                            <span id="nextGregorianYearDisplay"></span>
+                        </p>
+                        <p id="nextYearPillarDisplay" class="mt-4 text-lg font-semibold text-on-primary-container"></p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script type="module" src="main.js"></script>
 </body>

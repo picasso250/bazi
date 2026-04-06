@@ -1,10 +1,24 @@
 // main.js
 import { getSolarLongitudeForJD } from './src/astronomyUtils.js';
-import { calculateBaZiPillars, getTenGod, getGanZhiForYear, getHiddenStems } from './src/baziCore.js';
+import { calculateBaZiPillars, getTenGod, getGanZhiForYear, getHiddenStems, getBaZiYearForUTC8DateTime } from './src/baziCore.js';
 import { determineGrandCycleDirection, calculateGrandCycleStartAge, generateGrandCyclePillars } from './src/grandCycleUtils.js';
 import { loadRegionsData, findCityLocation } from './src/locationService.js';
 import { initializeUI, getFormInputs, displayError, clearError, clearResults, updateResultsDisplay } from './src/uiManager.js';
 import { stemAttributes } from './src/constants.js'; // For current year ten god
+
+function getCurrentUTC8DateTimeParts() {
+    const now = new Date();
+    const utc8Now = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+
+    return {
+        year: utc8Now.getUTCFullYear(),
+        month: utc8Now.getUTCMonth() + 1,
+        day: utc8Now.getUTCDate(),
+        hour: utc8Now.getUTCHours(),
+        minute: utc8Now.getUTCMinutes(),
+        second: utc8Now.getUTCSeconds()
+    };
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     const dataLoaded = await loadRegionsData();
@@ -80,13 +94,13 @@ document.getElementById('combinedQueryForm').addEventListener('submit', async fu
     };
 
     // --- 流年计算 ---
-    const currentGregorianYear = new Date().getUTCFullYear();
-    const currentYearGanZhi = getGanZhiForYear(currentGregorianYear);
+    const currentFlowYear = getBaZiYearForUTC8DateTime(getCurrentUTC8DateTimeParts());
+    const currentYearGanZhi = getGanZhiForYear(currentFlowYear);
     const currentYearTenGod = getTenGod(baziData.dayMasterAttributes, stemAttributes[currentYearGanZhi[0]]);
 
     // --- 下一年流年计算 ---
-    const nextGregorianYear = currentGregorianYear + 1;
-    const nextYearGanZhi = getGanZhiForYear(nextGregorianYear);
+    const nextFlowYear = currentFlowYear + 1;
+    const nextYearGanZhi = getGanZhiForYear(nextFlowYear);
     const nextYearTenGod = getTenGod(baziData.dayMasterAttributes, stemAttributes[nextYearGanZhi[0]]);
 
     // Update UI with all calculated data
@@ -95,10 +109,10 @@ document.getElementById('combinedQueryForm').addEventListener('submit', async fu
         selectedLocation,
         gender,
         grandCycleData,
-        currentGregorianYear,
+        currentFlowYear,
         currentYearGanZhi,
         currentYearTenGod,
-        nextGregorianYear, // <-- 新增：传递下一年公历年份
+        nextFlowYear, // <-- 新增：传递下一年流年年份
         nextYearGanZhi,    // <-- 新增：传递下一年干支
         nextYearTenGod,    // <-- 新增：传递下一年十神
         getTenGod,

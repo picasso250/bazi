@@ -5,6 +5,40 @@ import {
 } from './constants.js';
 import { findJDForSolarLongitude, getBaziMonthStartJDs, DateToJD } from './astronomyUtils.js';
 
+function validateDateTimeUTC8({ year, month, day, hour, minute, second }) {
+    const candidate = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+    const isValid =
+        Number.isInteger(year) &&
+        Number.isInteger(month) &&
+        Number.isInteger(day) &&
+        Number.isInteger(hour) &&
+        Number.isInteger(minute) &&
+        Number.isInteger(second) &&
+        candidate.getUTCFullYear() === year &&
+        candidate.getUTCMonth() === month - 1 &&
+        candidate.getUTCDate() === day &&
+        candidate.getUTCHours() === hour &&
+        candidate.getUTCMinutes() === minute &&
+        candidate.getUTCSeconds() === second;
+
+    if (!isValid) {
+        throw new Error("请输入有效的日期时间。");
+    }
+
+    return candidate;
+}
+
+export function getBaZiYearForUTC8DateTime(birthDateTimeUTC8) {
+    const { year, month, day, hour, minute, second } = birthDateTimeUTC8;
+    validateDateTimeUTC8(birthDateTimeUTC8);
+
+    const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second));
+    const birthJD = DateToJD(utcDate);
+    const lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4);
+
+    return birthJD < lichunJDCurrentGregorianYear ? year - 1 : year;
+}
+
 /**
  * 根据日元属性和目标天干属性，计算目标天干的十神。
  * @param {object} dayMasterAttr - 日元的五行和阴阳属性 { element: "木", yinYang: "阳" }。
@@ -166,7 +200,7 @@ export function calculateBaZiPillars(birthDateTimeUTC8, location) {
     const { lat, lng } = location;
 
     // 原始输入的UTC+8时间
-    const inputUtc8Date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+    const inputUtc8Date = validateDateTimeUTC8(birthDateTimeUTC8);
 
     // 转换为 UTC 时间
     const utcDate = new Date(Date.UTC(year, month - 1, day, hour - 8, minute, second));
@@ -181,13 +215,7 @@ export function calculateBaZiPillars(birthDateTimeUTC8, location) {
 
     // --- 年柱计算逻辑 ---
     // 立春JD的计算需要公历年份
-    const lichunJDCurrentGregorianYear = findJDForSolarLongitude(year, 315, 2, 4);
-    let baziYearGregorian; // 公历年份对应的八字年
-    if (birthJD < lichunJDCurrentGregorianYear) {
-        baziYearGregorian = year - 1;
-    } else {
-        baziYearGregorian = year;
-    }
+    const baziYearGregorian = getBaZiYearForUTC8DateTime(birthDateTimeUTC8);
     const yearGanZhi = getGanZhiForYear(baziYearGregorian);
 
     // --- 月柱计算逻辑 ---

@@ -98,7 +98,7 @@ export function initializeUI() {
     cityTypeRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'domestic') {
-                domesticCitySelectionDiv.style.display = 'flex';
+                domesticCitySelectionDiv.style.display = '';
                 overseasCitySelectionDiv.style.display = 'none';
                 cityInput.removeAttribute('required');
                 provinceSelect.setAttribute('required', 'true');
@@ -108,7 +108,7 @@ export function initializeUI() {
                 clearError();
             } else { // overseas
                 domesticCitySelectionDiv.style.display = 'none';
-                overseasCitySelectionDiv.style.display = 'flex';
+                overseasCitySelectionDiv.style.display = 'block';
                 cityInput.setAttribute('required', 'true');
                 provinceSelect.removeAttribute('required');
                 cityCountySelect.removeAttribute('required');
