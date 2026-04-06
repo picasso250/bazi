@@ -99,9 +99,7 @@ function resetAiChat(contextText) {
     latestChatContext = contextText;
     chatHistory = [];
     aiConversation.innerHTML = `
-        <div class="chat-empty-state">
-            可以继续问，例如：<span class="font-medium text-on-surface">“这个命盘的事业倾向如何？”</span>
-        </div>
+        <p class="text-sm leading-7 text-on-surface-variant">可以继续问，例如：“这个命盘的事业倾向如何？”</p>
     `;
     aiStatus.textContent = '';
     aiStatus.style.display = 'none';
@@ -123,6 +121,11 @@ function appendChatMessage(role, content) {
         emptyState.remove();
     }
 
+    const introText = aiConversation.querySelector('p.text-sm.leading-7.text-on-surface-variant');
+    if (introText && aiConversation.children.length === 1) {
+        introText.remove();
+    }
+
     aiConversation.appendChild(wrapper);
 }
 
@@ -137,6 +140,11 @@ function createStreamingAssistantMessage() {
     const emptyState = aiConversation.querySelector('.chat-empty-state');
     if (emptyState) {
         emptyState.remove();
+    }
+
+    const introText = aiConversation.querySelector('p.text-sm.leading-7.text-on-surface-variant');
+    if (introText && aiConversation.children.length === 1) {
+        introText.remove();
     }
 
     aiConversation.appendChild(wrapper);

@@ -150,31 +150,6 @@
                             行政区划使用统一时区，但传统四柱更依赖出生地相对于太阳的真实位置。本工具会先根据出生地经纬度换算当地时刻，再以节气边界推导年柱、月柱与后续大运。
                         </p>
                     </div>
-
-                    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                        <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5">
-                            <p class="text-xs uppercase tracking-[0.25em] text-outline">Calculation Scope</p>
-                            <p class="mt-3 font-headline text-2xl font-bold text-primary">四柱 · 藏干</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">年、月、日、时四柱并列呈现，便于快速浏览命局结构。</p>
-                        </div>
-                        <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5">
-                            <p class="text-xs uppercase tracking-[0.25em] text-outline">Transit View</p>
-                            <p class="mt-3 font-headline text-2xl font-bold text-primary">大运 · 流年</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">按起运岁数展开十年大运，并补充当前与下一年流年。</p>
-                        </div>
-                    </div>
-
-                    <div class="rounded-[2rem] border border-outline-variant/30 bg-[radial-gradient(circle_at_top,_rgba(33,68,87,0.14),_transparent_55%),linear-gradient(135deg,rgba(184,159,119,0.1),rgba(33,68,87,0.02))] p-6">
-                        <div class="flex items-center gap-3">
-                            <span class="text-primary">·</span>
-                            <p class="font-headline text-lg font-semibold">输入建议</p>
-                        </div>
-                        <ul class="mt-4 space-y-3 text-sm leading-7 text-on-surface-variant">
-                            <li>请优先确认准确出生地，避免同名海外城市造成换算偏差。</li>
-                            <li>如果出生时间临近子时、节气切换点，更建议使用精确分钟。</li>
-                            <li>页面显示的当地时间已结合经度换算，不等同于行政时区时间。</li>
-                        </ul>
-                    </div>
                 </div>
             </aside>
         </section>
@@ -311,7 +286,7 @@
                         <p class="text-xs uppercase tracking-[0.35em] text-outline">Worker AI</p>
                         <h3 class="mt-2 font-headline text-2xl font-bold text-on-surface">继续问</h3>
                         <p class="mt-2 text-sm leading-7 text-on-surface-variant">
-                            基于当前命盘结果继续追问。系统会自动带入出生信息、四柱、大运与流年上下文。
+                            基于当前命盘结果继续追问。
                         </p>
                     </div>
                     <div class="rounded-full border border-outline-variant/35 bg-surface-container-lowest px-4 py-2 text-xs tracking-[0.25em] text-on-surface-variant">
@@ -319,11 +294,7 @@
                     </div>
                 </div>
 
-                <div id="aiConversation" class="mt-8 space-y-4">
-                    <div class="chat-empty-state">
-                        可以继续问，例如：<span class="font-medium text-on-surface">“这个命盘的事业倾向如何？”</span>
-                    </div>
-                </div>
+                <div id="aiConversation" class="mt-8 space-y-4"></div>
 
                 <div id="aiStatus" class="mt-4 hidden text-sm text-on-surface-variant"></div>
 
@@ -333,9 +304,6 @@
                         <textarea id="followupQuestion" class="field-input min-h-[8rem] resize-y" placeholder="继续追问当前命盘，例如：接下来两年的工作与财运重点是什么？" required></textarea>
                     </label>
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <p class="text-sm text-on-surface-variant">
-                            回答仅基于当前页面已计算出的命盘参数，不会重新生成不同的八字结果。
-                        </p>
                         <button id="continueAskButton" type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-on-primary shadow-glow transition duration-200 hover:-translate-y-0.5">
                             <span>•</span>
                             继续问
