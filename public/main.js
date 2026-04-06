@@ -15,6 +15,63 @@ const continueAskButton = document.getElementById('continueAskButton');
 let latestChatContext = null;
 let chatHistory = [];
 
+function escapeHtml(value) {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function renderInlineMarkdown(text) {
+    return escapeHtml(text)
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>');
+}
+
+function renderMarkdown(markdown) {
+    const normalized = markdown.replace(/\r\n/g, '\n').trim();
+    if (!normalized) {
+        return '';
+    }
+
+    const blocks = normalized.split(/\n{2,}/);
+    return blocks.map((block) => {
+        if (block.startsWith('```') && block.endsWith('```')) {
+            const code = block.replace(/^```[^\n]*\n?/, '').replace(/\n?```$/, '');
+            return `<pre><code>${escapeHtml(code)}</code></pre>`;
+        }
+
+        const lines = block.split('\n');
+        if (lines.every((line) => /^[-*]\s+/.test(line))) {
+            const items = lines
+                .map((line) => line.replace(/^[-*]\s+/, ''))
+                .map((line) => `<li>${renderInlineMarkdown(line)}</li>`)
+                .join('');
+            return `<ul>${items}</ul>`;
+        }
+
+        if (lines.every((line) => /^\d+\.\s+/.test(line))) {
+            const items = lines
+                .map((line) => line.replace(/^\d+\.\s+/, ''))
+                .map((line) => `<li>${renderInlineMarkdown(line)}</li>`)
+                .join('');
+            return `<ol>${items}</ol>`;
+        }
+
+        if (/^###\s+/.test(block)) {
+            return `<h3>${renderInlineMarkdown(block.replace(/^###\s+/, ''))}</h3>`;
+        }
+        if (/^##\s+/.test(block)) {
+            return `<h2>${renderInlineMarkdown(block.replace(/^##\s+/, ''))}</h2>`;
+        }
+        if (/^#\s+/.test(block)) {
+            return `<h1>${renderInlineMarkdown(block.replace(/^#\s+/, ''))}</h1>`;
+        }
+
+        return `<p>${lines.map((line) => renderInlineMarkdown(line)).join('<br>')}</p>`;
+    }).join('');
+}
+
 function getCurrentUTC8DateTimeParts() {
     const now = new Date();
     const utc8Now = new Date(now.getTime() + 8 * 60 * 60 * 1000);
@@ -113,7 +170,7 @@ function appendChatMessage(role, content) {
     wrapper.className = `chat-bubble ${role === 'user' ? 'chat-bubble-user' : 'chat-bubble-assistant'}`;
     wrapper.innerHTML = `
         <p class="chat-role">${role === 'user' ? '你的追问' : 'Worker AI 回答'}</p>
-        <div class="chat-content">${content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        <div class="chat-content">${role === 'user' ? escapeHtml(content) : renderMarkdown(content)}</div>
     `;
 
     const emptyState = aiConversation.querySelector('.chat-empty-state');
@@ -134,6 +191,10 @@ function createStreamingAssistantMessage() {
     wrapper.className = 'chat-bubble chat-bubble-assistant';
     wrapper.innerHTML = `
         <p class="chat-role">Worker AI 回答</p>
+        <div class="chat-reasoning hidden">
+            <p class="chat-subtitle">推理过程</p>
+            <div class="chat-reasoning-content"></div>
+        </div>
         <div class="chat-content"></div>
     `;
 
@@ -148,7 +209,11 @@ function createStreamingAssistantMessage() {
     }
 
     aiConversation.appendChild(wrapper);
-    return wrapper.querySelector('.chat-content');
+    return {
+        contentNode: wrapper.querySelector('.chat-content'),
+        reasoningWrap: wrapper.querySelector('.chat-reasoning'),
+        reasoningNode: wrapper.querySelector('.chat-reasoning-content')
+    };
 }
 
 function decodeSseChunk(rawChunk) {
@@ -159,7 +224,8 @@ function decodeSseChunk(rawChunk) {
         .map((line) => line.slice(5).trim())
         .filter(Boolean);
 
-    let text = '';
+    let content = '';
+    let reasoning = '';
     let done = false;
 
     for (const line of lines) {
@@ -170,21 +236,35 @@ function decodeSseChunk(rawChunk) {
 
         try {
             const parsed = JSON.parse(line);
-            if (typeof parsed.response === 'string') {
-                text += parsed.response;
-            } else if (typeof parsed.text === 'string') {
-                text += parsed.text;
+            for (const choice of parsed.choices || []) {
+                const delta = choice?.delta || {};
+
+                if (typeof delta.reasoning_content === 'string') {
+                    reasoning += delta.reasoning_content;
+                } else if (typeof delta.reasoning === 'string') {
+                    reasoning += delta.reasoning;
+                }
+
+                if (typeof delta.content === 'string') {
+                    content += delta.content;
+                } else if (Array.isArray(delta.content)) {
+                    for (const part of delta.content) {
+                        if (typeof part?.text === 'string') {
+                            content += part.text;
+                        }
+                    }
+                }
             }
 
-            if (parsed.done === true) {
+            if (parsed.choices?.some((choice) => choice?.finish_reason)) {
                 done = true;
             }
         } catch {
-            text += line;
+            content += line;
         }
     }
 
-    return { text, done };
+    return { content, reasoning, done };
 }
 
 async function handleContinueAskSubmit(event) {
@@ -196,15 +276,15 @@ async function handleContinueAskSubmit(event) {
     }
 
     appendChatMessage('user', question);
-    chatHistory.push({ role: 'user', content: question });
 
     followupQuestionInput.value = '';
     followupQuestionInput.disabled = true;
     continueAskButton.disabled = true;
     aiStatus.textContent = 'Worker AI 正在整理当前命盘上下文并生成回答...';
     aiStatus.style.display = 'block';
-    const streamingContentNode = createStreamingAssistantMessage();
+    const streamingUi = createStreamingAssistantMessage();
     let streamedAnswer = '';
+    let streamedReasoning = '';
 
     try {
         const response = await fetch('/api/chat', {
@@ -228,10 +308,7 @@ async function handleContinueAskSubmit(event) {
                         content: '我已收到并记住这份命盘结果，后续将严格基于这些信息回答。'
                     },
                     ...chatHistory.slice(-8),
-                    {
-                        role: 'user',
-                        content: question
-                    }
+                    { role: 'user', content: question }
                 ]
             })
         });
@@ -259,33 +336,50 @@ async function handleContinueAskSubmit(event) {
             buffer = events.pop() || '';
 
             for (const eventChunk of events) {
-                const { text } = decodeSseChunk(eventChunk);
-                if (text) {
-                    streamedAnswer += text;
-                    streamingContentNode.textContent = streamedAnswer;
-                    aiConversation.scrollTop = aiConversation.scrollHeight;
+                const { content, reasoning } = decodeSseChunk(eventChunk);
+                if (reasoning && !streamedAnswer) {
+                    streamedReasoning += reasoning;
+                    streamingUi.reasoningWrap.classList.remove('hidden');
+                    streamingUi.reasoningNode.textContent = streamedReasoning;
                 }
+                if (content) {
+                    streamedAnswer += content;
+                    streamingUi.contentNode.innerHTML = renderMarkdown(streamedAnswer);
+                    streamingUi.reasoningWrap.classList.add('hidden');
+                }
+                aiConversation.scrollTop = aiConversation.scrollHeight;
             }
         }
 
         if (buffer.trim()) {
-            const { text } = decodeSseChunk(buffer);
-            if (text) {
-                streamedAnswer += text;
-                streamingContentNode.textContent = streamedAnswer;
+            const { content, reasoning } = decodeSseChunk(buffer);
+            if (reasoning && !streamedAnswer) {
+                streamedReasoning += reasoning;
+                streamingUi.reasoningWrap.classList.remove('hidden');
+                streamingUi.reasoningNode.textContent = streamedReasoning;
+            }
+            if (content) {
+                streamedAnswer += content;
+                streamingUi.contentNode.innerHTML = renderMarkdown(streamedAnswer);
+                streamingUi.reasoningWrap.classList.add('hidden');
             }
         }
 
         const answer = streamedAnswer.trim();
-        if (!answer) {
+        const reasoning = streamedReasoning.trim();
+        if (!answer && !reasoning) {
             throw new Error('Worker AI 没有返回有效内容。');
         }
 
-        chatHistory.push({ role: 'assistant', content: answer });
+        chatHistory.push({ role: 'user', content: question });
+        chatHistory.push({
+            role: 'assistant',
+            content: answer || reasoning
+        });
         aiStatus.textContent = '已带入当前命盘参数。你可以继续追问。';
     } catch (error) {
-        if (!streamedAnswer) {
-            streamingContentNode.textContent = error.message || '调用 Worker AI 时发生错误。';
+        if (!streamedAnswer && !streamedReasoning) {
+            streamingUi.contentNode.textContent = error.message || '调用 Worker AI 时发生错误。';
         }
         aiStatus.textContent = error.message || '调用 Worker AI 时发生错误。';
     } finally {

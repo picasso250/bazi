@@ -188,8 +188,67 @@
     @apply text-[0.65rem] uppercase tracking-[0.28em] text-outline;
   }
 
+  .chat-subtitle {
+    @apply text-[0.65rem] uppercase tracking-[0.24em] text-outline;
+  }
+
+  .chat-reasoning {
+    @apply mb-4 rounded-2xl border border-outline-variant/25 bg-surface-container-low px-4 py-3;
+  }
+
+  .chat-reasoning-content {
+    @apply mt-2 whitespace-pre-wrap text-sm leading-7 text-on-surface-variant;
+  }
+
   .chat-content {
     @apply mt-3 whitespace-pre-wrap text-sm leading-7;
+  }
+
+  .chat-content h1,
+  .chat-content h2,
+  .chat-content h3 {
+    @apply mt-4 font-headline font-bold text-on-surface;
+  }
+
+  .chat-content h1 {
+    @apply text-2xl;
+  }
+
+  .chat-content h2 {
+    @apply text-xl;
+  }
+
+  .chat-content h3 {
+    @apply text-lg;
+  }
+
+  .chat-content p {
+    @apply my-3;
+  }
+
+  .chat-content ul,
+  .chat-content ol {
+    @apply my-3 pl-6;
+  }
+
+  .chat-content ul {
+    @apply list-disc;
+  }
+
+  .chat-content ol {
+    @apply list-decimal;
+  }
+
+  .chat-content code {
+    @apply rounded bg-surface-container-low px-1.5 py-0.5 text-[0.92em];
+  }
+
+  .chat-content pre {
+    @apply my-4 overflow-x-auto rounded-2xl bg-surface-container-low p-4;
+  }
+
+  .chat-content pre code {
+    @apply bg-transparent p-0;
   }
 }
 

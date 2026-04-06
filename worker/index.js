@@ -1,4 +1,4 @@
-const MODEL = "@cf/meta/llama-3.2-3b-instruct";
+const MODEL = "@cf/zai-org/glm-4.7-flash";
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -57,13 +57,17 @@ async function handleChat(request, env) {
           "在后续消息里，前面会先给你一段命盘事实和一条确认消息，然后才是用户追问。",
           "必须严格以消息中给出的命盘事实为准，不要重新捏造出生数据，也不要说你没有看到命盘。",
           "优先给出简洁、清晰、有依据的中文回答。若结论依赖解释，请点明你引用的是哪些已给出的柱、藏干、大运或流年。",
-          "如果问题超出当前上下文支持范围，要明确说明限制，不要编造。"
+          "如果问题超出当前上下文支持范围，要明确说明限制，不要编造。",
+          "回答默认使用 Markdown，优先使用短标题、项目符号、加粗重点，避免输出纯大段文字。"
         ].join("\n")
       },
       ...sanitizedMessages
     ],
-    max_tokens: 700,
-    temperature: 0.4
+    max_completion_tokens: 1200,
+    temperature: 0.4,
+    chat_template_kwargs: {
+      enable_thinking: false
+    }
   };
 
   if (stream) {
