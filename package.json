@@ -2,10 +2,13 @@
   "name": "bazi",
   "private": true,
   "scripts": {
-    "build:css": "tailwindcss -i ./src/input.css -o ./style.css --minify",
-    "watch:css": "tailwindcss -i ./src/input.css -o ./style.css --watch"
+    "build:css": "tailwindcss -i ./src/input.css -o ./public/style.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./public/style.css --watch",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "wrangler": "^4.12.0"
   }
 }

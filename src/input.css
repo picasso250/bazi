@@ -4,11 +4,11 @@
 
 @layer base {
   body {
-    font-family: "Work Sans", sans-serif;
+    font-family: system-ui, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
   }
 
   .font-headline {
-    font-family: "Noto Serif SC", serif;
+    font-family: "STSong", "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
   }
 }
 
@@ -30,7 +30,7 @@
   }
 
   .field-input {
-    @apply w-full rounded-2xl border border-outline-variant/50 bg-surface-container-lowest px-4 py-3 text-base text-on-surface shadow-sm outline-none transition duration-200 placeholder:text-on-surface-variant/45 focus:border-primary focus:ring-2 focus:ring-primary/15;
+    @apply w-full rounded-2xl border border-outline-variant/50 bg-surface-container-lowest px-4 py-3 text-base text-on-surface shadow-sm outline-none transition duration-200 placeholder:text-on-surface-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/20;
   }
 
   .segmented-wrap {
@@ -68,7 +68,7 @@
   }
 
   .error-message {
-    @apply rounded-2xl border border-error/25 bg-error-container px-5 py-4 text-sm font-medium leading-7 text-error shadow-sm;
+    @apply rounded-2xl border border-error/20 bg-error-container px-5 py-4 text-sm font-medium leading-7 text-error shadow-sm;
   }
 
   .summary-chip {
@@ -76,7 +76,7 @@
   }
 
   .summary-card {
-    @apply rounded-[1.5rem] border border-outline-variant/35 bg-surface-container-lowest p-5;
+    @apply rounded-[1.5rem] border border-outline-variant/30 bg-surface-container-lowest p-5;
   }
 
   .summary-label {
@@ -88,11 +88,11 @@
   }
 
   .pillar-card {
-    @apply rounded-[1.75rem] border border-outline-variant/35 bg-surface-container-lowest p-6 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-panel;
+    @apply rounded-[1.75rem] border border-outline-variant/30 bg-surface-container-lowest p-6 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-panel;
   }
 
   .pillar-card-master {
-    @apply border-primary/35 bg-gradient-to-b from-surface-container-lowest to-primary/5;
+    @apply border-primary/30 bg-gradient-to-b from-surface-container-lowest to-primary/5;
   }
 
   .pillar-label {
@@ -124,7 +124,7 @@
   }
 
   .stat-chip {
-    @apply rounded-2xl border border-outline-variant/35 bg-surface-container-lowest px-4 py-3;
+    @apply rounded-2xl border border-outline-variant/30 bg-surface-container-lowest px-4 py-3;
   }
 
   .stat-chip-label {
@@ -141,7 +141,7 @@
   }
 
   .grand-cycle-item {
-    @apply min-w-[10.5rem] flex-shrink-0 rounded-[1.75rem] border border-outline-variant/35 bg-surface-container-lowest p-5 text-center shadow-sm transition duration-300;
+    @apply min-w-[10.5rem] flex-shrink-0 rounded-[1.75rem] border border-outline-variant/30 bg-surface-container-lowest p-5 text-center shadow-sm transition duration-300;
   }
 
   .grand-cycle-item .age-range {
@@ -153,7 +153,7 @@
   }
 
   .flow-card {
-    @apply rounded-[2rem] border border-outline-variant/35 bg-surface-container-lowest p-6 shadow-sm;
+    @apply rounded-[2rem] border border-outline-variant/30 bg-surface-container-lowest p-6 shadow-sm;
   }
 
   .flow-card-next {
@@ -165,7 +165,31 @@
   }
 
   .flow-card-next .flow-label {
-    @apply text-on-primary-container/65;
+    @apply text-on-primary-container/70;
+  }
+
+  .chat-empty-state {
+    @apply rounded-[1.5rem] border border-dashed border-outline-variant/50 bg-surface-container-low px-5 py-4 text-sm leading-7 text-on-surface-variant;
+  }
+
+  .chat-bubble {
+    @apply rounded-[1.5rem] px-5 py-4 shadow-sm;
+  }
+
+  .chat-bubble-user {
+    @apply border border-primary/20 bg-primary/10 text-on-surface;
+  }
+
+  .chat-bubble-assistant {
+    @apply border border-outline-variant/30 bg-surface-container-lowest text-on-surface;
+  }
+
+  .chat-role {
+    @apply text-[0.65rem] uppercase tracking-[0.28em] text-outline;
+  }
+
+  .chat-content {
+    @apply mt-3 whitespace-pre-wrap text-sm leading-7;
   }
 }
 
@@ -188,9 +212,5 @@
 
   .element-\6c34 {
     color: #3f6f96;
-  }
-
-  .material-symbols-outlined {
-    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
   }
 }

@@ -1,0 +1,15 @@
+name = "bazi"
+main = "worker/index.js"
+compatibility_date = "2026-04-06"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[ai]
+binding = "AI"
+remote = true
+
+[[routes]]
+pattern = "bazi.io99.xyz"
+custom_domain = true

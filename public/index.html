@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>八字真时查询</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-background text-on-surface antialiased">
@@ -24,7 +20,7 @@
                 <h1 class="mt-1 font-headline text-xl font-bold tracking-[0.08em] text-on-surface">八字真时查询</h1>
             </div>
             <div class="hidden items-center gap-3 text-sm text-on-surface-variant md:flex">
-                <span class="material-symbols-outlined text-primary">routine</span>
+                <span class="text-primary">·</span>
                 <span>基于出生时间与经纬度推算四柱干支</span>
             </div>
         </div>
@@ -46,7 +42,7 @@
                 <form id="combinedQueryForm" class="space-y-6">
                     <section class="panel p-6 sm:p-8">
                         <div class="section-title">
-                            <span class="material-symbols-outlined text-primary">calendar_month</span>
+                            <span class="text-primary">01</span>
                             <div>
                                 <h3 class="font-headline text-xl font-semibold">出生时间</h3>
                                 <p class="mt-1 text-sm text-on-surface-variant">请输入北京时间（UTC+8）的出生时刻。</p>
@@ -79,7 +75,7 @@
 
                     <section class="panel p-6 sm:p-8">
                         <div class="section-title">
-                            <span class="material-symbols-outlined text-primary">location_on</span>
+                            <span class="text-primary">02</span>
                             <div>
                                 <h3 class="font-headline text-xl font-semibold">出生地点与基本信息</h3>
                                 <p class="mt-1 text-sm text-on-surface-variant">地点用于换算当地真太阳时，以提高推演精度。</p>
@@ -136,7 +132,7 @@
                     </section>
 
                     <button type="submit" class="action-button">
-                        <span class="material-symbols-outlined text-xl">auto_awesome</span>
+                        <span class="text-lg">•</span>
                         <span class="font-headline text-lg font-bold tracking-[0.25em]">开启推演</span>
                     </button>
                 </form>
@@ -170,7 +166,7 @@
 
                     <div class="rounded-[2rem] border border-outline-variant/30 bg-[radial-gradient(circle_at_top,_rgba(33,68,87,0.14),_transparent_55%),linear-gradient(135deg,rgba(184,159,119,0.1),rgba(33,68,87,0.02))] p-6">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary">public</span>
+                            <span class="text-primary">·</span>
                             <p class="font-headline text-lg font-semibold">输入建议</p>
                         </div>
                         <ul class="mt-4 space-y-3 text-sm leading-7 text-on-surface-variant">
@@ -307,6 +303,45 @@
                         <p id="nextYearPillarDisplay" class="mt-4 text-lg font-semibold text-on-primary-container"></p>
                     </article>
                 </div>
+            </div>
+
+            <div class="panel p-6 sm:p-8">
+                <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.35em] text-outline">Worker AI</p>
+                        <h3 class="mt-2 font-headline text-2xl font-bold text-on-surface">继续问</h3>
+                        <p class="mt-2 text-sm leading-7 text-on-surface-variant">
+                            基于当前命盘结果继续追问。系统会自动带入出生信息、四柱、大运与流年上下文。
+                        </p>
+                    </div>
+                    <div class="rounded-full border border-outline-variant/35 bg-surface-container-lowest px-4 py-2 text-xs tracking-[0.25em] text-on-surface-variant">
+                        CONTEXT-AWARE CHAT
+                    </div>
+                </div>
+
+                <div id="aiConversation" class="mt-8 space-y-4">
+                    <div class="chat-empty-state">
+                        可以继续问，例如：<span class="font-medium text-on-surface">“这个命盘的事业倾向如何？”</span>
+                    </div>
+                </div>
+
+                <div id="aiStatus" class="mt-4 hidden text-sm text-on-surface-variant"></div>
+
+                <form id="continueAskForm" class="mt-6 space-y-4">
+                    <label class="field">
+                        <span class="field-label">Follow-up Question</span>
+                        <textarea id="followupQuestion" class="field-input min-h-[8rem] resize-y" placeholder="继续追问当前命盘，例如：接下来两年的工作与财运重点是什么？" required></textarea>
+                    </label>
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <p class="text-sm text-on-surface-variant">
+                            回答仅基于当前页面已计算出的命盘参数，不会重新生成不同的八字结果。
+                        </p>
+                        <button id="continueAskButton" type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-on-primary shadow-glow transition duration-200 hover:-translate-y-0.5">
+                            <span>•</span>
+                            继续问
+                        </button>
+                    </div>
+                </form>
             </div>
         </section>
     </main>

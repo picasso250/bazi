@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./index.html", "./main.js", "./src/**/*.js"],
+  content: ["./public/index.html", "./public/main.js", "./public/src/**/*.js"],
   theme: {
     extend: {
       colors: {
@@ -25,8 +25,8 @@ module.exports = {
         "error-container": "#ffdad6"
       },
       fontFamily: {
-        headline: ["\"Noto Serif SC\"", "serif"],
-        body: ["\"Work Sans\"", "sans-serif"]
+        headline: ["\"STSong\"", "\"Songti SC\"", "\"Source Han Serif SC\"", "\"Noto Serif CJK SC\"", "serif"],
+        body: ["system-ui", "\"PingFang SC\"", "\"Microsoft YaHei\"", "\"Noto Sans CJK SC\"", "sans-serif"]
       },
       boxShadow: {
         panel: "0 18px 50px rgba(27, 28, 26, 0.06)",
