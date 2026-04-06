@@ -126,6 +126,59 @@ function appendChatMessage(role, content) {
     aiConversation.appendChild(wrapper);
 }
 
+function createStreamingAssistantMessage() {
+    const wrapper = document.createElement('article');
+    wrapper.className = 'chat-bubble chat-bubble-assistant';
+    wrapper.innerHTML = `
+        <p class="chat-role">Worker AI 回答</p>
+        <div class="chat-content"></div>
+    `;
+
+    const emptyState = aiConversation.querySelector('.chat-empty-state');
+    if (emptyState) {
+        emptyState.remove();
+    }
+
+    aiConversation.appendChild(wrapper);
+    return wrapper.querySelector('.chat-content');
+}
+
+function decodeSseChunk(rawChunk) {
+    const lines = rawChunk
+        .split('\n')
+        .map((line) => line.trim())
+        .filter((line) => line.startsWith('data:'))
+        .map((line) => line.slice(5).trim())
+        .filter(Boolean);
+
+    let text = '';
+    let done = false;
+
+    for (const line of lines) {
+        if (line === '[DONE]') {
+            done = true;
+            continue;
+        }
+
+        try {
+            const parsed = JSON.parse(line);
+            if (typeof parsed.response === 'string') {
+                text += parsed.response;
+            } else if (typeof parsed.text === 'string') {
+                text += parsed.text;
+            }
+
+            if (parsed.done === true) {
+                done = true;
+            }
+        } catch {
+            text += line;
+        }
+    }
+
+    return { text, done };
+}
+
 async function handleContinueAskSubmit(event) {
     event.preventDefault();
 
@@ -142,6 +195,8 @@ async function handleContinueAskSubmit(event) {
     continueAskButton.disabled = true;
     aiStatus.textContent = 'Worker AI 正在整理当前命盘上下文并生成回答...';
     aiStatus.style.display = 'block';
+    const streamingContentNode = createStreamingAssistantMessage();
+    let streamedAnswer = '';
 
     try {
         const response = await fetch('/api/chat', {
@@ -150,6 +205,7 @@ async function handleContinueAskSubmit(event) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                stream: true,
                 messages: [
                     {
                         role: 'user',
@@ -171,21 +227,58 @@ async function handleContinueAskSubmit(event) {
                 ]
             })
         });
-
-        const data = await response.json().catch(() => ({}));
         if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
             throw new Error(data.error || 'Worker AI 请求失败。');
         }
 
-        const answer = (data.response || '').trim();
+        if (!response.body) {
+            throw new Error('Worker AI 没有返回可读取的流。');
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) {
+                break;
+            }
+
+            buffer += decoder.decode(value, { stream: true });
+            const events = buffer.split('\n\n');
+            buffer = events.pop() || '';
+
+            for (const eventChunk of events) {
+                const { text } = decodeSseChunk(eventChunk);
+                if (text) {
+                    streamedAnswer += text;
+                    streamingContentNode.textContent = streamedAnswer;
+                    aiConversation.scrollTop = aiConversation.scrollHeight;
+                }
+            }
+        }
+
+        if (buffer.trim()) {
+            const { text } = decodeSseChunk(buffer);
+            if (text) {
+                streamedAnswer += text;
+                streamingContentNode.textContent = streamedAnswer;
+            }
+        }
+
+        const answer = streamedAnswer.trim();
         if (!answer) {
             throw new Error('Worker AI 没有返回有效内容。');
         }
 
-        appendChatMessage('assistant', answer);
         chatHistory.push({ role: 'assistant', content: answer });
         aiStatus.textContent = '已带入当前命盘参数。你可以继续追问。';
     } catch (error) {
+        if (!streamedAnswer) {
+            streamingContentNode.textContent = error.message || '调用 Worker AI 时发生错误。';
+        }
         aiStatus.textContent = error.message || '调用 Worker AI 时发生错误。';
     } finally {
         followupQuestionInput.disabled = false;

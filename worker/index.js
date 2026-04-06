@@ -10,6 +10,16 @@ function json(data, init = {}) {
   });
 }
 
+function sse(stream) {
+  return new Response(stream, {
+    headers: {
+      "content-type": "text/event-stream; charset=UTF-8",
+      "cache-control": "no-cache, no-transform",
+      connection: "keep-alive"
+    }
+  });
+}
+
 async function handleChat(request, env) {
   if (!env.AI) {
     return json({ error: "Workers AI 绑定不存在，请检查 wrangler 配置。" }, { status: 500 });
@@ -23,6 +33,7 @@ async function handleChat(request, env) {
   }
 
   const messages = Array.isArray(payload.messages) ? payload.messages : [];
+  const stream = payload.stream !== false;
 
   const sanitizedMessages = messages
     .filter((message) => message && (message.role === "user" || message.role === "assistant") && typeof message.content === "string")
@@ -37,7 +48,7 @@ async function handleChat(request, env) {
     return json({ error: "缺少对话消息。" }, { status: 400 });
   }
 
-  const result = await env.AI.run(MODEL, {
+  const modelInput = {
     messages: [
       {
         role: "system",
@@ -53,7 +64,18 @@ async function handleChat(request, env) {
     ],
     max_tokens: 700,
     temperature: 0.4
-  });
+  };
+
+  if (stream) {
+    const result = await env.AI.run(MODEL, {
+      ...modelInput,
+      stream: true
+    });
+
+    return sse(result);
+  }
+
+  const result = await env.AI.run(MODEL, modelInput);
 
   return json({ response: result.response || "" });
 }
