@@ -1,0 +1,672 @@
+<!-- 八字查询产品设计方案说明 -->
+# “八字查询”Web 页面设计方案 (Stitch Design Pro)
+
+## 1. 视觉方案与品牌调性
+*   **关键词**：专业、克制、东方、现代、学术。
+*   **设计理念**：将古老的历法天文数据通过现代排版技术呈现。借鉴宣纸、活字印刷的质感，结合现代 UI 的间距与响应式逻辑。
+*   **避雷点**：坚决不用发光特效、粗糙的八卦图、高饱和度红黄配色。
+
+## 2. 页面分区结构
+### 2.1 顶部 (Header)
+*   **标题**：[八字真时查询] - 强调“真时”，体现学术严谨性。
+*   **描述**：基于地理经纬度精准换算平太阳时与真太阳时，推算四柱干支。
+
+### 2.2 输入区 (Input Section) - 模块化表单
+*   **出生时间模块**：年、月、日、时、分（下拉或数字输入）。
+*   **出生地点模块**：
+    *   国内：省/市/区 联动选择。
+    *   海外：城市名称输入。
+    *   *提示文案*：“地点用于计算地理经度，以获取精准的真太阳时。”
+*   **性别选择**：简洁的 Segmented Control（分段开关）。
+*   **操作**：大尺寸、稳重的“开启查询”按钮。
+
+### 2.3 结果展示区 (Result Section)
+*   **核心摘要卡片**：展示换算后的当地时间、经纬度、太阳黄经。
+*   **四柱核心模块**：四张并列卡片（年、月、日、时），干支字体加粗放大，十神作为角标或底部辅助。
+*   **藏干详情**：紧跟在四柱卡片下方，采用整齐的网格布局。
+*   **大运流年**：采用横向滑动的“时间轴”或“卡片流”，区分起运岁数与当前状态。
+
+## 3. 设计规范建议
+*   **色彩 (Palette)**：
+    *   背景：`#F9F8F4` (暖米白)
+    *   文字：`#2C2C2C` (墨黑)
+    *   主色：`#3A5B6F` (黛青)
+    *   装饰：`#B89F77` (铜金)
+    *   警示：`#A63F3F` (深红)
+*   **字体 (Typography)**：
+    *   标题/干支：优先使用衬线体（如思源宋体），体现文化底蕴。
+    *   正文/数据：非衬线体（如 PingFang SC），确保屏显清晰度。
+*   **间距 (Spacing)**：遵循 8px 栅格系统，保持充分的间距（Whitespace）。
+
+## 4. UI 文案建议 (更专业化)
+*   “查询” -> **“开启推演”** 或 **“生成报告”**
+*   “输入出生信息” -> **“录入生辰信息”**
+*   “结果” -> **“命理参数概要”**
+*   错误提示：“请选择城市” -> **“需确定出生位置以计算真太阳时”**
+
+## 5. 交互建议
+*   **Loading**：点击查询后，展示一个简约的“天文轨道旋转”加载动画，持续 1s 左右，增加仪式感。
+*   **Reveal**：结果区由下至上平滑淡入，视线聚焦在四柱卡片上。
+
+<!-- 八字查询-输入页 -->
+<!DOCTYPE html>
+
+<html class="light" lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Celestial Scholar | 八字真时查询</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&amp;family=Work+Sans:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#f4f4f0",
+                    "surface-container-high": "#e9e8e4",
+                    "outline-variant": "#c2c7cc",
+                    "primary-container": "#3a5b6f",
+                    "on-primary-fixed-variant": "#294a5e",
+                    "surface-bright": "#faf9f5",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#e5c99f",
+                    "tertiary-fixed-dim": "#dec398",
+                    "tertiary-container": "#685432",
+                    "background": "#faf9f5",
+                    "inverse-surface": "#2f312e",
+                    "surface-container": "#efeeea",
+                    "secondary-container": "#fd817e",
+                    "tertiary-fixed": "#fbdfb2",
+                    "surface-tint": "#416277",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1b1c1a",
+                    "secondary": "#a23c3c",
+                    "on-secondary-fixed": "#410006",
+                    "on-tertiary-fixed": "#271900",
+                    "secondary-fixed": "#ffdad8",
+                    "on-primary-fixed": "#001e2d",
+                    "on-secondary-fixed-variant": "#822527",
+                    "on-secondary-container": "#73191d",
+                    "on-background": "#1b1c1a",
+                    "primary": "#214457",
+                    "tertiary": "#4f3d1d",
+                    "inverse-primary": "#a9cbe2",
+                    "on-tertiary-fixed-variant": "#564423",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#42474c",
+                    "inverse-on-surface": "#f2f1ed",
+                    "surface-variant": "#e3e2df",
+                    "error-container": "#ffdad6",
+                    "outline": "#72787d",
+                    "surface-container-highest": "#e3e2df",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#b0d2e9",
+                    "surface": "#faf9f5",
+                    "primary-fixed-dim": "#a9cbe2",
+                    "surface-dim": "#dbdad6",
+                    "primary-fixed": "#c5e7ff",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb3af"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Noto Serif SC", "serif"],
+                    "body": ["Work Sans", "sans-serif"],
+                    "label": ["Work Sans", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf9f5;
+            color: #1b1c1a;
+            font-family: 'Work Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .chinese-serif { font-family: 'Noto Serif SC', serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-xl z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-800 dark:text-slate-200">menu</span>
+<h1 class="font-serif font-semibold text-slate-900 dark:text-slate-50 tracking-widest uppercase text-sm">The Celestial Scholar</h1>
+</div>
+<div class="hidden md:flex items-center gap-8 text-stone-400 dark:text-stone-500 font-sans text-[10px] uppercase tracking-widest">
+<a class="text-slate-900 dark:text-white font-bold hover:text-slate-600 transition-colors" href="#">Analysis</a>
+<a class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="#">Archive</a>
+<a class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="#">Methodology</a>
+</div>
+<span class="material-symbols-outlined text-slate-800 dark:text-slate-200">settings</span>
+</header>
+<main class="flex-grow pt-32 pb-24 px-6 md:px-12 max-w-5xl mx-auto w-full">
+<!-- Hero Section -->
+<section class="mb-16 md:mb-24 relative">
+<div class="absolute -left-12 -top-12 opacity-5 pointer-events-none select-none">
+<span class="chinese-serif text-[12rem] font-black leading-none">時</span>
+</div>
+<div class="relative z-10">
+<h2 class="chinese-serif text-4xl md:text-5xl font-black text-on-surface tracking-tight mb-4">八字真时查询</h2>
+<p class="text-on-surface-variant font-body font-light text-lg max-w-lg leading-relaxed">
+                    基于出生时间与经纬度精确推算。<br/>
+<span class="text-sm opacity-60 tracking-wider">A precise astronomical calculation of the Four Pillars of Destiny.</span>
+</p>
+</div>
+</section>
+<!-- Form Section: Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Left Column: Date & Time Picker -->
+<div class="md:col-span-7 space-y-8">
+<div class="bg-surface-container-low p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<h3 class="chinese-serif text-xl font-semibold text-on-surface">出生时间</h3>
+</div>
+<div class="grid grid-cols-3 gap-4 mb-6">
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Year</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif text-lg" placeholder="1990" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Month</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif text-lg">
+<option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option>
+<option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Day</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif text-lg" placeholder="01" type="number"/>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Hour</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif text-lg" placeholder="12" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Minute</label>
+<input class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif text-lg" placeholder="00" type="number"/>
+</div>
+</div>
+</div>
+<!-- Gender Selector -->
+<div class="bg-surface-container-low p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">person</span>
+<h3 class="chinese-serif text-xl font-semibold text-on-surface">性别</h3>
+</div>
+<div class="flex bg-surface-container-high p-1 rounded-lg">
+<button class="px-8 py-2 rounded-md bg-surface-container-lowest text-primary shadow-sm chinese-serif font-bold transition-all">男</button>
+<button class="px-8 py-2 rounded-md text-outline hover:text-on-surface chinese-serif transition-all">女</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Location Picker -->
+<div class="md:col-span-5 space-y-8">
+<div class="bg-surface-container-low p-8 rounded-xl shadow-sm border border-outline-variant/10 min-h-[440px] flex flex-col">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<h3 class="chinese-serif text-xl font-semibold text-on-surface">出生地点</h3>
+</div>
+<div class="flex gap-4 mb-8 border-b border-outline-variant/20">
+<button class="pb-3 text-xs uppercase tracking-widest border-b-2 border-primary text-on-surface font-semibold">中国内地</button>
+<button class="pb-3 text-xs uppercase tracking-widest text-outline hover:text-on-surface-variant transition-colors">海外/港澳台</button>
+</div>
+<div class="space-y-4 flex-grow">
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">Province</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif">
+<option>请选择省份</option>
+<option>北京市</option>
+<option>上海市</option>
+<option>浙江省</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-outline">City</label>
+<select class="w-full bg-surface-container-lowest border-none rounded-md px-4 py-3 focus:ring-1 focus:ring-primary text-on-surface chinese-serif">
+<option>请选择城市</option>
+</select>
+</div>
+<div class="mt-auto pt-8">
+<div class="flex items-start gap-2 p-3 bg-tertiary-fixed/20 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-tertiary mt-0.5">info</span>
+<p class="text-[11px] leading-relaxed text-on-tertiary-fixed-variant">用于换算当地真太阳时 (True Solar Time calculation required for precision).</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full group relative overflow-hidden bg-primary text-on-primary py-5 rounded-xl shadow-xl transition-all active:scale-95">
+<div class="absolute inset-0 bg-gradient-to-r from-primary to-primary-container opacity-50"></div>
+<div class="relative flex items-center justify-center gap-3">
+<span class="chinese-serif text-xl font-bold tracking-[0.2em]">开始推演</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+</div>
+</button>
+</div>
+</div>
+<!-- Secondary Info / Asymmetric Visuals -->
+<div class="mt-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div class="space-y-4">
+<h4 class="chinese-serif text-lg font-bold text-on-surface">何谓真太阳时？</h4>
+<p class="text-sm text-on-surface-variant font-light leading-loose">
+                    在传统八字计算中，时间的精确度至关重要。平太阳时（如北京时间）是基于行政划分的人造时间，而真太阳时则是基于您出生地点相对于太阳的真实位置。本系统通过高精度经纬度算法，为您还原最准确的天文时空坐标。
+                </p>
+</div>
+<div class="relative h-48 bg-surface-container-high rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-60 transition-all duration-700" data-alt="minimalist aesthetic map of China in slate blue and parchment tones with subtle astronomical constellation overlays" data-location="China" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGKhCOCtvBw78b6e8gcYJkE340aHnZoZPfrN84lqVM2ne3OZJtX4YCqlzH-rIrkDEtl7YX4HygY7CbjcczCHlWaiIhKskGTQ_HLIi9aNIvOzmuPCBaya1pUJY8oe1lgdsmZaZrfLb-TcVdKSReT96K_8EIQyd8TFUd8zqsqKJHMx9p74VR4BrP9l5JFWQn_q_EfAHHddqoEgURu9icpZqYoprEFfc-gth21BUUVquiJpGeR5Bfb_hXX0--25Cuvq9YV2e_YOfb9Ls"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-primary/30">public</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-8 mt-16 text-center bg-stone-200 dark:bg-stone-950">
+<p class="font-sans text-xs leading-relaxed text-stone-600 dark:text-stone-400">
+            © Celestial Scholar Archive. Methodology: Traditional Song Dynasty BaZi Calculation.<br/>
+            All astronomical algorithms are cross-referenced with modern ephemeris data.
+        </p>
+<div class="mt-6 flex justify-center gap-8">
+<a class="font-sans text-xs uppercase tracking-widest text-stone-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline" href="#">Documentation</a>
+<a class="font-sans text-xs uppercase tracking-widest text-stone-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline" href="#">Methodology</a>
+<a class="font-sans text-xs uppercase tracking-widest text-stone-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors underline" href="#">Archive</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full flex justify-around items-center px-4 py-3 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-xl z-50 shadow-[0_-1px_0_0_rgba(0,0,0,0.05)]">
+<div class="flex flex-col items-center justify-center text-slate-900 dark:text-white bg-stone-200/50 dark:bg-stone-800/50 rounded-xl px-3 py-1 scale-95">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">Chart</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors px-3 py-1 rounded-xl">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">Cycles</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors px-3 py-1 rounded-xl">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">Analysis</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors px-3 py-1 rounded-xl">
+<span class="material-symbols-outlined">history</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">History</span>
+</div>
+</nav>
+</body></html>
+
+<!-- Design System -->
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Celestial Scholar | Analysis Result</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f4f4f0",
+                        "surface-container-high": "#e9e8e4",
+                        "outline-variant": "#c2c7cc",
+                        "primary-container": "#3a5b6f",
+                        "on-primary-fixed-variant": "#294a5e",
+                        "surface-bright": "#faf9f5",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#e5c99f",
+                        "tertiary-fixed-dim": "#dec398",
+                        "tertiary-container": "#685432",
+                        "background": "#faf9f5",
+                        "inverse-surface": "#2f312e",
+                        "surface-container": "#efeeea",
+                        "secondary-container": "#fd817e",
+                        "tertiary-fixed": "#fbdfb2",
+                        "surface-tint": "#416277",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#1b1c1a",
+                        "secondary": "#a23c3c",
+                        "on-secondary-fixed": "#410006",
+                        "on-tertiary-fixed": "#271900",
+                        "secondary-fixed": "#ffdad8",
+                        "on-primary-fixed": "#001e2d",
+                        "on-secondary-fixed-variant": "#822527",
+                        "on-secondary-container": "#73191d",
+                        "on-background": "#1b1c1a",
+                        "primary": "#214457",
+                        "tertiary": "#4f3d1d",
+                        "inverse-primary": "#a9cbe2",
+                        "on-tertiary-fixed-variant": "#564423",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#42474c",
+                        "inverse-on-surface": "#f2f1ed",
+                        "surface-variant": "#e3e2df",
+                        "error-container": "#ffdad6",
+                        "outline": "#72787d",
+                        "surface-container-highest": "#e3e2df",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#b0d2e9",
+                        "surface": "#faf9f5",
+                        "primary-fixed-dim": "#a9cbe2",
+                        "surface-dim": "#dbdad6",
+                        "primary-fixed": "#c5e7ff",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb3af"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Noto Serif SC", "serif"],
+                        "body": ["Work Sans", "sans-serif"],
+                        "label": ["Work Sans", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Work Sans', sans-serif; }
+        h1, h2, h3, .chinese-font { font-family: 'Noto Serif SC', serif; }
+        .asymmetric-bleed { margin-right: -2rem; }
+        @media (min-width: 768px) { .asymmetric-bleed { margin-right: 0; } }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-6 h-16 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-xl docked full-width top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-800 dark:text-slate-200">menu</span>
+<span class="font-serif font-semibold text-slate-900 dark:text-slate-50 tracking-widest">The Celestial Scholar</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8 text-sm uppercase tracking-widest font-sans">
+<a class="text-slate-400 dark:text-stone-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="#">Chart</a>
+<a class="text-slate-400 dark:text-stone-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="#">Cycles</a>
+<a class="text-slate-900 dark:text-white font-bold transition-colors" href="#">Analysis</a>
+<a class="text-slate-400 dark:text-stone-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="#">History</a>
+</nav>
+<span class="material-symbols-outlined text-slate-800 dark:text-slate-200">settings</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Top Section: Parameters -->
+<section class="mb-12">
+<div class="bg-surface-container-low rounded-xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+<div class="space-y-2">
+<h2 class="text-xs font-semibold tracking-widest uppercase text-outline">Birth Ephemeris</h2>
+<p class="text-2xl font-headline font-bold text-primary">Beijing, China</p>
+<div class="flex flex-wrap gap-4 text-xs text-on-surface-variant font-label">
+<span class="bg-surface-container-high px-2 py-1 rounded">UTC+8:00</span>
+<span class="bg-surface-container-high px-2 py-1 rounded">LAT: 39.9042° N</span>
+<span class="bg-surface-container-high px-2 py-1 rounded">LONG: 116.4074° E</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-x-12 gap-y-4">
+<div>
+<p class="text-[10px] uppercase tracking-tighter text-outline">Local True Solar Time</p>
+<p class="text-sm font-semibold">14:42:18</p>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-tighter text-outline">Solar Longitude</p>
+<p class="text-sm font-semibold">285.42°</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Results: Four Pillars (Bento Grid Style) -->
+<section class="mb-12">
+<div class="flex items-baseline justify-between mb-6">
+<h3 class="text-xl font-headline font-bold">The Four Pillars</h3>
+<span class="text-[10px] font-label uppercase tracking-[0.2em] text-outline">BaZi (八字) Calculation</span>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Pillar: Year -->
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col items-center justify-center text-center group hover:bg-surface-bright transition-all duration-300">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline mb-4">Year (Nian)</span>
+<div class="text-6xl md:text-7xl font-black leading-tight flex flex-col text-on-surface group-hover:text-primary transition-colors">
+<span>甲</span>
+<span class="text-tertiary">子</span>
+</div>
+<div class="mt-6 space-y-1">
+<p class="text-xs font-semibold">Wood Rat</p>
+<p class="text-[10px] text-secondary font-label uppercase tracking-tighter">Direct Wealth</p>
+</div>
+</div>
+<!-- Pillar: Month -->
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col items-center justify-center text-center group hover:bg-surface-bright transition-all duration-300">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline mb-4">Month (Yue)</span>
+<div class="text-6xl md:text-7xl font-black leading-tight flex flex-col text-on-surface group-hover:text-primary transition-colors">
+<span>丙</span>
+<span class="text-tertiary">寅</span>
+</div>
+<div class="mt-6 space-y-1">
+<p class="text-xs font-semibold">Fire Tiger</p>
+<p class="text-[10px] text-secondary font-label uppercase tracking-tighter">Seven Killings</p>
+</div>
+</div>
+<!-- Pillar: Day -->
+<div class="bg-surface-container-lowest rounded-xl p-6 ring-2 ring-primary ring-inset flex flex-col items-center justify-center text-center group hover:bg-surface-bright transition-all duration-300">
+<span class="text-[10px] font-label uppercase tracking-widest text-primary mb-4">Day (Ri) - Master</span>
+<div class="text-6xl md:text-7xl font-black leading-tight flex flex-col text-on-surface group-hover:text-primary transition-colors">
+<span>庚</span>
+<span class="text-tertiary">申</span>
+</div>
+<div class="mt-6 space-y-1">
+<p class="text-xs font-semibold">Metal Monkey</p>
+<p class="text-[10px] text-secondary font-label uppercase tracking-tighter">Day Master</p>
+</div>
+</div>
+<!-- Pillar: Hour -->
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col items-center justify-center text-center group hover:bg-surface-bright transition-all duration-300">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline mb-4">Hour (Shi)</span>
+<div class="text-6xl md:text-7xl font-black leading-tight flex flex-col text-on-surface group-hover:text-primary transition-colors">
+<span>癸</span>
+<span class="text-tertiary">未</span>
+</div>
+<div class="mt-6 space-y-1">
+<p class="text-xs font-semibold">Water Goat</p>
+<p class="text-[10px] text-secondary font-label uppercase tracking-tighter">Eating God</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Hidden Stems (Cang-Gan) -->
+<section class="mb-16">
+<div class="bg-surface-container-high/40 rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant/10">
+<h4 class="text-xs font-label uppercase tracking-widest text-on-surface-variant">Hidden Stems (Cang-Gan)</h4>
+</div>
+<div class="grid grid-cols-4 divide-x divide-outline-variant/10">
+<div class="p-6 flex flex-col items-center gap-2">
+<span class="text-lg font-headline">癸</span>
+<span class="text-[10px] text-outline">Rob Wealth</span>
+</div>
+<div class="p-6 flex flex-col items-center gap-2">
+<div class="flex gap-3">
+<div class="flex flex-col items-center"><span class="text-lg font-headline">甲</span><span class="text-[10px] text-outline">偏财</span></div>
+<div class="flex flex-col items-center"><span class="text-lg font-headline">丙</span><span class="text-[10px] text-outline">七杀</span></div>
+</div>
+</div>
+<div class="p-6 flex flex-col items-center gap-2">
+<div class="flex gap-3">
+<div class="flex flex-col items-center"><span class="text-lg font-headline">庚</span><span class="text-[10px] text-outline">比肩</span></div>
+<div class="flex flex-col items-center"><span class="text-lg font-headline">壬</span><span class="text-[10px] text-outline">食神</span></div>
+</div>
+</div>
+<div class="p-6 flex flex-col items-center gap-2">
+<div class="flex gap-3">
+<div class="flex flex-col items-center"><span class="text-lg font-headline">己</span><span class="text-[10px] text-outline">正印</span></div>
+<div class="flex flex-col items-center"><span class="text-lg font-headline">丁</span><span class="text-[10px] text-outline">正官</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Da-Yun & Life Cycles -->
+<section class="mb-16">
+<div class="flex items-center gap-4 mb-8">
+<h3 class="text-xl font-headline font-bold whitespace-nowrap">Major Cycles</h3>
+<div class="h-px w-full bg-outline-variant/20"></div>
+<div class="text-[10px] font-label uppercase tracking-widest text-outline whitespace-nowrap">Starting Age: 6</div>
+</div>
+<div class="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar">
+<!-- Cycle Item -->
+<div class="snap-start flex-shrink-0 w-32 bg-surface-container-low rounded-xl p-4 text-center border-t-2 border-primary">
+<p class="text-2xl font-headline mb-1">丁卯</p>
+<p class="text-[10px] font-label text-outline mb-4">6 - 15</p>
+<div class="w-full h-1 bg-primary/10 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<p class="mt-3 text-[10px] font-bold uppercase text-secondary">Past</p>
+</div>
+<!-- Cycle Item -->
+<div class="snap-start flex-shrink-0 w-32 bg-surface-container-low rounded-xl p-4 text-center border-t-2 border-primary">
+<p class="text-2xl font-headline mb-1">戊辰</p>
+<p class="text-[10px] font-label text-outline mb-4">16 - 25</p>
+<div class="w-full h-1 bg-primary/10 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<p class="mt-3 text-[10px] font-bold uppercase text-secondary">Past</p>
+</div>
+<!-- Cycle Item Active -->
+<div class="snap-start flex-shrink-0 w-40 bg-surface-container-lowest shadow-xl shadow-primary/5 rounded-xl p-6 text-center border-t-4 border-primary transform -translate-y-2">
+<p class="text-3xl font-headline mb-1 text-primary">己巳</p>
+<p class="text-xs font-label text-outline mb-6">26 - 35</p>
+<div class="w-full h-1.5 bg-primary/10 rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-primary"></div>
+</div>
+<p class="mt-4 text-xs font-bold uppercase text-primary">Current Cycle</p>
+</div>
+<!-- Cycle Item -->
+<div class="snap-start flex-shrink-0 w-32 bg-surface-container-low rounded-xl p-4 text-center border-t-2 border-outline-variant">
+<p class="text-2xl font-headline mb-1 text-on-surface-variant">庚午</p>
+<p class="text-[10px] font-label text-outline mb-4">36 - 45</p>
+<div class="w-full h-1 bg-outline-variant/10 rounded-full"></div>
+<p class="mt-3 text-[10px] font-bold uppercase text-outline">Future</p>
+</div>
+<!-- Cycle Item -->
+<div class="snap-start flex-shrink-0 w-32 bg-surface-container-low rounded-xl p-4 text-center border-t-2 border-outline-variant">
+<p class="text-2xl font-headline mb-1 text-on-surface-variant">辛未</p>
+<p class="text-[10px] font-label text-outline mb-4">46 - 55</p>
+<div class="w-full h-1 bg-outline-variant/10 rounded-full"></div>
+<p class="mt-3 text-[10px] font-bold uppercase text-outline">Future</p>
+</div>
+<!-- Cycle Item -->
+<div class="snap-start flex-shrink-0 w-32 bg-surface-container-low rounded-xl p-4 text-center border-t-2 border-outline-variant">
+<p class="text-2xl font-headline mb-1 text-on-surface-variant">壬申</p>
+<p class="text-[10px] font-label text-outline mb-4">56 - 65</p>
+<div class="w-full h-1 bg-outline-variant/10 rounded-full"></div>
+<p class="mt-3 text-[10px] font-bold uppercase text-outline">Future</p>
+</div>
+</div>
+</section>
+<!-- Current/Next Year (Liu-Nian) -->
+<section class="grid md:grid-cols-2 gap-8">
+<div class="group relative overflow-hidden bg-surface-container-high rounded-xl p-8 transition-all hover:bg-surface-container-highest">
+<div class="relative z-10">
+<span class="text-[10px] font-label uppercase tracking-widest text-outline">Current Transit</span>
+<h4 class="text-4xl font-headline font-bold mt-2 mb-4">2024: 甲辰</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed max-w-sm">
+                        The Wood Dragon year introduces a period of expansion and grounded creativity. A significant alignment with your Day Master suggests professional stabilization.
+                    </p>
+<button class="mt-6 flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest">
+                        Read Full Analysis
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="absolute -right-8 -bottom-12 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="text-[16rem] font-headline">龍</span>
+</div>
+</div>
+<div class="group relative overflow-hidden bg-primary-container rounded-xl p-8 text-on-primary-container">
+<div class="relative z-10">
+<span class="text-[10px] font-label uppercase tracking-widest text-on-primary-container/60">Upcoming Transit</span>
+<h4 class="text-4xl font-headline font-bold mt-2 mb-4">2025: 乙巳</h4>
+<p class="text-sm text-on-primary-container/80 leading-relaxed max-w-sm">
+                        Transitioning into the Wood Snake. Prepare for a more internal, strategic phase. Financial intuition is heightened; focus on intellectual consolidation.
+                    </p>
+<button class="mt-6 flex items-center gap-2 text-on-primary-container font-bold text-xs uppercase tracking-widest">
+                        Pre-Cycle Analysis
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="absolute -right-8 -bottom-12 opacity-10">
+<span class="text-[16rem] font-headline">蛇</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-8 mt-16 text-center bg-stone-200 dark:bg-stone-950 full-width">
+<div class="max-w-4xl mx-auto space-y-6">
+<p class="font-sans text-xs leading-relaxed text-stone-600 dark:text-stone-400">© Celestial Scholar Archive. Methodology: Traditional Song Dynasty BaZi Calculation.</p>
+<div class="flex justify-center gap-8">
+<a class="font-sans text-xs text-stone-500 dark:text-stone-50 hover:text-slate-700 dark:hover:text-slate-300 underline" href="#">Documentation</a>
+<a class="font-sans text-xs text-stone-500 dark:text-stone-50 hover:text-slate-700 dark:hover:text-slate-300" href="#">Methodology</a>
+<a class="font-sans text-xs text-stone-500 dark:text-stone-50 hover:text-slate-700 dark:hover:text-slate-300" href="#">Archive</a>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full flex justify-around items-center px-4 py-3 bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-xl docked full-width bottom-0 z-50 shadow-[0_-1px_0_0_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">Chart</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">Cycles</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-900 dark:text-white bg-stone-200/50 dark:bg-stone-800/50 rounded-xl px-3 py-1 scale-95 transition-transform">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">Analysis</span>
+</button>
+<button class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 hover:bg-stone-100 dark:hover:bg-stone-800">
+<span class="material-symbols-outlined">history</span>
+<span class="font-sans text-[10px] uppercase tracking-widest mt-1">History</span>
+</button>
+</nav>
+</body></html>
