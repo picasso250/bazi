@@ -90,6 +90,23 @@ function formatDisplayDate(date) {
     return date.toISOString().replace('Z', ' ').replace('T', ' ').slice(0, 19) + ' UTC+8';
 }
 
+function calculateCurrentAge(inputUtc8Date) {
+    const now = new Date();
+    const utc8Now = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    let age = utc8Now.getUTCFullYear() - inputUtc8Date.getUTCFullYear();
+
+    const hasHadBirthdayThisYear =
+        utc8Now.getUTCMonth() > inputUtc8Date.getUTCMonth() ||
+        (utc8Now.getUTCMonth() === inputUtc8Date.getUTCMonth() &&
+            utc8Now.getUTCDate() >= inputUtc8Date.getUTCDate());
+
+    if (!hasHadBirthdayThisYear) {
+        age -= 1;
+    }
+
+    return age;
+}
+
 function buildChartContext({
     baziData,
     selectedLocation,
@@ -125,6 +142,7 @@ function buildChartContext({
         '如果用户的问题超出当前命盘信息的支持范围，要明确说明限制。',
         '',
         `出生时间（UTC+8）：${formatDisplayDate(baziData.inputUtc8Date)}`,
+        `当前年龄：${calculateCurrentAge(baziData.inputUtc8Date)} 岁`,
         `出生地：${selectedLocation.name} (${selectedLocation.countryCode})`,
         `纬度：${selectedLocation.lat.toFixed(4)}，经度：${selectedLocation.lng.toFixed(4)}`,
         `当地真太阳时：${new Intl.DateTimeFormat('zh-CN', {
